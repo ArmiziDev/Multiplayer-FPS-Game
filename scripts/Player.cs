@@ -1,8 +1,5 @@
 using Godot;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 public enum Team
 {
@@ -33,9 +30,8 @@ public partial class Player : CharacterBody3D
     [Export] public NodePath AnimationPlayerPath { get; set; }
     [Export] public NodePath ShapeCastPath { get; set; }
     [Export] public WeaponControllerSingleMesh WEAPON_CONTROLLER;
-    [Export] public HealthComponent healthComponent { get; set; }
     [Export] public State_Machine stateMachine { get; set; }
-    [Export] public PlayerUI player_ui;
+    [Export] public PlayerUserInterface player_user_interface;
     [Export] public float _speed;
     public int Money { get; set; } = 100;
     public float gravity = 12.0f;
@@ -61,11 +57,13 @@ public partial class Player : CharacterBody3D
 
     // Multiplayer
     public MultiplayerSynchronizer multiplayerSynchronizer;
+    [Export] public PlayerNetworkingCalls playerNetworkingCalls { get; set; }
 
     [Signal] public delegate void PlayerReadyEventHandler();
 
     public override void _Ready()
     {
+        // We Initalized player_info when we spawned them in the worldsetup script
         GD.Print("Loading Player");
 
         InitializeNetworkComponents();
@@ -77,24 +75,21 @@ public partial class Player : CharacterBody3D
         EmitSignal(SignalName.PlayerReady);
     }
 
+
     private void InitializeNetworkComponents()
     {
         // Set current player as multiplayer authority
-        player_info = Globals.localPlayerInfo;
         multiplayerSynchronizer = GetNode<MultiplayerSynchronizer>("%MultiplayerSynchronizer");
         multiplayerSynchronizer.SetMultiplayerAuthority(int.Parse(Name));
     }
     private void InitializePlayerComponents()
     {
-        // Setup Player UI
-        player_ui.UpdateUI("Health", "Health: " + health);
-        player_ui.UpdateUI("Money", "$" + Money);
         // Setting current speed to the default_speed set for player and gravity vector
         _speed = default_speed;
 
-
         _camera = GetNode<Camera3D>(CameraNodePath);
         _camera.Fov = camera_fov;
+
         // Raycasting
         space_state = _camera.GetWorld3D().DirectSpaceState;
         _animationPlayer = GetNode<AnimationPlayer>(AnimationPlayerPath);
@@ -105,6 +100,19 @@ public partial class Player : CharacterBody3D
         _crouchShapeCast = GetNode<ShapeCast3D>(ShapeCastPath);
         stateMachine.InitializeStateMachine(this);
         gravity_vector = new Vector3(0.0f, gravity, 0.0f);
+
+        // Adding User Interface
+        PackedScene playerUIScene = (PackedScene)ResourceLoader.Load("res://scenes/player_user_interface.tscn");
+
+        player_user_interface = (PlayerUserInterface)playerUIScene.Instantiate();
+
+        // Add the UI to the scene tree, usually under the root or a UI-related node
+        GetTree().Root.AddChild(player_user_interface);
+
+        player_user_interface.reticle().SetPlayer(this);
+        player_user_interface.playerUI().UpdateUI("Health", "Health: " + health);
+        player_user_interface.playerUI().UpdateUI("Money", "$" + Money);
+        player_user_interface.playerUI().UpdateUI("DisplayName", player_info.Name);
     }
 
     public override void _Input(InputEvent @event)
@@ -142,12 +150,17 @@ public partial class Player : CharacterBody3D
         
     }
 
-    public void Die()
+    public void Damage(int _damage, PlayerInfo sender_player)
     {
-        GD.Print("Player is Dead ID: " + Name);
+        // sender is the player sending the damage
+        // player_info is the player currently being damaged
+        PlayerInfo damaged_player = player_info;
+        playerNetworkingCalls.Damage(_damage, damaged_player, sender_player);
+
+
     }
 
-    public Godot.Collections.Dictionary shoot_raycast(int distance, float recoil_offset_x = 0.0f, float recoil_offset_y = 0.0f, bool debug_raycost_dot = false)
+    public Godot.Collections.Dictionary shoot_raycast(int distance, float raycast_offset_x = 0.0f, float raycast_offset_y = 0.0f, bool debug_raycost_dot = false)
     {
         space_state = _camera.GetWorld3D().DirectSpaceState;
         
@@ -160,8 +173,8 @@ public partial class Player : CharacterBody3D
         Vector3 origin = _camera.ProjectRayOrigin(screen_center);
 
         // Apply recoil offset by moving the screen center upwards
-        screen_center.Y -= recoil_offset_y;  // Moves the center up for recoil effect
-        screen_center.X -= recoil_offset_x; // Moves the recoil left or right
+        screen_center.X -= raycast_offset_x; // Moves the recoil left or right
+        screen_center.Y -= raycast_offset_y;  // Moves the center up for recoil effect
 
         // Creating Ray Begining and End
         Vector3 end = origin + _camera.ProjectRayNormal(screen_center) * distance; // Distanced Traveled
@@ -190,34 +203,33 @@ public partial class Player : CharacterBody3D
                 if (IsInstanceValid(current_interactable))
                 {
                     current_interactable?.EmitSignal(InteractionComponent.SignalName.NotInRange);
-                    player_ui.GetUIElement("Interact").Visible = false;
+                    player_user_interface.playerUI().GetUIElement("Interact").Visible = false;
                 }
                 current_interactable = collider;
                 current_interactable?.EmitSignal(InteractionComponent.SignalName.InRange);
-                player_ui.GetUIElement("Interact").Visible = true;
+                player_user_interface.playerUI().GetUIElement("Interact").Visible = true;
             }
         }
         else if (IsInstanceValid(current_interactable))
         {
             current_interactable?.EmitSignal(InteractionComponent.SignalName.NotInRange);
             current_interactable = null;
-            player_ui.GetUIElement("Interact").Visible = false;
+            player_user_interface.playerUI().GetUIElement("Interact").Visible = false;
         }
         else
         {
             current_interactable = null;
-            player_ui.GetUIElement("Interact").Visible = false;
+            player_user_interface.playerUI().GetUIElement("Interact").Visible = false;
         }
 
         // Shoot weapon raycast
-        weapon_raycast_result = shoot_raycast(1000, WEAPON_CONTROLLER.recoil_offset.X, WEAPON_CONTROLLER.recoil_offset.Y); //Regular distance for Weapon raycast
+        weapon_raycast_result = shoot_raycast(1000, WEAPON_CONTROLLER.raycast_offset.X, WEAPON_CONTROLLER.raycast_offset.Y); //Regular distance for Weapon raycast
 
         if (weapon_raycast_result.ContainsKey("position"))
         {
             Vector3 raycast_end_position = (Vector3)weapon_raycast_result["position"];
             DrawRaycastDot(raycast_end_position); 
         }
-        
     }
 
     private void DrawRaycastDot(Vector3 raycast_end_position)
@@ -239,7 +251,7 @@ public partial class Player : CharacterBody3D
     {
         if (current_interactable != null)
         {
-            //Globals.debug.debug_message("Interacting With: " + current_interactable.Name);
+            ////Globals.debug.debug_message("Interacting With: " + current_interactable.Name);
             current_interactable.EmitSignal(InteractionComponent.SignalName.OnInteract);
         }
     }
@@ -264,21 +276,10 @@ public partial class Player : CharacterBody3D
         Velocity -= gravity_vector * delta;
     }
 
-    public void Damage(float damage)
-    {
-        health -= damage;
-
-        if (health <= 0.0f)
-        {
-            //Player is dead
-            Globals.debug.debug_message("Player is dead");
-        }
-    }
-
     public void AddMoney(int _money)
     {
         Money += _money;
-        player_ui.UpdateUI("Money", "$" + Money);
+        player_user_interface.playerUI().UpdateUI("Money", "$" + Money);
     }
 
     public void UpdateInput(float speed, float acceleration, float deceleration, float input_multiplier)
@@ -304,6 +305,16 @@ public partial class Player : CharacterBody3D
             }
 
             Velocity = velocity;   
+    }
+
+    public void _on_player_rpc_calls_player_information_update()
+    {
+        player_user_interface?.playerUI().UpdateUI("Health", "Health: " + player_info.health);
+
+        if (player_info.health <= 0)
+        {
+            QueueFree();
+        }
     }
 
     public void UpdateVelocity()

@@ -4,7 +4,7 @@ using System;
 public partial class Reticle : CenterContainer
 {
 	[Export] public Godot.Collections.Array<Line2D> RETICLE_LINES = new Godot.Collections.Array<Line2D>();
-	[Export] CharacterBody3D PLAYER_CONTROLLER;
+	[Export] public CharacterBody3D PLAYER_CONTROLLER;
 	[Export] private float RETICLE_SPEED = 0.25f;
 	[Export] private float RETICLE_DISTANCE = 2.0f;
 	[Export] private float DOT_RADIUS = 1.0f;
@@ -13,6 +13,11 @@ public partial class Reticle : CenterContainer
 	{
 		QueueRedraw();
 	}
+
+	public void SetPlayer(CharacterBody3D player)
+	{
+		PLAYER_CONTROLLER = player;
+    }
 
     public override void _Process(double delta)
     {

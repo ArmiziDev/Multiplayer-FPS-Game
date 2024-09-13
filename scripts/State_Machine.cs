@@ -12,13 +12,13 @@ public partial class State_Machine : Node
     public override void _Ready()
     {
        // Adding to Debug
-        Globals.debug.add_debug_property("Position", 0);
-        Globals.debug.add_debug_property("Current Player State", "Null");
-        Globals.debug.add_debug_property("Previous Player State", "Null");
-        Globals.debug.add_debug_property("Weapon Loaded", "");
-        Globals.debug.add_debug_property("Animation", "");
-        Globals.debug.add_debug_property("FOV", 0);
-        Globals.debug.add_debug_property("Slide Timer", 0);
+        //Globals.debug.add_debug_property("Position", 0);
+        //Globals.debug.add_debug_property("Current Player State", "Null");
+        //Globals.debug.add_debug_property("Previous Player State", "Null");
+        //Globals.debug.add_debug_property("Weapon Loaded", "");
+        //Globals.debug.add_debug_property("Animation", "");
+        //Globals.debug.add_debug_property("FOV", 0);
+        //Globals.debug.add_debug_property("Slide Timer", 0);
     }
 
     //_on_PLAYER_READY
@@ -38,7 +38,7 @@ public partial class State_Machine : Node
             }          
             else
             {
-                Globals.debug.debug_err("State machine contains incompatible child node");
+                //Globals.debug.debug_err("State machine contains incompatible child node");
             }
         }
 
@@ -53,7 +53,7 @@ public partial class State_Machine : Node
         if (enabled) CURRENT_STATE?.Update((float)delta);
 
         // Update Debug
-        Globals.debug.update_debug_property("Animation", animationPlayer.CurrentAnimation);
+        ////Globals.debug.update_debug_property("Animation", animationPlayer.CurrentAnimation);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -79,7 +79,7 @@ public partial class State_Machine : Node
     {
         if (CURRENT_STATE != null)
         {
-            Globals.debug.update_debug_property("Previous Player State", CURRENT_STATE.Name);
+            //Globals.debug.update_debug_property("Previous Player State", CURRENT_STATE.Name);
             PREVIOUS_STATE = CURRENT_STATE;
             CURRENT_STATE.Exit();  // Call exit on the current state
         }
@@ -88,7 +88,7 @@ public partial class State_Machine : Node
         {
             newState.Enter(CURRENT_STATE);  // Call enter on the new state
             CURRENT_STATE = newState;
-            Globals.debug.update_debug_property("Current Player State", CURRENT_STATE.Name);
+            //Globals.debug.update_debug_property("Current Player State", CURRENT_STATE.Name);
         }
     }
 }

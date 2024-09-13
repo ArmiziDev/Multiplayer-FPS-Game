@@ -65,8 +65,8 @@ public partial class PlayerMovementState : State
 
     public void update_debug()
     {
-        Globals.debug.update_debug_property("Position", player.Position);
-        Globals.debug.update_debug_property("Speed", speed);
-        Globals.debug.update_debug_property("FOV", player._camera.Fov);
+        //Globals.debug.update_debug_property("Position", player.Position);
+        //Globals.debug.update_debug_property("Speed", speed);
+        //Globals.debug.update_debug_property("FOV", player._camera.Fov);
     }
 }

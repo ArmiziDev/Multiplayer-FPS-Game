@@ -1,24 +1,19 @@
-[gd_scene load_steps=43 format=3 uid="uid://ce4lhugdkhlkl"]
+[gd_scene load_steps=28 format=3 uid="uid://ce4lhugdkhlkl"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_erhc8"]
 [ext_resource type="Texture2D" uid="uid://dq1xf8ov4swea" path="res://materials/PrototypeTextures/Green/Prototype_Green_001.png" id="1_etq1f"]
+[ext_resource type="Script" path="res://scripts/Networking/PlayerNetworkingCalls.cs" id="2_w6nvr"]
 [ext_resource type="Script" path="res://scripts/HeadMovement.cs" id="3_5pwa8"]
-[ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="3_hmplu"]
-[ext_resource type="Script" path="res://scripts/Reticle.cs" id="3_mdpsv"]
 [ext_resource type="Script" path="res://scripts/WeaponRecoil.cs" id="3_vxix5"]
 [ext_resource type="PackedScene" uid="uid://85f2v3t7gdwy" path="res://scenes/weapon.tscn" id="4_c001k"]
-[ext_resource type="Script" path="res://scripts/Debug.cs" id="5_io0el"]
 [ext_resource type="Script" path="res://scripts/State_Machine.cs" id="6_ruf4d"]
 [ext_resource type="Script" path="res://scripts/playerStates/IdlePlayerState.cs" id="7_gofhs"]
-[ext_resource type="Script" path="res://scripts/PlayerUI.cs" id="8_di2ar"]
 [ext_resource type="Script" path="res://scripts/playerStates/WalkingPlayerState.cs" id="8_m70jt"]
 [ext_resource type="Script" path="res://scripts/playerStates/SprintingPlayerState.cs" id="9_710fs"]
-[ext_resource type="FontFile" uid="uid://8ftaq73i0w2x" path="res://assets/fonts/Gameplay.ttf" id="9_g1k4s"]
 [ext_resource type="Script" path="res://scripts/playerStates/CrouchingPlayerState.cs" id="10_eem2e"]
 [ext_resource type="Script" path="res://scripts/playerStates/SlidingPlayerState.cs" id="11_alqgl"]
 [ext_resource type="Script" path="res://scripts/playerStates/JumpingPlayerState.cs" id="12_bmjgq"]
 [ext_resource type="Script" path="res://scripts/playerStates/FallingPlayerState.cs" id="13_0s4uh"]
-[ext_resource type="PackedScene" uid="uid://da4f2sosva4j5" path="res://scenes/health_component.tscn" id="19_wp01g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gth1"]
 
@@ -406,43 +401,6 @@ _data = {
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_x8sye"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_0jiqp"]
-font = ExtResource("9_g1k4s")
-font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_lbvbf"]
-font = ExtResource("9_g1k4s")
-font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_0u1p1"]
-font = ExtResource("9_g1k4s")
-
-[sub_resource type="LabelSettings" id="LabelSettings_m1b6s"]
-font = ExtResource("9_g1k4s")
-font_size = 48
-
-[sub_resource type="LabelSettings" id="LabelSettings_pxpwm"]
-font = ExtResource("9_g1k4s")
-
-[sub_resource type="LabelSettings" id="LabelSettings_scb6k"]
-font = ExtResource("9_g1k4s")
-
-[sub_resource type="LabelSettings" id="LabelSettings_s5k0j"]
-font = ExtResource("9_g1k4s")
-
-[sub_resource type="LabelSettings" id="LabelSettings_ldqrq"]
-font = ExtResource("9_g1k4s")
-font_size = 20
-font_color = Color(1, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_5d4lw"]
-font = ExtResource("9_g1k4s")
-
-[sub_resource type="LabelSettings" id="LabelSettings_m05ps"]
-font = ExtResource("9_g1k4s")
-font_size = 20
-font_color = Color(0, 0, 1, 1)
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v61i3"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -462,8 +420,11 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon:network_shooting")
 properties/5/spawn = true
 properties/5/replication_mode = 1
+properties/6/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon:network_loadout")
+properties/6/spawn = true
+properties/6/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "healthComponent", "stateMachine", "player_ui")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "stateMachine", "player_user_interface", "playerNetworkingCalls")]
 script = ExtResource("1_erhc8")
 MouseSensitivity = 17.054
 ACCELERATION = 0.5
@@ -471,10 +432,13 @@ CameraNodePath = NodePath("CameraController/HeadMovement/Recoil/Camera3D")
 AnimationPlayerPath = NodePath("AnimationPlayer")
 ShapeCastPath = NodePath("ShapeCast3D")
 WEAPON_CONTROLLER = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon")
-healthComponent = NodePath("Health")
 stateMachine = NodePath("PlayerStateMachine")
-player_ui = NodePath("UserInterface/PlayerUI")
+player_user_interface = NodePath("")
 _speed = 6.0
+playerNetworkingCalls = NodePath("PlayerRpcCalls")
+
+[node name="PlayerRpcCalls" type="Node" parent="."]
+script = ExtResource("2_w6nvr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_1gth1")
@@ -512,296 +476,6 @@ shape = SubResource("SphereShape3D_x8sye")
 target_position = Vector3(0, 0.5, 0)
 debug_shape_custom_color = Color(0, 0.905882, 0, 1)
 
-[node name="UserInterface" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-theme = ExtResource("3_hmplu")
-
-[node name="Reticle" type="CenterContainer" parent="UserInterface" node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_right = 40.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("3_mdpsv")
-RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
-PLAYER_CONTROLLER = NodePath("../..")
-
-[node name="Top" type="Line2D" parent="UserInterface/Reticle"]
-points = PackedVector2Array(0, -5, 0, -15)
-width = 2.0
-
-[node name="Right" type="Line2D" parent="UserInterface/Reticle"]
-points = PackedVector2Array(5, 0, 15, 0)
-width = 2.0
-
-[node name="Bottom" type="Line2D" parent="UserInterface/Reticle"]
-points = PackedVector2Array(0, 5, 0, 15)
-width = 2.0
-
-[node name="Left" type="Line2D" parent="UserInterface/Reticle"]
-points = PackedVector2Array(-5, 0, -15, 0)
-width = 2.0
-
-[node name="DebugPanel" type="PanelContainer" parent="UserInterface" node_paths=PackedStringArray("vBoxContainer")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 210.0
-offset_bottom = 50.0
-script = ExtResource("5_io0el")
-vBoxContainer = NodePath("MarginContainer/VBoxContainer")
-
-[node name="MarginContainer" type="MarginContainer" parent="UserInterface/DebugPanel"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/DebugPanel/MarginContainer"]
-layout_mode = 2
-
-[node name="PlayerUI" type="CanvasLayer" parent="UserInterface"]
-script = ExtResource("8_di2ar")
-
-[node name="Health" type="Label" parent="UserInterface/PlayerUI"]
-unique_name_in_owner = true
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 45.0
-offset_top = -70.0
-offset_right = 303.0
-offset_bottom = -32.0
-grow_vertical = 0
-text = "Health: null"
-label_settings = SubResource("LabelSettings_0jiqp")
-
-[node name="Ammo" type="Label" parent="UserInterface/PlayerUI"]
-unique_name_in_owner = true
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -279.0
-offset_top = -69.0
-offset_right = -37.0
-offset_bottom = -31.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Ammo: --/--"
-label_settings = SubResource("LabelSettings_lbvbf")
-
-[node name="Interact" type="Label" parent="UserInterface/PlayerUI"]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -59.5
-offset_top = 50.0
-offset_right = 59.5
-offset_bottom = 73.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Interact [E]"
-label_settings = SubResource("LabelSettings_0u1p1")
-
-[node name="Money" type="Label" parent="UserInterface/PlayerUI"]
-unique_name_in_owner = true
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -188.0
-offset_top = 33.0
-offset_right = -44.0
-offset_bottom = 90.0
-grow_horizontal = 0
-text = "$ 999"
-label_settings = SubResource("LabelSettings_m1b6s")
-
-[node name="Loadout" type="Control" parent="UserInterface/PlayerUI"]
-layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -300.0
-offset_right = -160.0
-offset_bottom = -260.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="Loadout1" type="Label" parent="UserInterface/PlayerUI/Loadout"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Loadout1"
-label_settings = SubResource("LabelSettings_pxpwm")
-
-[node name="Loadout2" type="Label" parent="UserInterface/PlayerUI/Loadout"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_top = 40.0
-offset_right = 74.0
-offset_bottom = 63.0
-text = "Loadout2"
-label_settings = SubResource("LabelSettings_scb6k")
-
-[node name="Loadout3" type="Label" parent="UserInterface/PlayerUI/Loadout"]
-unique_name_in_owner = true
-layout_mode = 0
-offset_top = 80.0
-offset_right = 74.0
-offset_bottom = 103.0
-text = "Loadout3"
-label_settings = SubResource("LabelSettings_s5k0j")
-
-[node name="Scoreboard" type="Panel" parent="UserInterface/PlayerUI"]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -389.0
-offset_top = -198.0
-offset_right = 389.0
-offset_bottom = 198.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TeamRed" type="Label" parent="UserInterface/PlayerUI/Scoreboard"]
-layout_mode = 1
-offset_left = 139.0
-offset_top = 37.0
-offset_right = 253.0
-offset_bottom = 62.0
-text = "Team Red"
-label_settings = SubResource("LabelSettings_ldqrq")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/PlayerUI/Scoreboard/TeamRed"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -39.0
-offset_top = 88.0
-offset_right = 40.0
-offset_bottom = 287.0
-grow_horizontal = 2
-theme_override_constants/separation = 25
-
-[node name="Player1" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player2" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player3" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player4" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player5" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="TeamBlue" type="Label" parent="UserInterface/PlayerUI/Scoreboard"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -265.0
-offset_top = 34.0
-offset_right = -136.0
-offset_bottom = 59.0
-grow_horizontal = 0
-text = "Team Blue"
-label_settings = SubResource("LabelSettings_m05ps")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -39.5
-offset_top = 88.0
-offset_right = 39.5
-offset_bottom = 283.0
-grow_horizontal = 2
-theme_override_constants/separation = 25
-
-[node name="Player6" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player7" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player8" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player9" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Player10" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "player"
-label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
-
-[node name="Health" parent="." instance=ExtResource("19_wp01g")]
-
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE", "animationPlayer")]
 script = ExtResource("6_ruf4d")
 CURRENT_STATE = NodePath("IdlePlayerState")
@@ -836,4 +510,5 @@ replication_config = SubResource("SceneReplicationConfig_v61i3")
 
 [connection signal="PlayerReady" from="." to="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon" method="_on_PLAYER_READY"]
 [connection signal="PlayerReady" from="." to="PlayerStateMachine" method="_on_PLAYER_READY"]
+[connection signal="PlayerInformationUpdate" from="PlayerRpcCalls" to="." method="_on_player_rpc_calls_player_information_update"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]

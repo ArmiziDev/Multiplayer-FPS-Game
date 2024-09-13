@@ -23,20 +23,20 @@ public partial class HealthComponent : Node
 	private void damage(int amount) // if we pass in an int
 	{
 		player.player_info.health -= amount;
-		Globals.debug.debug_message(parent.Name + ": Health " + player.player_info.health);
+		//Globals.debug.debug_message(parent.Name + ": Health " + player.player_info.health);
 		check_death();
 	}
 
 	private void damage(int amount, PlayerInfo playerInfo)
 	{
-		//Globals.debug.debug_message("Shooter: " + enemy_team + " Reciever: " + team);
+		//Globals.debug.debug_message("Shooter: " + playerInfo.player_team + " Reciever: " + player.player_info.player_team);
 		if (playerInfo.player_team != player.player_info.player_team || player.player_info.player_team == Team.None) /// if player is on opposite team or on none
 		{
 			damage(amount);
 		}
 		else
 		{
-			Globals.debug.debug_err("Can't Shoot Teamate!!!");
+			//Globals.debug.debug_err("Can't Shoot Teamate!!!");
 		}
 	}
 

@@ -48,15 +48,15 @@ public partial class HeadMovement : Node3D
         //Position = Position.Lerp(target_position, positionSwaySpeed * (float)delta);
 
         // Debugging (optional)
-        Globals.debug.update_debug_property("HeadMovement Rotation", Rotation);
-		Globals.debug.update_debug_property("Target Head Rotation", target_rotation);
+        //Globals.debug.update_debug_property("HeadMovement Rotation", Rotation);
+		//Globals.debug.update_debug_property("Target Head Rotation", target_rotation);
     }
 
     private void AdjustBasedOnRotation(double delta)
     {
         // Calculate the offset (difference) between the current and previous rotation
         float rotationOffset = player._rotation.Y - previousPlayerRotationY;
-		Globals.debug.update_debug_property("Head Rotation Offset", rotationOffset);
+		//Globals.debug.update_debug_property("Head Rotation Offset", rotationOffset);
 
         // Calculate the sway based on the offset
         float sway = rotationOffset * rotationSwayAmount;
@@ -78,7 +78,7 @@ public partial class HeadMovement : Node3D
     {
         // Calculate the offset (difference) between the current and previous position
         Vector3 positionOffset = player.GlobalTransform.Origin - previousPlayerPosition;
-		Globals.debug.update_debug_property("Head Position Offset", positionOffset.X);
+		//Globals.debug.update_debug_property("Head Position Offset", positionOffset.X);
 
         // Calculate the sway based on the position offset
         target_rotation.Z = Mathf.Clamp(-positionOffset.X * positionSwayAmount, -maxPositionSwayOffset, maxPositionSwayOffset);

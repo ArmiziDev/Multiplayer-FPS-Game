@@ -24,7 +24,6 @@ public partial class WeaponRecoilPhysics : Node3D
 
 	public void add_recoil()
     {
-		GD.Print("Adding Recoil");
         // Only adjust the Y-axis for straight up recoil
         target_position.X += GetRandomFloatInRange(-weapon.WEAPON_TYPE.recoil_amount_kickback.X, weapon.WEAPON_TYPE.recoil_amount_kickback.X);
 		target_position.Y += GetRandomFloatInRange(-weapon.WEAPON_TYPE.recoil_amount_kickback.Y, weapon.WEAPON_TYPE.recoil_amount_kickback.Y);

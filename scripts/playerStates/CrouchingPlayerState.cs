@@ -14,7 +14,7 @@ public partial class CrouchingPlayerState : PlayerMovementState
     public override void Enter(PlayerMovementState previous_state)
     {
         speed = player.crouch_speed;
-        
+
         state_machine.animationPlayer.SpeedScale = 1.0f;
         if (previous_state.Name != "SlidingPlayerState")
         {

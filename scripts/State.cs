@@ -8,13 +8,13 @@ public partial class State : Node
     public virtual void Enter(PlayerMovementState previous_state)
     {
         // Code for entering the state
-        //Globals.debug.debug_err("Base State Class Enter() Function");
+        ////Globals.debug.debug_err("Base State Class Enter() Function");
     }
 
     public virtual void Exit()
     {
         // Code for exiting the state
-        //Globals.debug.debug_err("Base State Class Exit() Function");
+        ////Globals.debug.debug_err("Base State Class Exit() Function");
     }
 
     public virtual void Update(float delta)

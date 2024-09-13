@@ -25,7 +25,7 @@ public partial class SlidingPlayerState : PlayerMovementState
         AddChild(slide_timer);
         slide_timer.Timeout += () => 
         {
-            Globals.debug.debug_message("Sprint Timer has finished!");
+            //Globals.debug.debug_message("Sprint Timer has finished!");
             Finish("CrouchingPlayerState");
         };
         slide_timer.Start();
@@ -41,7 +41,7 @@ public partial class SlidingPlayerState : PlayerMovementState
         Slide();
 
         update_debug();
-        Globals.debug.update_debug_property("Slide Timer", Mathf.Round(slide_timer.TimeLeft));
+        //Globals.debug.update_debug_property("Slide Timer", Mathf.Round(slide_timer.TimeLeft));
     }
 
     private void Slide()
@@ -68,7 +68,7 @@ public partial class SlidingPlayerState : PlayerMovementState
     public void Finish(StringName nextState)
     {
         slide_timer.Stop(); //stop timer
-        Globals.debug.debug_message("Finished Slide");
+        //Globals.debug.debug_message("Finished Slide");
         state_machine.animationPlayer.CurrentAnimation = "Sliding";
         state_machine.animationPlayer.Seek(state_machine.animationPlayer.CurrentAnimationLength, true); // skip to end of animation
 

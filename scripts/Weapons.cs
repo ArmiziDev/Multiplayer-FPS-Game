@@ -30,7 +30,6 @@ public partial class Weapons : Resource
 	[Export] public FireMode fire_mode { get; set; } = FireMode.FullAuto;
 	[Export(PropertyHint.Range, "1,5,1")] public int burst_fire_count { get; set; } = 3;
 	[Export(PropertyHint.Range, "0,10,0.1")] public float bullet_spread { get; set; } = 1.0f;
-	[Export(PropertyHint.Range, "0,1,0.01")] public float aiming_accuracy_multiplier { get; set; } = 0.5f;
 
 	[ExportCategory("Weapon Recoil Kickback")]
 	[Export] public Vector3 recoil_amount_kickback;

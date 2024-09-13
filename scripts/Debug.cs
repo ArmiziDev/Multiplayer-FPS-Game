@@ -12,7 +12,7 @@ public partial class Debug : PanelContainer
         Globals.debug = this;
 
         // Setting Initial Visibility To False
-        Visible = true;
+        Visible = false;
 
         // Add debug properties
         add_debug_property("FPS", 0);  // Initialize FPS as 0, will be updated later

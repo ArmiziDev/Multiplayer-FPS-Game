@@ -17,6 +17,7 @@ public partial class PlayerUI : CanvasLayer
         AddUIElement("Ammo", GetNode<Label>("%Ammo"));
         AddUIElement("Interact", GetNode<Label>("%Interact"));
         AddUIElement("Money", GetNode<Label>("%Money"));
+        AddUIElement("DisplayName", GetNode<Label>("%DisplayName"));
         GetUIElement("Interact").Visible = false;
 
         // Loadout
@@ -84,13 +85,13 @@ public partial class PlayerUI : CanvasLayer
                     break;
                 // Add more cases for different UI elements as needed
                 default:
-                    Globals.debug.debug_err($"Unsupported UI element type for {elementName}.");
+                    //Globals.debug.debug_err($"Unsupported UI element type for {elementName}.");
                     break;
             }
         }
         else
         {
-            Globals.debug.debug_err($"UI element {elementName} not found.");
+            //Globals.debug.debug_err($"UI element {elementName} not found.");
         }
     }
 
@@ -111,7 +112,7 @@ public partial class PlayerUI : CanvasLayer
         }
         else
         {
-            Globals.debug.debug_err($"UI element {elementName} not found.");
+            //Globals.debug.debug_err($"UI element {elementName} not found.");
             return null;
         }
     }

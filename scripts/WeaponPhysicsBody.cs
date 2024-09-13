@@ -28,7 +28,7 @@ public partial class WeaponPhysicsBody : RigidBody3D
         }
         else
         {
-            Globals.debug.debug_err("WEAPON is null. Cannot connect WeaponPickup signal.");
+            //Globals.debug.debug_err("WEAPON is null. Cannot connect WeaponPickup signal.");
         }
     }
 

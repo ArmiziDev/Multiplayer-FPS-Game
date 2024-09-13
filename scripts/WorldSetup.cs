@@ -6,11 +6,13 @@ public partial class WorldSetup : Node3D
 
     public override void _Ready()
     {
-        foreach (var item in Globals.PLAYERS)
+        foreach (var player in Globals.PLAYERS)
         {
             Player currentPlayer = playerScene.Instantiate<Player>();
 
-            currentPlayer.Name = item.server_id.ToString();
+            currentPlayer.Name = player.server_id.ToString();
+            currentPlayer.player_info = player; // this is where we initialize the player info
+
             AddChild(currentPlayer);
 
             currentPlayer.GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10);

@@ -40,15 +40,19 @@ public partial class WeaponControllerSingleMesh : Node3D
     private bool currently_loading_weapon = false;
     private Random random;
 
-    // Recoil Offset
+    // Raycast Offset
+    public Vector3 raycast_offset = Vector3.Zero;
     public Vector3 recoil_offset = Vector3.Zero;
     public Vector3 recoil_offset_target = Vector3.Zero;
+    public Vector3 recoil_innacuracy_spread = Vector3.Zero;
+    public float recoil_reset_lerp_factor;
 
     //Signals
     [Signal] public delegate void WeaponFiredEventHandler();
 
     // Networking
     [Export] public bool network_shooting = false;
+    [Export] public int network_loadout;
 
     public void InitializeWeaponController(Player player)
     {
@@ -73,6 +77,7 @@ public partial class WeaponControllerSingleMesh : Node3D
     public void _on_PLAYER_READY()
     {
         current_loadout = 0;
+        network_loadout = 0;
         LoadWeapon();
     }
 
@@ -102,7 +107,7 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug.debug_err(weapon.name + ": No Fire Sound Path");
+                //Globals.debug.debug_err(weapon.name + ": No Fire Sound Path");
             }
 
             if (weapon.ReloadSoundPath != null)
@@ -111,7 +116,7 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug.debug_err(weapon.name + ": No Reload Sound Path");
+                //Globals.debug.debug_err(weapon.name + ": No Reload Sound Path");
             }
         }
         */
@@ -121,23 +126,30 @@ public partial class WeaponControllerSingleMesh : Node3D
     {
         SyncNetworkingComponents();
         ResetRecoilOffset((float)delta);
+
+        raycast_offset = recoil_offset;
+        raycast_offset += recoil_innacuracy_spread;
     }
 
     public override void _Input(InputEvent @event)
     {
+        if (player.multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
         if (@event.IsActionPressed("primary_weapon") && loadout.Count > 0 && loadout[0] != null)
         {
-            current_loadout = 0;
+            current_loadout = 0; // changing for your own player for only you to see
+            network_loadout = 0; // changing for networked players for everyone to see
             LoadWeapon();
         }
         if (@event.IsActionPressed("secondary_weapon") && loadout.Count > 1 && loadout[1] != null)
         {
             current_loadout = 1;
+            network_loadout = 1;
             LoadWeapon();
         }
         if (@event.IsActionPressed("tertiary_weapon") && loadout.Count > 2 && loadout[2] != null)
         {
             current_loadout = 2;
+            network_loadout = 2;
             LoadWeapon();
         }
         if (@event is InputEventMouseMotion eventMouseMotion)
@@ -148,9 +160,9 @@ public partial class WeaponControllerSingleMesh : Node3D
 
     public void OnWeaponPickedUp(Weapons _weapon)
     {
-        Globals.debug.debug_message("Weapon was picked up: " + _weapon.name);
-        Globals.debug.debug_message("Weapon Type: " + _weapon.weapon_type);
-        Globals.debug.debug_message("Gun Class: " + _weapon.gun_class);
+        //Globals.debug.debug_message("Weapon was picked up: " + _weapon.name);
+        //Globals.debug.debug_message("Weapon Type: " + _weapon.weapon_type);
+        //Globals.debug.debug_message("Gun Class: " + _weapon.gun_class);
 
         switch(_weapon.weapon_type)
         {
@@ -168,7 +180,7 @@ public partial class WeaponControllerSingleMesh : Node3D
                         LoadWeapon();
                         break;
                     case (Weapons.GunClass.None): // Error
-                        Globals.debug.debug_err(_weapon.name + " Has No Class");
+                        //Globals.debug.debug_err(_weapon.name + " Has No Class");
                         break;
                     default: // First Gun In Loadout (Rifle, SMG, Sniper, Shotgun)
                         GD.Print("default hit");
@@ -255,7 +267,7 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug?.debug_err("weapon_mesh is null. Cannot set mesh.");
+                //Globals.debug?.debug_err("weapon_mesh is null. Cannot set mesh.");
             }
 
             if (weapon_shadow != null)
@@ -264,7 +276,7 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug?.debug_err("weapon_shadow is null. Cannot set visibility.");
+                //Globals.debug?.debug_err("weapon_shadow is null. Cannot set visibility.");
             }
 
             Scale = WEAPON_TYPE.scale;
@@ -281,7 +293,7 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug?.debug_err("shoot_timer is null. Cannot set wait time.");
+                //Globals.debug?.debug_err("shoot_timer is null. Cannot set wait time.");
             }
 
             // Muzzle Flash
@@ -291,15 +303,15 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
             else
             {
-                Globals.debug?.debug_err("muzzle_flash is null. Cannot set position.");
+                //Globals.debug?.debug_err("muzzle_flash is null. Cannot set position.");
             }
 
             // Update Loadout UI
-            player.player_ui.UpdateUI("Loadout1", "1: " + loadout[0].name);
-            player.player_ui.UpdateUI("Loadout2", "2: " + loadout[1].name);
-            player.player_ui.UpdateUI("Loadout3", "3: " + loadout[2].name);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout1", "1: " + loadout[0].name);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout2", "2: " + loadout[1].name);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout3", "3: " + loadout[2].name);
 
-            player.player_ui.UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
+            player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
 
             // Await and completion
             //await ToSignal(GetTree().CreateTimer(WEAPON_TYPE.pullout_time), "timeout"); // causing godot to crash!
@@ -307,7 +319,7 @@ public partial class WeaponControllerSingleMesh : Node3D
         }
         else
         {
-            Globals.debug?.debug_err("WEAPON_TYPE is null. Cannot load weapon.");
+            //Globals.debug?.debug_err("WEAPON_TYPE is null. Cannot load weapon.");
         }
     }
 
@@ -316,8 +328,8 @@ public partial class WeaponControllerSingleMesh : Node3D
         currently_loading_weapon = false;
         can_shoot = true;
 
-        Globals.debug.debug_message("Ending Weapon Position: " + Position);
-        Globals.debug.debug_message("Ending Weapon Rotation: " + Rotation);
+        //Globals.debug.debug_message("Ending Weapon Position: " + Position);
+        //Globals.debug.debug_message("Ending Weapon Rotation: " + Rotation);
     }
 
     private async void StartPulloutAnimation()
@@ -336,8 +348,8 @@ public partial class WeaponControllerSingleMesh : Node3D
         Vector3 endPosition = WEAPON_TYPE.position;
         Vector3 endRotation = WEAPON_TYPE.rotation;
 
-        Globals.debug.debug_message("Original Weapon Position: " + startPosition);
-        Globals.debug.debug_message("Original Weapon Rotation: " + startRotation);
+        //Globals.debug.debug_message("Original Weapon Position: " + startPosition);
+        //Globals.debug.debug_message("Original Weapon Rotation: " + startRotation);
 
         while (elapsedTime < pulloutDuration)
         {
@@ -364,8 +376,8 @@ public partial class WeaponControllerSingleMesh : Node3D
         Position = endPosition;
         RotationDegrees = endRotation;
 
-        Globals.debug.debug_message("Final Weapon Position: " + Position);
-        Globals.debug.debug_message("Final Weapon Rotation: " + Rotation);
+        //Globals.debug.debug_message("Final Weapon Position: " + Position);
+        //Globals.debug.debug_message("Final Weapon Rotation: " + Rotation);
     }
 
 
@@ -454,15 +466,24 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             network_shooting = false;
         }
+
+        if(current_loadout != network_loadout)
+        {
+            current_loadout = network_loadout;
+            //Globals.debug.debug_message(player.Name + " Switching Loadout");
+            LoadWeapon();
+            
+        }
+        
     }
 
     public void _attack(float delta)
     {
-        if(WEAPON_TYPE != null && WEAPON_TYPE.weapon_type == Weapons.WeaponType.Gun && can_shoot && WEAPON_TYPE.current_ammo > 0)
+        //raycast_offset = Vector3.Zero;
+        if (WEAPON_TYPE != null && WEAPON_TYPE.weapon_type == Weapons.WeaponType.Gun && can_shoot && WEAPON_TYPE.current_ammo > 0)
         {
-            GD.Print("Shooting");
             WEAPON_TYPE.current_ammo --;
-            player.player_ui.UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
+            player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
 
             shooting = true;
             network_shooting = true; // once a player shoots, we set this to true so the networked player shooting is triggered, 
@@ -482,39 +503,60 @@ public partial class WeaponControllerSingleMesh : Node3D
             if (player.weapon_raycast_result.ContainsKey("collider"))
             {
                 var collider = (Node)player.weapon_raycast_result["collider"]; //set it to collider if there is 
-                if (collider.HasSignal(HealthComponent.SignalName.Damage))
+                if (collider.HasMethod("Damage"))
                 {
-                    collider.EmitSignal(HealthComponent.SignalName.Damage, WEAPON_TYPE.base_damage, player.player_info);
+                    if (collider is Player)
+                    {
+                        Player hit_player = (Player)collider;
+                        if(hit_player != player)
+                        {
+                            hit_player.Damage((int)WEAPON_TYPE.base_damage, player.player_info);
+                        }
+                    }
                 }
             }
 
             add_recoil_offset(delta);
+            add_weapon_innacuracy(delta);
         }
+    }
+
+    private void add_weapon_innacuracy(float delta)
+    {
+        // Multiplying player velocity by 15 for a dramatic effect to bullet spread when moving
+        float player_movement_spread_multiplier = 15.0f;
+
+        recoil_innacuracy_spread.X = GetRandomFloatInRange(-WEAPON_TYPE.bullet_spread, WEAPON_TYPE.bullet_spread);
+        recoil_innacuracy_spread.Y = GetRandomFloatInRange(-WEAPON_TYPE.bullet_spread, WEAPON_TYPE.bullet_spread);
+
+        // Cap the innacuracy to 50
+        recoil_innacuracy_spread *= Mathf.Min(50, Mathf.Max(1, player.Velocity.Length() * player_movement_spread_multiplier));
+
+        //Globals.debug.update_debug_property("Recoil Innacuracy", recoil_innacuracy_spread.Length());
     }
 
     private void add_recoil_offset(float delta)
     {
+        // Adding gun recoil
         recoil_offset.Y += WEAPON_TYPE.recoil_amount_rotation.Y;
-
         // Currently Random Left and Right Movement
 		recoil_offset.X += GetRandomFloatInRange(-WEAPON_TYPE.recoil_amount_rotation.X, WEAPON_TYPE.recoil_amount_rotation.X);
     }
 
-    private void ResetRecoilOffset(float delta)
+    private void ResetRecoilOffset(float delta) 
     {
         if (WEAPON_TYPE == null) return;
         float recoil_reset_speed_amplifier = 1.0f;
-        if (!shooting) recoil_reset_speed_amplifier *= WEAPON_TYPE.recoil_reset_speed_amplifier;
+        if (!shooting) recoil_reset_speed_amplifier = WEAPON_TYPE.recoil_reset_speed_amplifier;
 
-        Globals.debug.update_debug_property("Recoil Reset Speed Amplifier", recoil_reset_speed_amplifier);
-        float recoil_reset_lerp_factor = WEAPON_TYPE.recoil_reset_speed * recoil_reset_speed_amplifier * delta;
-        Globals.debug.update_debug_property("Lerp Factor", recoil_reset_lerp_factor);
+        recoil_reset_lerp_factor = WEAPON_TYPE.recoil_reset_speed * recoil_reset_speed_amplifier;
 
-        // Interpolate target rotation towards zero for smooth return to center
-        recoil_offset_target = recoil_offset_target.MoveToward(Vector3.Zero, recoil_reset_lerp_factor);
+        if (player.stateMachine.CURRENT_STATE.Name == "CrouchingPlayerState") recoil_reset_lerp_factor *= 2;
+
+        //Globals.debug.update_debug_property("Lerp Factor", recoil_reset_lerp_factor);
         
-        // Interpolate current rotation towards the target rotation for smooth recoil
-        recoil_offset = recoil_offset.Lerp(recoil_offset_target, WEAPON_TYPE.recoil_follow_speed * delta);
+        // Interpolate to 0,0,0 slowly, when not shooting we amplifiy
+        recoil_offset = recoil_offset.Lerp(Vector3.Zero, WEAPON_TYPE.recoil_follow_speed * recoil_reset_lerp_factor * delta);
     }
 
     public async void _reload()
@@ -528,7 +570,7 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             reloading = false;
             can_shoot = true;
-            player.player_ui.UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
+            player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
         }
     }
 

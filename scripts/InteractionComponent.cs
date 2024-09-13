@@ -47,7 +47,7 @@ public partial class InteractionComponent : Node
 
 	public void OnLoot()
 	{
-		Globals.debug.debug_message(parent.Name + ": Loot Triggered");
+		//Globals.debug.debug_message(parent.Name + ": Loot Triggered");
 	}
 
 	public void OnPickup()
@@ -60,18 +60,18 @@ public partial class InteractionComponent : Node
 		}
 		else
 		{
-			Globals.debug.debug_err("Parent Has No Pickup Function");
+			//Globals.debug.debug_err("Parent Has No Pickup Function");
 		}
 	}
 
 	public void OnTrigger()
 	{
-		Globals.debug.debug_message(parent.Name + ": Trigger Event Triggered");
+		//Globals.debug.debug_message(parent.Name + ": Trigger Event Triggered");
 	}
 
     public void on_interact()
     {
-        Globals.debug.debug_message("On interact:: " + parent.Name);
+        //Globals.debug.debug_message("On interact:: " + parent.Name);
 
 		switch (interactableType)
 		{
@@ -111,7 +111,7 @@ public partial class InteractionComponent : Node
 		{
 			if (child is MeshInstance3D)
 			{
-				//Globals.debug.debug_message(parent.Name+ " Found MeshInstance3D: " + child.Name);
+				////Globals.debug.debug_message(parent.Name+ " Found MeshInstance3D: " + child.Name);
 				return (MeshInstance3D)child;
 			}
 

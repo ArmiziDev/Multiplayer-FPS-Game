@@ -1,0 +1,677 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ox0pwjeyj4sa"
+valid=false
+
+[deps]
+
+source_file="res://meshes/weapons/weapon_pack/low_poly_colored_liberator_gun_pack.glb"
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+_subresources={
+"meshes": {
+"Sketchfab_Scene_Object_0": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/AUG_4/aug_4.res"
+},
+"Sketchfab_Scene_Object_10": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/HK_G36K14/hk_g36k14.res"
+},
+"Sketchfab_Scene_Object_100": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/SCOPE/scope.res"
+},
+"Sketchfab_Scene_Object_102": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/TOMAHAWK/tomahawk.res"
+},
+"Sketchfab_Scene_Object_103": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/KATANA/katana.res"
+},
+"Sketchfab_Scene_Object_104": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/RED_DOT/red_dot_sight.res"
+},
+"Sketchfab_Scene_Object_107": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/ANGLED_GRIP/angled_grip.res"
+},
+"Sketchfab_Scene_Object_108": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/TRENCH_MACE/trench_mace.res"
+},
+"Sketchfab_Scene_Object_109": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/MORNINGSTAR/morningstar.res"
+},
+"Sketchfab_Scene_Object_125": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/DEAGLE_125/deagle_125.res"
+},
+"Sketchfab_Scene_Object_128": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/G-17/g-17.res"
+},
+"Sketchfab_Scene_Object_131": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/P9/p9.res"
+},
+"Sketchfab_Scene_Object_135": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SCORPION/skorpion.res"
+},
+"Sketchfab_Scene_Object_140": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/FIVE_SEVEN/five_seven.res"
+},
+"Sketchfab_Scene_Object_144": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/RARAN_PROTYPE/raran_prototype.res"
+},
+"Sketchfab_Scene_Object_147": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/BLAZESON-JULIUS/blazeson-julius.res"
+},
+"Sketchfab_Scene_Object_15": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/AR15_19/ar15_19.res"
+},
+"Sketchfab_Scene_Object_156": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/awm_157/awm_157.res"
+},
+"Sketchfab_Scene_Object_160": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SKS_161/sks_161.res"
+},
+"Sketchfab_Scene_Object_164": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Snipers/BARRET_M107/barret_m107.res"
+},
+"Sketchfab_Scene_Object_168": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Snipers/MOSIN_NAGAT/mosin_nagat.res"
+},
+"Sketchfab_Scene_Object_171": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Snipers/SCAR-SSR/scar-ssr.res"
+},
+"Sketchfab_Scene_Object_176": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Snipers/DRAGUNOV_SVD/dragunov_svd.res"
+},
+"Sketchfab_Scene_Object_180": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Shotguns/AA-12/aa-12.res"
+},
+"Sketchfab_Scene_Object_185": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Shotguns/XMA-10/xma-10.res"
+},
+"Sketchfab_Scene_Object_189": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Shotguns/S12P8/s12p8.res"
+},
+"Sketchfab_Scene_Object_193": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/Shotguns/SAIGA-12/saiga-12.res"
+},
+"Sketchfab_Scene_Object_197": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/HK_MP7/hk_mp7.res"
+},
+"Sketchfab_Scene_Object_20": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SCAR-L_24/scar-l_24.res"
+},
+"Sketchfab_Scene_Object_202": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/SR-3M/sr-3m.res"
+},
+"Sketchfab_Scene_Object_206": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/HK_UMP45/hk_ump45.res"
+},
+"Sketchfab_Scene_Object_211": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/VECTOR/vector.res"
+},
+"Sketchfab_Scene_Object_216": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/P90/p90.res"
+},
+"Sketchfab_Scene_Object_220": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SMG/HONEY_BADGER/honey_badger.res"
+},
+"Sketchfab_Scene_Object_25": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/AK-556_28/ak-556_28.res"
+},
+"Sketchfab_Scene_Object_29": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/GROZA_32/groza_32.res"
+},
+"Sketchfab_Scene_Object_33": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/L85A2_36/l85a2_36.res"
+},
+"Sketchfab_Scene_Object_37": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/12_GAUGE/12_gauge.res"
+},
+"Sketchfab_Scene_Object_38": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/9MM/9mm.res"
+},
+"Sketchfab_Scene_Object_39": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/9MM_Casting/9mm_casting.res"
+},
+"Sketchfab_Scene_Object_40": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/45_ACP/45_acp.res"
+},
+"Sketchfab_Scene_Object_41": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/45_ACP_Casting/45_acp_casting.res"
+},
+"Sketchfab_Scene_Object_42": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/357_MAGNUM/357_magnum.res"
+},
+"Sketchfab_Scene_Object_43": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/357_MAGNUM_CASING/357_magnum_casing.res"
+},
+"Sketchfab_Scene_Object_44": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/7_62MMR_RUS/7_62mmr_rus.res"
+},
+"Sketchfab_Scene_Object_45": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/7_62MMR_RUS_CASING/7_62mmr_rus_casing.res"
+},
+"Sketchfab_Scene_Object_46": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/5_56x45MM/5_56x45mm.res"
+},
+"Sketchfab_Scene_Object_47": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/5_56x45MM_CASING/5_56x45mm_casing.res"
+},
+"Sketchfab_Scene_Object_48": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/50_BMG/50_bmg.res"
+},
+"Sketchfab_Scene_Object_49": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/50_BMG_CASING/50_bmg_casing.res"
+},
+"Sketchfab_Scene_Object_5": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/FAMAS_F19/famas_f19.res"
+},
+"Sketchfab_Scene_Object_50": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/7_62x51mm/7_62x51mm.res"
+},
+"Sketchfab_Scene_Object_51": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/7_62x51mm_CASING/7-62x51mm_casing.res"
+},
+"Sketchfab_Scene_Object_52": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/30-06_Springfield/30-06_springfield.res"
+},
+"Sketchfab_Scene_Object_53": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/30-06_SPRINGFIELD_CASING/30-06_springfield_casing.res"
+},
+"Sketchfab_Scene_Object_54": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/bullet_pack/10_GAUGE/10_gauge.res"
+},
+"Sketchfab_Scene_Object_55": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/HK_G3/hk_g3.res"
+},
+"Sketchfab_Scene_Object_60": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/SCAR-H/scar-h.res"
+},
+"Sketchfab_Scene_Object_65": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/AS-762/as-762.res"
+},
+"Sketchfab_Scene_Object_69": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/IMI_GALIL/imi_galil.res"
+},
+"Sketchfab_Scene_Object_74": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/AUG_HBAR/aug_hbar.res"
+},
+"Sketchfab_Scene_Object_79": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/M24/m24.res"
+},
+"Sketchfab_Scene_Object_83": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/RPD_89/rpd_89.res"
+},
+"Sketchfab_Scene_Object_87": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/RPK-556/rpk-556.res"
+},
+"Sketchfab_Scene_Object_91": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/gernades_pack/FLASHBANG/flashbang.res"
+},
+"Sketchfab_Scene_Object_92": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/FLASHLIGHT/flashlight.res"
+},
+"Sketchfab_Scene_Object_94": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/FOREGRIP/foregrip.res"
+},
+"Sketchfab_Scene_Object_95": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/gernades_pack/GERNADE/gernade.res"
+},
+"Sketchfab_Scene_Object_96": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/KNIFE/knife.res"
+},
+"Sketchfab_Scene_Object_97": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/LARGE_KNIFE/large_knife.res"
+},
+"Sketchfab_Scene_Object_98": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://meshes/weapons/weapon_pack/utility_pack/LASER/laser.res"
+}
+}
+}
+gltf/naming_version=1
+gltf/embedded_image_handling=1

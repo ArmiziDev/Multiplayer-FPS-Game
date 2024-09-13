@@ -1,0 +1,134 @@
+[gd_scene load_steps=20 format=3 uid="uid://ccg7o15w0lhi6"]
+
+[ext_resource type="Script" path="res://scripts/WorldSetup.cs" id="1_ccgnv"]
+[ext_resource type="Texture2D" uid="uid://d1nk77oed4a8v" path="res://materials/PrototypeTextures/Contrast/Prototype_Contrast_003.png" id="1_po7dm"]
+[ext_resource type="Texture2D" uid="uid://clp0ghto4o8ic" path="res://materials/PrototypeTextures/Blue/Prototype_Blue_001.png" id="2_2x68d"]
+[ext_resource type="PackedScene" uid="uid://35bm0eur5345" path="res://scenes/interactable.tscn" id="3_hh1x0"]
+[ext_resource type="Texture2D" uid="uid://ckb4ciuwxvkrl" path="res://materials/PrototypeTextures/Orange/Prototype_Orange_001.png" id="3_md1lu"]
+[ext_resource type="PackedScene" uid="uid://ce4lhugdkhlkl" path="res://scenes/player.tscn" id="10_v7wsf"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ruwf"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_63okr"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lc3q5"]
+albedo_texture = ExtResource("1_po7dm")
+distance_fade_min_distance = 8.15
+
+[sub_resource type="BoxMesh" id="BoxMesh_0cfw4"]
+material = SubResource("StandardMaterial3D_lc3q5")
+size = Vector3(500, 1, 500)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fvvwi"]
+size = Vector3(500, 1, 500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kblvq"]
+albedo_texture = ExtResource("2_2x68d")
+
+[sub_resource type="BoxMesh" id="BoxMesh_oapla"]
+material = SubResource("StandardMaterial3D_kblvq")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k2faq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xdbeq"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ag05s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jgn64"]
+albedo_texture = ExtResource("3_md1lu")
+
+[sub_resource type="BoxMesh" id="BoxMesh_vmg58"]
+size = Vector3(5, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h20cd"]
+size = Vector3(5, 1, 5)
+
+[node name="world" type="Node3D"]
+script = ExtResource("1_ccgnv")
+playerScene = ExtResource("10_v7wsf")
+
+[node name="RecoilTestWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.70383, 17.5415)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RecoilTestWall"]
+mesh = SubResource("BoxMesh_4ruwf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RecoilTestWall"]
+shape = SubResource("BoxShape3D_63okr")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="StaticBody3D4"]
+mesh = SubResource("BoxMesh_0cfw4")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
+shape = SubResource("BoxShape3D_fvvwi")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.33197, 0.998039, 3.1056)
+
+[node name="Box1" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_oapla")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_k2faq")
+
+[node name="Interactable" parent="StaticBody3D" instance=ExtResource("3_hh1x0")]
+interactableType = 0
+
+[node name="Box2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466046, 1.30821, 0.456426)
+mesh = SubResource("BoxMesh_oapla")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box2/StaticBody3D"]
+shape = SubResource("BoxShape3D_k2faq")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3006, 1.95081, -1.76816)
+
+[node name="Box3" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_oapla")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_k2faq")
+
+[node name="Interactable" parent="StaticBody3D2" node_paths=PackedStringArray("mesh") instance=ExtResource("3_hh1x0")]
+interactableType = 0
+mesh = NodePath("../Box3")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.31407, 2.16246, 2.30217)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("SphereShape3D_xdbeq")
+
+[node name="Sphere" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("SphereMesh_ag05s")
+skeleton = NodePath("../..")
+
+[node name="Interactable" parent="StaticBody3D3" instance=ExtResource("3_hh1x0")]
+interactableType = 0
+
+[node name="CrouchCeiling" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.6, 3)
+material_override = SubResource("StandardMaterial3D_jgn64")
+mesh = SubResource("BoxMesh_vmg58")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CrouchCeiling"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrouchCeiling/StaticBody3D"]
+shape = SubResource("BoxShape3D_h20cd")
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, -0.428809, 0.903395, 0, -0.903395, -0.428809, 3.06883, 5.51709, -3.22038)
+shadow_enabled = true
+directional_shadow_mode = 1

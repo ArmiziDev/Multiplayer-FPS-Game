@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=3 uid="uid://chqu0uqg8nnti"]
+
+[ext_resource type="Script" path="res://scripts/LoadingScreen.cs" id="1_e2xdb"]
+[ext_resource type="FontFile" uid="uid://8ftaq73i0w2x" path="res://assets/fonts/Gameplay.ttf" id="1_tymar"]
+[ext_resource type="PackedScene" uid="uid://ce4lhugdkhlkl" path="res://scenes/player.tscn" id="2_2yl73"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7lnx6"]
+font = ExtResource("1_tymar")
+font_size = 46
+
+[sub_resource type="LabelSettings" id="LabelSettings_hlhwn"]
+font = ExtResource("1_tymar")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_2cm11"]
+font = ExtResource("1_tymar")
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_sgmdy"]
+font = ExtResource("1_tymar")
+
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e2xdb")
+playerScene = ExtResource("2_2yl73")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 61.0
+offset_top = 70.0
+offset_right = 374.0
+offset_bottom = 611.0
+scale = Vector2(1.34328, 1.1831)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+offset_right = 275.0
+offset_bottom = 161.0
+
+[node name="LoadingLabel" type="Label" parent="Control/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Loading..."
+label_settings = SubResource("LabelSettings_7lnx6")
+
+[node name="LevelName" type="Label" parent="Control/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "LevelName"
+label_settings = SubResource("LabelSettings_hlhwn")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -161.0
+offset_right = 275.0
+grow_vertical = 0
+
+[node name="TipLabel" type="Label" parent="Control/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tip"
+label_settings = SubResource("LabelSettings_2cm11")
+
+[node name="TipValue" type="Label" parent="Control/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Tip Here"
+label_settings = SubResource("LabelSettings_sgmdy")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 75.0
+offset_top = -86.0
+offset_right = -89.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_tymar")
+theme_override_font_sizes/font_size = 32

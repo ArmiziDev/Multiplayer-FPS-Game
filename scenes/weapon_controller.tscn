@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://vwigg8fena7k"]
+
+[ext_resource type="Script" path="res://scripts/WeaponController.cs" id="1_8rmcg"]
+[ext_resource type="Resource" uid="uid://cokerdvprpjfv" path="res://meshes/weapons/fps_pistol/weapon_pistol.tres" id="2_ar8iu"]
+[ext_resource type="ArrayMesh" uid="uid://bhuvd7tl5fccv" path="res://meshes/weapons/fps_pistol/mesh_fps_arms.res" id="3_j2gj5"]
+[ext_resource type="ArrayMesh" uid="uid://ce3ruym533gsm" path="res://meshes/weapons/fps_pistol/mesh_fps_pistol.res" id="4_pk0lw"]
+[ext_resource type="ArrayMesh" uid="uid://dx32m4f2o74tm" path="res://meshes/weapons/fps_pistol/mesh_fps_barrel.res" id="5_3qj8t"]
+[ext_resource type="ArrayMesh" uid="uid://b7laoinv8aot4" path="res://meshes/weapons/fps_pistol/mesh_fps_mag.res" id="6_m8ox5"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g331e"]
+
+[node name="WeaponController" type="Node3D"]
+script = ExtResource("1_8rmcg")
+WEAPON_TYPE = ExtResource("2_ar8iu")
+
+[node name="Gun" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195362, 0.00524512, 0.525077)
+
+[node name="GunMesh" type="MeshInstance3D" parent="Gun"]
+unique_name_in_owner = true
+mesh = ExtResource("4_pk0lw")
+skeleton = NodePath("../..")
+
+[node name="BarrelMesh" type="MeshInstance3D" parent="Gun"]
+unique_name_in_owner = true
+mesh = ExtResource("5_3qj8t")
+skeleton = NodePath("../..")
+
+[node name="MagMesh" type="MeshInstance3D" parent="Gun"]
+unique_name_in_owner = true
+mesh = ExtResource("6_m8ox5")
+skeleton = NodePath("../..")
+
+[node name="Arms" type="Node3D" parent="."]
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Arms"]
+unique_name_in_owner = true
+mesh = ExtResource("3_j2gj5")
+skeleton = NodePath("../..")
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_g331e")
+}

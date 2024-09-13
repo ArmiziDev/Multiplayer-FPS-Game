@@ -1,0 +1,45 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dnwg7yk6ek4kj"]
+
+[ext_resource type="Script" path="res://scripts/Weapons.cs" id="1_50sxn"]
+[ext_resource type="ArrayMesh" uid="uid://b5522256hdmb" path="res://meshes/weapons/weapon_pack/Rifles/AR15_19/ar15_19.res" id="1_ljh0b"]
+
+[resource]
+script = ExtResource("1_50sxn")
+name = &"AR-15"
+weapon_type = 1
+gun_class = 1
+position = Vector3(-0.2, 0.2, 1.5)
+rotation = Vector3(0, 185.5, 4)
+scale = Vector3(1, 1, 1)
+base_damage = 22.0
+current_ammo = 30
+magazine_capacity = 30
+reload_time = 1.5
+time_between_bullets = 0.15
+automatic_reload = true
+pullout_time = 1.5
+fire_mode = 2
+burst_fire_count = 3
+bullet_spread = 1.0
+aiming_accuracy_multiplier = 0.5
+recoil_amount_kickback = Vector3(0.1, 0.1, -1)
+snap_amount_kickback = 10.0
+speed_kickback = 20.0
+recoil_amount_rotation = Vector3(6, 16, 0)
+recoil_follow_speed = 1.0
+recoil_reset_speed = 0.1
+recoil_reset_speed_amplifier = 10000.0
+sway_min = Vector2(-20, -20)
+sway_max = Vector2(20, 20)
+sway_speed_position = 0.07
+sway_speed_rotation = 0.1
+sway_amount_position = 0.1
+sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+random_sway_amount = 5.0
+mesh = ExtResource("1_ljh0b")
+shadow = false
+muzzle_flash_position = Vector3(0, 0, -1.45)
+FireSoundPath = NodePath("")
+ReloadSoundPath = NodePath("")

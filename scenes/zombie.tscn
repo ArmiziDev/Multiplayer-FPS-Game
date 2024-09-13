@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://7yuuspvna2dy"]
+
+[ext_resource type="Script" path="res://scripts/Zombie.cs" id="1_vawdv"]
+[ext_resource type="PackedScene" uid="uid://da4f2sosva4j5" path="res://scenes/health_component.tscn" id="2_e3884"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uuo7d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_14phm"]
+albedo_color = Color(6.73831e-06, 0.997285, 0.197955, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fduvi"]
+material = SubResource("StandardMaterial3D_14phm")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m0nhv"]
+size = Vector3(100, 5, 100)
+
+[node name="Zombie" type="CharacterBody3D"]
+script = ExtResource("1_vawdv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_uuo7d")
+
+[node name="Placeholder Mesh" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_fduvi")
+
+[node name="EnemyDetection" type="Area3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Area" type="CollisionShape3D" parent="EnemyDetection"]
+shape = SubResource("BoxShape3D_m0nhv")
+
+[node name="Health" parent="." instance=ExtResource("2_e3884")]
+
+[connection signal="body_entered" from="EnemyDetection" to="." method="_on_enemy_detection_body_entered"]
+[connection signal="body_exited" from="EnemyDetection" to="." method="_on_enemy_detection_body_exited"]

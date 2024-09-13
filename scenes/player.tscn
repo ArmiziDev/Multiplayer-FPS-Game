@@ -1,0 +1,839 @@
+[gd_scene load_steps=43 format=3 uid="uid://ce4lhugdkhlkl"]
+
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_erhc8"]
+[ext_resource type="Texture2D" uid="uid://dq1xf8ov4swea" path="res://materials/PrototypeTextures/Green/Prototype_Green_001.png" id="1_etq1f"]
+[ext_resource type="Script" path="res://scripts/HeadMovement.cs" id="3_5pwa8"]
+[ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="3_hmplu"]
+[ext_resource type="Script" path="res://scripts/Reticle.cs" id="3_mdpsv"]
+[ext_resource type="Script" path="res://scripts/WeaponRecoil.cs" id="3_vxix5"]
+[ext_resource type="PackedScene" uid="uid://85f2v3t7gdwy" path="res://scenes/weapon.tscn" id="4_c001k"]
+[ext_resource type="Script" path="res://scripts/Debug.cs" id="5_io0el"]
+[ext_resource type="Script" path="res://scripts/State_Machine.cs" id="6_ruf4d"]
+[ext_resource type="Script" path="res://scripts/playerStates/IdlePlayerState.cs" id="7_gofhs"]
+[ext_resource type="Script" path="res://scripts/PlayerUI.cs" id="8_di2ar"]
+[ext_resource type="Script" path="res://scripts/playerStates/WalkingPlayerState.cs" id="8_m70jt"]
+[ext_resource type="Script" path="res://scripts/playerStates/SprintingPlayerState.cs" id="9_710fs"]
+[ext_resource type="FontFile" uid="uid://8ftaq73i0w2x" path="res://assets/fonts/Gameplay.ttf" id="9_g1k4s"]
+[ext_resource type="Script" path="res://scripts/playerStates/CrouchingPlayerState.cs" id="10_eem2e"]
+[ext_resource type="Script" path="res://scripts/playerStates/SlidingPlayerState.cs" id="11_alqgl"]
+[ext_resource type="Script" path="res://scripts/playerStates/JumpingPlayerState.cs" id="12_bmjgq"]
+[ext_resource type="Script" path="res://scripts/playerStates/FallingPlayerState.cs" id="13_0s4uh"]
+[ext_resource type="PackedScene" uid="uid://da4f2sosva4j5" path="res://scenes/health_component.tscn" id="19_wp01g"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gth1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q2mbk"]
+albedo_texture = ExtResource("1_etq1f")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0u0go"]
+material = SubResource("StandardMaterial3D_q2mbk")
+
+[sub_resource type="Animation" id="Animation_oyh3a"]
+resource_name = "Crouch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.25, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0), Vector3(0, -0.2, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_dfpre"]
+resource_name = "JumpStart"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.0349066, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0), Vector3(0, 0.58, 0), Vector3(0, 0.6, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ou3js"]
+resource_name = "JumpEnd"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0523599, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0), Vector3(0, 0.58, 0), Vector3(0, 0.6, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_laj0l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraController:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CameraController:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.6, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CameraController:position:z")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("CameraController:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("ShapeCast3D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D:fov")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+
+[sub_resource type="Animation" id="Animation_5frda"]
+resource_name = "Sliding"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.25, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0), Vector3(0, 0.1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CameraController:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 3, 4.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ShapeCast3D:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D:fov")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [75.0, 79.0, 75.0]
+}
+
+[sub_resource type="Animation" id="Animation_vwq0u"]
+resource_name = "Sprinting"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.266667, 0.0123051, 0.0647456, -0.25, 0, 0.0666667, 0.00818437, 0.0753549, -0.1, -0.00879059, 0.3, -0.000909373, -0.0649913, -0.2, 0.0127312, 0.0333333, -0.00757807, -0.0743881, -0.1, -0.0063656, 0.257838, 0.0321311, -0.00012289, -0.0333334, -0.00394061, 0.2, 0.0200062),
+"times": PackedFloat32Array(0, 0.3, 0.5, 0.8, 1, 1.2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.6, -0.25, 0, 0.25, 0, 0.663415, -0.25, 0, 0.25, 0, 0.56975, -0.25, 0, 0.25, 0, 0.663415, -0.25, 0, 0.25, 0, 0.570053, -0.25, 0, 0.25, 0, 0.599759, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.3, 0.5, 0.8, 1, 1.2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_pu2kw"]
+resource_name = "Walking"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.0151597, -0.25, 0, 0.2, 0.00022774, -0.000326767, -0.25, 0, 0.25, 0, -0.01513, -0.25, 0, 0.25, 0, -0.000326767, -0.25, 0, 0.25, 0, 0.0153874, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.6, -0.25, 0, 0.2, 0.0171076, 0.658443, -0.25, 0, 0.25, 0, 0.599471, -0.266667, 0.0126761, 0.266667, 0.0126761, 0.658443, -0.25, 0, 0.25, 0, 0.600022, -0.233333, 0.011574, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1.03333, 1.5, 2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_01rq2"]
+_data = {
+"Crouching": SubResource("Animation_oyh3a"),
+"JumpEnd": SubResource("Animation_dfpre"),
+"JumpStart": SubResource("Animation_ou3js"),
+"RESET": SubResource("Animation_laj0l"),
+"Sliding": SubResource("Animation_5frda"),
+"Sprinting": SubResource("Animation_vwq0u"),
+"Walking": SubResource("Animation_pu2kw")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_x8sye"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0jiqp"]
+font = ExtResource("9_g1k4s")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_lbvbf"]
+font = ExtResource("9_g1k4s")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_0u1p1"]
+font = ExtResource("9_g1k4s")
+
+[sub_resource type="LabelSettings" id="LabelSettings_m1b6s"]
+font = ExtResource("9_g1k4s")
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_pxpwm"]
+font = ExtResource("9_g1k4s")
+
+[sub_resource type="LabelSettings" id="LabelSettings_scb6k"]
+font = ExtResource("9_g1k4s")
+
+[sub_resource type="LabelSettings" id="LabelSettings_s5k0j"]
+font = ExtResource("9_g1k4s")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ldqrq"]
+font = ExtResource("9_g1k4s")
+font_size = 20
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5d4lw"]
+font = ExtResource("9_g1k4s")
+
+[sub_resource type="LabelSettings" id="LabelSettings_m05ps"]
+font = ExtResource("9_g1k4s")
+font_size = 20
+font_color = Color(0, 0, 1, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v61i3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("CameraController/HeadMovement:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("CameraController/HeadMovement:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon:network_shooting")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "healthComponent", "stateMachine", "player_ui")]
+script = ExtResource("1_erhc8")
+MouseSensitivity = 17.054
+ACCELERATION = 0.5
+CameraNodePath = NodePath("CameraController/HeadMovement/Recoil/Camera3D")
+AnimationPlayerPath = NodePath("AnimationPlayer")
+ShapeCastPath = NodePath("ShapeCast3D")
+WEAPON_CONTROLLER = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon")
+healthComponent = NodePath("Health")
+stateMachine = NodePath("PlayerStateMachine")
+player_ui = NodePath("UserInterface/PlayerUI")
+_speed = 6.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1gth1")
+
+[node name="Placeholder Mesh" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_0u0go")
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="HeadMovement" type="Node3D" parent="CameraController" node_paths=PackedStringArray("player")]
+script = ExtResource("3_5pwa8")
+player = NodePath("../..")
+
+[node name="Recoil" type="Node3D" parent="CameraController/HeadMovement" node_paths=PackedStringArray("weapon")]
+script = ExtResource("3_vxix5")
+weapon = NodePath("Camera3D/WeaponRig/Weapon")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController/HeadMovement/Recoil"]
+unique_name_in_owner = true
+
+[node name="WeaponRig" type="Node3D" parent="CameraController/HeadMovement/Recoil/Camera3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.55, -0.72, -0.13)
+
+[node name="Weapon" parent="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig" instance=ExtResource("4_c001k")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_01rq2")
+}
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_x8sye")
+target_position = Vector3(0, 0.5, 0)
+debug_shape_custom_color = Color(0, 0.905882, 0, 1)
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme = ExtResource("3_hmplu")
+
+[node name="Reticle" type="CenterContainer" parent="UserInterface" node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_mdpsv")
+RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+PLAYER_CONTROLLER = NodePath("../..")
+
+[node name="Top" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="DebugPanel" type="PanelContainer" parent="UserInterface" node_paths=PackedStringArray("vBoxContainer")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+script = ExtResource("5_io0el")
+vBoxContainer = NodePath("MarginContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="UserInterface/DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/DebugPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="PlayerUI" type="CanvasLayer" parent="UserInterface"]
+script = ExtResource("8_di2ar")
+
+[node name="Health" type="Label" parent="UserInterface/PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = -70.0
+offset_right = 303.0
+offset_bottom = -32.0
+grow_vertical = 0
+text = "Health: null"
+label_settings = SubResource("LabelSettings_0jiqp")
+
+[node name="Ammo" type="Label" parent="UserInterface/PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -279.0
+offset_top = -69.0
+offset_right = -37.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Ammo: --/--"
+label_settings = SubResource("LabelSettings_lbvbf")
+
+[node name="Interact" type="Label" parent="UserInterface/PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = 50.0
+offset_right = 59.5
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Interact [E]"
+label_settings = SubResource("LabelSettings_0u1p1")
+
+[node name="Money" type="Label" parent="UserInterface/PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -188.0
+offset_top = 33.0
+offset_right = -44.0
+offset_bottom = 90.0
+grow_horizontal = 0
+text = "$ 999"
+label_settings = SubResource("LabelSettings_m1b6s")
+
+[node name="Loadout" type="Control" parent="UserInterface/PlayerUI"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -300.0
+offset_right = -160.0
+offset_bottom = -260.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Loadout1" type="Label" parent="UserInterface/PlayerUI/Loadout"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Loadout1"
+label_settings = SubResource("LabelSettings_pxpwm")
+
+[node name="Loadout2" type="Label" parent="UserInterface/PlayerUI/Loadout"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 40.0
+offset_right = 74.0
+offset_bottom = 63.0
+text = "Loadout2"
+label_settings = SubResource("LabelSettings_scb6k")
+
+[node name="Loadout3" type="Label" parent="UserInterface/PlayerUI/Loadout"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 80.0
+offset_right = 74.0
+offset_bottom = 103.0
+text = "Loadout3"
+label_settings = SubResource("LabelSettings_s5k0j")
+
+[node name="Scoreboard" type="Panel" parent="UserInterface/PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -389.0
+offset_top = -198.0
+offset_right = 389.0
+offset_bottom = 198.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TeamRed" type="Label" parent="UserInterface/PlayerUI/Scoreboard"]
+layout_mode = 1
+offset_left = 139.0
+offset_top = 37.0
+offset_right = 253.0
+offset_bottom = 62.0
+text = "Team Red"
+label_settings = SubResource("LabelSettings_ldqrq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/PlayerUI/Scoreboard/TeamRed"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -39.0
+offset_top = 88.0
+offset_right = 40.0
+offset_bottom = 287.0
+grow_horizontal = 2
+theme_override_constants/separation = 25
+
+[node name="Player1" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player2" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player3" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player4" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player5" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="TeamBlue" type="Label" parent="UserInterface/PlayerUI/Scoreboard"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -265.0
+offset_top = 34.0
+offset_right = -136.0
+offset_bottom = 59.0
+grow_horizontal = 0
+text = "Team Blue"
+label_settings = SubResource("LabelSettings_m05ps")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -39.5
+offset_top = 88.0
+offset_right = 39.5
+offset_bottom = 283.0
+grow_horizontal = 2
+theme_override_constants/separation = 25
+
+[node name="Player6" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player7" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player8" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player9" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Player10" type="Label" parent="UserInterface/PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "player"
+label_settings = SubResource("LabelSettings_5d4lw")
+horizontal_alignment = 1
+
+[node name="Health" parent="." instance=ExtResource("19_wp01g")]
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE", "animationPlayer")]
+script = ExtResource("6_ruf4d")
+CURRENT_STATE = NodePath("IdlePlayerState")
+animationPlayer = NodePath("../AnimationPlayer")
+
+[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_gofhs")
+
+[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_m70jt")
+
+[node name="SprintingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_710fs")
+
+[node name="CrouchingPlayerState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("CROUCH_SHAPECAST")]
+script = ExtResource("10_eem2e")
+CROUCH_SHAPECAST = NodePath("../../ShapeCast3D")
+
+[node name="SlidingPlayerState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("CROUCH_SHAPECAST")]
+script = ExtResource("11_alqgl")
+CROUCH_SHAPECAST = NodePath("../../ShapeCast3D")
+
+[node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("12_bmjgq")
+
+[node name="FallingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("13_0s4uh")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+unique_name_in_owner = true
+replication_config = SubResource("SceneReplicationConfig_v61i3")
+
+[connection signal="PlayerReady" from="." to="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon" method="_on_PLAYER_READY"]
+[connection signal="PlayerReady" from="." to="PlayerStateMachine" method="_on_PLAYER_READY"]
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]

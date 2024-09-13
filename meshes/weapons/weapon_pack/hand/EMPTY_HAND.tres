@@ -1,0 +1,44 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dai8uknr858wx"]
+
+[ext_resource type="Script" path="res://scripts/Weapons.cs" id="1_dy20s"]
+[ext_resource type="ArrayMesh" uid="uid://cn4w1hiyxt4nt" path="res://meshes/weapons/weapon_pack/hand/idle_hand.res" id="1_gsr4s"]
+
+[resource]
+script = ExtResource("1_dy20s")
+name = &"Hand"
+weapon_type = 0
+gun_class = 0
+position = Vector3(-1.52, -1.525, 1.585)
+rotation = Vector3(-53, -191.5, 10.4)
+scale = Vector3(0.1, 0.1, 0.1)
+base_damage = 13.0
+current_ammo = 0
+magazine_capacity = 0
+reload_time = 1.5
+time_between_bullets = 2.0
+automatic_reload = true
+pullout_time = 1.5
+fire_mode = 0
+burst_fire_count = 3
+bullet_spread = 1.0
+aiming_accuracy_multiplier = 0.5
+recoil_amount_kickback = Vector3(0, 0, 0)
+snap_amount_kickback = 0.0
+speed_kickback = 0.0
+recoil_amount_rotation = Vector3(0, 0, 0)
+snap_amount_rotation = 0.0
+speed_rotation = 0.0
+sway_min = Vector2(-20, -20)
+sway_max = Vector2(20, 20)
+sway_speed_position = 0.07
+sway_speed_rotation = 0.1
+sway_amount_position = 0.1
+sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+random_sway_amount = 5.0
+mesh = ExtResource("1_gsr4s")
+shadow = false
+muzzle_flash_position = Vector3(0.11, 31.25, 94.597)
+FireSoundPath = NodePath("")
+ReloadSoundPath = NodePath("")

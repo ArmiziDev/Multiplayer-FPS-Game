@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d11eehl6egttn"]
+
+[ext_resource type="Script" path="res://scripts/Weapons.cs" id="1_cx467"]
+
+[resource]
+script = ExtResource("1_cx467")
+name = null
+position = Vector3(0, 0, 0)
+rotation = Vector3(0, 0, 0)
+shadow = false

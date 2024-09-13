@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://bn7klcq0cq1vt"]
+
+[ext_resource type="Script" path="res://scripts/WeaponPhysicsBody.cs" id="1_jrd1c"]
+[ext_resource type="ArrayMesh" uid="uid://b5522256hdmb" path="res://meshes/weapons/weapon_pack/Rifles/AR15_19/ar15_19.res" id="2_80vov"]
+[ext_resource type="PackedScene" uid="uid://35bm0eur5345" path="res://scenes/interactable.tscn" id="2_tsc2y"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fpmmh"]
+friction = 0.1
+bounce = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kwhnt"]
+size = Vector3(0.3, 1.5, 0.3)
+
+[node name="WeaponPhysicsBody" type="RigidBody3D"]
+mass = 0.013
+physics_material_override = SubResource("PhysicsMaterial_fpmmh")
+script = ExtResource("1_jrd1c")
+
+[node name="GunMesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = ExtResource("2_80vov")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_kwhnt")
+
+[node name="Interactable" parent="." instance=ExtResource("2_tsc2y")]
+interactableType = 0

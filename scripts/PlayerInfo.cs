@@ -5,10 +5,12 @@ public partial class PlayerInfo : Node
 {
 	public Team player_team;
 	public int server_id;
-	public int health;
 
-	// stats
-	public int kills;
+    // stats
+    public int health;
+    public int kills;
 	public int deaths;
 	public int assists;
+	//
+	public int money;
 }

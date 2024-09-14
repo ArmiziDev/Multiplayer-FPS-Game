@@ -25,6 +25,7 @@ public partial class Weapons : Resource
 	[Export] public float time_between_bullets { get; set; } = 2.0f;
 	[Export] public bool automatic_reload { get; set; } = true;
 	[Export] public float pullout_time { get; set; } = 1.5f;
+	[Export] public int money { get; set; } = 100;
 
 	public enum FireMode { SemiAuto, Burst, FullAuto}
 	[Export] public FireMode fire_mode { get; set; } = FireMode.FullAuto;

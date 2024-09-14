@@ -3,7 +3,8 @@ using System;
 
 public partial class PlayerNetworkingCalls : Node
 {
-    [Signal] public delegate void PlayerInformationUpdateEventHandler();
+    [Signal] public delegate void PlayerDamageUpdateEventHandler();
+    [Signal] public delegate void PlayerDeathUpdateEventHandler(PlayerInfo player);
 
     internal void Damage(int damage, PlayerInfo reciever, PlayerInfo sender)
     {
@@ -37,6 +38,9 @@ public partial class PlayerNetworkingCalls : Node
                 {
                     reciever_player.deaths++;
                     sender_player.kills++;
+                    sender_player.money += 300;
+
+                    EmitSignal(nameof(PlayerDeathUpdate), sender_player);
                 }
             }
             else
@@ -50,6 +54,6 @@ public partial class PlayerNetworkingCalls : Node
             Globals.debug.debug_err("Null Player Found");
         }
 
-        EmitSignal(nameof(PlayerInformationUpdate));
+        EmitSignal(nameof(PlayerDamageUpdate));
     }
 }

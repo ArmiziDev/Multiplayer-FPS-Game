@@ -357,10 +357,6 @@ public partial class MainMenu : Control
 			player.player_team = (Team)newTeam;
 			player.Name = name;
 			player.health = health;
-
-			player.kills = 0;
-			player.deaths = 0;
-			player.assists = 0;
 			
 			// If the player being updated is the local player, update localPlayerInfo as well
 			if (player.server_id == Multiplayer.GetUniqueId())
@@ -396,8 +392,15 @@ public partial class MainMenu : Control
 			{
 				Name = name,
 				server_id = id,
+
 				health = 100,
-				player_team = Team.Red
+				money = 700,
+
+				player_team = Team.Red,
+
+				kills = 0,
+				deaths = 0,
+				assists = 0
 			};
 			Globals.PLAYERS.Add(new_player);
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://derrt75lmxbw6"]
+[gd_scene load_steps=22 format=3 uid="uid://derrt75lmxbw6"]
 
 [ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="1_rfiqa"]
 [ext_resource type="Script" path="res://scripts/Reticle.cs" id="2_rh4ca"]
@@ -40,9 +40,6 @@ font = ExtResource("5_6yovh")
 font = ExtResource("5_6yovh")
 font_size = 20
 font_color = Color(1, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_fvilj"]
-font = ExtResource("5_6yovh")
 
 [sub_resource type="LabelSettings" id="LabelSettings_5d4lw"]
 font = ExtResource("5_6yovh")
@@ -243,6 +240,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TeamRed" type="Label" parent="PlayerUI/Scoreboard"]
+unique_name_in_owner = true
 layout_mode = 1
 offset_left = 139.0
 offset_top = 37.0
@@ -250,19 +248,6 @@ offset_right = 253.0
 offset_bottom = 62.0
 text = "Team Red"
 label_settings = SubResource("LabelSettings_ldqrq")
-
-[node name="Kills Deaths" type="Label" parent="PlayerUI/Scoreboard/TeamRed"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 68.0
-offset_top = 32.0
-offset_right = 217.0
-offset_bottom = 51.0
-grow_vertical = 0
-text = "Kills \\ Deaths"
-label_settings = SubResource("LabelSettings_fvilj")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/Scoreboard/TeamRed"]
 layout_mode = 1
@@ -279,34 +264,30 @@ theme_override_constants/separation = 25
 [node name="Player1" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 
 [node name="Player2" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 
 [node name="Player3" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 
 [node name="Player4" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 
 [node name="Player5" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 
 [node name="TeamBlue" type="Label" parent="PlayerUI/Scoreboard"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -318,19 +299,6 @@ offset_bottom = 59.0
 grow_horizontal = 0
 text = "Team Blue"
 label_settings = SubResource("LabelSettings_m05ps")
-
-[node name="Kills Deaths" type="Label" parent="PlayerUI/Scoreboard/TeamBlue"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = -76.0
-offset_top = 35.0
-offset_right = 73.0
-offset_bottom = 54.0
-grow_vertical = 0
-text = "Kills / Deaths"
-label_settings = SubResource("LabelSettings_fvilj")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/Scoreboard/TeamBlue"]
 layout_mode = 1
@@ -347,35 +315,30 @@ theme_override_constants/separation = 25
 [node name="Player6" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
 
 [node name="Player7" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
 
 [node name="Player8" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
 
 [node name="Player9" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
 
 [node name="Player10" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
 

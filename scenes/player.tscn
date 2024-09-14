@@ -509,5 +509,6 @@ replication_config = SubResource("SceneReplicationConfig_v61i3")
 
 [connection signal="PlayerReady" from="." to="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon" method="_on_PLAYER_READY"]
 [connection signal="PlayerReady" from="." to="PlayerStateMachine" method="_on_PLAYER_READY"]
-[connection signal="PlayerInformationUpdate" from="PlayerRpcCalls" to="." method="_on_player_rpc_calls_player_information_update"]
+[connection signal="PlayerDamageUpdate" from="PlayerRpcCalls" to="." method="_on_player_rpc_player_damage_update"]
+[connection signal="PlayerDeathUpdate" from="PlayerRpcCalls" to="." method="_on_player_rpc_player_death_update"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]

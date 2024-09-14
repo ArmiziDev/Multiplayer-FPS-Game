@@ -42,29 +42,63 @@ public partial class PlayerUI : CanvasLayer
         if (@event.IsActionPressed("scoreboard"))
         {
             scoreboard.Visible = true;
-            int redplayercount = 1;
-            int blueplayercount = 6;
-            if (scoreboard.Visible)
+            switch (Globals.game_mode)
             {
-                foreach(var player in Globals.PLAYERS)
-                {
-                    if(player.player_team == Team.Red)
-                    {
-                        GetNode<Label>("%Player" + redplayercount.ToString()).Text = player.Name + "           " + player.kills + "   /   " + player.deaths;
-                        redplayercount++;
-                    }
-                    if(player.player_team == Team.Blue)
-                    {
-                        GetNode<Label>("%Player" + blueplayercount.ToString()).Text = player.kills + "   /   " + player.deaths + "           " + player.Name;
-                        blueplayercount++;                        
-                    }
-                }
+                case 0: // 5v5s
+                    show_redvsblue_scoreboard();
+                    break;
+                default:
+                    show_regular_scoreboard();
+                    break;
+            
             }
         }
         if (@event.IsActionReleased("scoreboard"))
         {
             scoreboard.Visible = false;
         }        
+    }
+
+    public void show_regular_scoreboard()
+    {
+        int current_player_count = 1;
+        if (scoreboard.Visible)
+        {
+            foreach (PlayerInfo player in Globals.PLAYERS)
+            {
+                Label current_player_label = GetNode<Label>("%Player" + current_player_count.ToString());
+                current_player_label.Text = player.Name + "           " + player.kills + "   /   " + player.deaths;
+
+                current_player_count++;
+            }
+        }
+
+    }
+
+    public void show_redvsblue_scoreboard()
+    {
+        int redplayercount = 1;
+        int blueplayercount = 6;
+        if (scoreboard.Visible)
+        {
+            foreach (PlayerInfo player in Globals.PLAYERS)
+            {
+                if (player.player_team == Team.Red)
+                {
+                    Label current_player_label = GetNode<Label>("%Player" + redplayercount.ToString());
+                    current_player_label.Text = player.Name + "           " + player.kills + "   /   " + player.deaths;
+
+                    redplayercount++;
+                }
+                if (player.player_team == Team.Blue)
+                {
+                    Label current_player_label = GetNode<Label>("%Player" + blueplayercount.ToString());
+                    current_player_label.Text = player.kills + "   /   " + player.deaths + "           " + player.Name;
+
+                    blueplayercount++;
+                }
+            }
+        }
     }
 
     // General method to update any UI element

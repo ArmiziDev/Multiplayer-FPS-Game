@@ -33,7 +33,7 @@ public partial class Player : CharacterBody3D
     [Export] public State_Machine stateMachine { get; set; }
     [Export] public PlayerUserInterface player_user_interface;
     [Export] public float _speed;
-    public int Money { get; set; } = 100;
+
     public float gravity = 12.0f;
     public Vector3 gravity_vector;
     public Vector3 _rotation = Vector3.Zero;
@@ -71,8 +71,6 @@ public partial class Player : CharacterBody3D
 
         // Spawn Points
         GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10);
-
-        Globals.localPlayerInfo = player_info;
 
         EmitSignal(SignalName.PlayerReady);
     }
@@ -114,6 +112,8 @@ public partial class Player : CharacterBody3D
 
         // Needed for Networked Player Not Extras
         if (multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
+        Globals.localPlayerInfo = player_info;
+
         _crouchShapeCast = GetNode<ShapeCast3D>(ShapeCastPath);
         stateMachine.InitializeStateMachine(this);
         gravity_vector = new Vector3(0.0f, gravity, 0.0f);
@@ -128,8 +128,11 @@ public partial class Player : CharacterBody3D
 
         player_user_interface.reticle().SetPlayer(this);
         player_user_interface.playerUI().UpdateUI("Health", "Health: " + health);
-        player_user_interface.playerUI().UpdateUI("Money", "$" + Money);
+        player_user_interface.playerUI().UpdateUI("Money", "$" + player_info.money);
         player_user_interface.playerUI().UpdateUI("DisplayName", player_info.Name);
+
+        player_user_interface.debug().add_debug_property("Global Local Player Team: ", Globals.localPlayerInfo.player_team);
+        player_user_interface.debug().add_debug_property("Player Team: ", player_info.player_team);
     }
 
     public override void _Input(InputEvent @event)
@@ -178,8 +181,7 @@ public partial class Player : CharacterBody3D
     public void PlayerDie()
     {
         // Game Manager Handles Player Death
-
-        Globals.gameManager.HandlePlayerDead(this);
+        Globals.gameManager.HandlePlayerDead(this); // reciever, sender
     }
 
     public void ResetAttributes()
@@ -310,8 +312,8 @@ public partial class Player : CharacterBody3D
 
     public void AddMoney(int _money)
     {
-        Money += _money;
-        player_user_interface.playerUI().UpdateUI("Money", "$" + Money);
+        player_info.money += _money;
+        player_user_interface.playerUI().UpdateUI("Money", "$" + player_info.money);
     }
 
     public void UpdateInput(float speed, float acceleration, float deceleration, float input_multiplier)
@@ -339,10 +341,14 @@ public partial class Player : CharacterBody3D
             Velocity = velocity;   
     }
 
-    public void _on_player_rpc_calls_player_information_update()
+    public void UpdateVelocity()
     {
-        player_user_interface?.playerUI().UpdateUI("Health", "Health: " + player_info.health);
+        MoveAndSlide();
+    }
 
+    // Networking Player RPC Calls Handling
+    public void _on_player_rpc_player_damage_update()
+    {
         if (player_info.health < health)
         {
             health = player_info.health;
@@ -353,10 +359,8 @@ public partial class Player : CharacterBody3D
         {
             PlayerDie();
         }
+        player_user_interface?.playerUI().UpdateUI("Health", player_info.health);
     }
 
-    public void UpdateVelocity()
-    {
-        MoveAndSlide();
-    }
+
 }

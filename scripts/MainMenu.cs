@@ -183,10 +183,10 @@ public partial class MainMenu : Control
 		switch (Globals.game_mode)
 		{
 			case 0:
-				current_game_mode = "Free For All";
+				current_game_mode = "5v5 Teams";
 				break;
 			case 1:
-				current_game_mode = "5v5 Teams";
+				current_game_mode = "Free For All";
 				break;
 			case 2:
 				current_game_mode = "Zombies";
@@ -195,6 +195,7 @@ public partial class MainMenu : Control
 				current_game_mode = "None";
 				break;
 		}
+
 		GetNode<Label>("%GameModeDisplay").Text = "Game Mode: " + current_game_mode;
         // Clear Lobby
         for (int i = 1; i <= 10; i++)
@@ -413,13 +414,13 @@ public partial class MainMenu : Control
 
 		if (Multiplayer.IsServer())
 		{
-			foreach (var player in Globals.PLAYERS)
+            Rpc(nameof(UpdateGameMode), Globals.game_mode);
+            foreach (var player in Globals.PLAYERS)
 			{
-				RpcId(id, nameof(UpdateGameMode), Globals.game_mode);
 				Rpc(nameof(sendPlayerInformation), player.server_id, player.Name);
 			}
 		}
-		Rpc(nameof(UpdateLobbyMenu));
+        Rpc(nameof(UpdateLobbyMenu));
 	}
 
 

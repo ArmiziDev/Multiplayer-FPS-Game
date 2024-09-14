@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://ccg7o15w0lhi6"]
+[gd_scene load_steps=21 format=3 uid="uid://ccg7o15w0lhi6"]
 
 [ext_resource type="Script" path="res://scripts/GameManager.cs" id="1_ccgnv"]
 [ext_resource type="Texture2D" uid="uid://d1nk77oed4a8v" path="res://materials/PrototypeTextures/Contrast/Prototype_Contrast_003.png" id="1_po7dm"]
 [ext_resource type="Texture2D" uid="uid://clp0ghto4o8ic" path="res://materials/PrototypeTextures/Blue/Prototype_Blue_001.png" id="2_2x68d"]
 [ext_resource type="PackedScene" uid="uid://35bm0eur5345" path="res://scenes/interactable.tscn" id="3_hh1x0"]
 [ext_resource type="Texture2D" uid="uid://ckb4ciuwxvkrl" path="res://materials/PrototypeTextures/Orange/Prototype_Orange_001.png" id="3_md1lu"]
+[ext_resource type="PackedScene" uid="uid://b15b20v2tr67f" path="res://scenes/spawn_points.tscn" id="7_vbwwq"]
 [ext_resource type="PackedScene" uid="uid://ce4lhugdkhlkl" path="res://scenes/player.tscn" id="10_v7wsf"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4ruwf"]
@@ -45,9 +46,10 @@ size = Vector3(5, 1, 5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_h20cd"]
 size = Vector3(5, 1, 5)
 
-[node name="world" type="Node3D"]
+[node name="world" type="Node3D" node_paths=PackedStringArray("spawnPoints")]
 script = ExtResource("1_ccgnv")
 playerScene = ExtResource("10_v7wsf")
+spawnPoints = NodePath("SpawnPoints")
 
 [node name="RecoilTestWall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.70383, 17.5415)
@@ -132,3 +134,5 @@ shape = SubResource("BoxShape3D_h20cd")
 transform = Transform3D(1, 0, 0, 0, -0.428809, 0.903395, 0, -0.903395, -0.428809, 3.06883, 5.51709, -3.22038)
 shadow_enabled = true
 directional_shadow_mode = 1
+
+[node name="SpawnPoints" parent="." instance=ExtResource("7_vbwwq")]

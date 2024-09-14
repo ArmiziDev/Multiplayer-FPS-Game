@@ -70,11 +70,12 @@ public partial class Player : CharacterBody3D
         InitializePlayerComponents();
 
         // Spawn Points
-        GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10); 
+        GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10);
+
+        Globals.localPlayerInfo = player_info;
 
         EmitSignal(SignalName.PlayerReady);
     }
-
 
     private void InitializeNetworkComponents()
     {
@@ -90,7 +91,7 @@ public partial class Player : CharacterBody3D
 
         //Setting player color
         StandardMaterial3D player_material = (StandardMaterial3D)GetNode<MeshInstance3D>("%Placeholder Mesh").GetActiveMaterial(0);
-        switch (Globals.localPlayerInfo.player_team)
+        switch (player_info.player_team)
         {
             case (Team.Red):
                 player_material.AlbedoColor = new Color(1, 0, 0);
@@ -176,13 +177,19 @@ public partial class Player : CharacterBody3D
 
     public void PlayerDie()
     {
-        // Set Visibility to False and wait for round to end
-        QueueFree();
+        // Game Manager Handles Player Death
+
+        Globals.gameManager.HandlePlayerDead(this);
     }
 
-    public void Respawn()
+    public void ResetAttributes()
     {
+        player_info.health = 100;
+        health = player_info.health; // reset health
+        WEAPON_CONTROLLER.WEAPON_TYPE.current_ammo = WEAPON_CONTROLLER.WEAPON_TYPE.magazine_capacity; // reset ammo
         
+        player_user_interface?.playerUI().UpdateUI("Health", "Health: " + player_info.health);
+        player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_CONTROLLER.WEAPON_TYPE.current_ammo + " / " + WEAPON_CONTROLLER.WEAPON_TYPE.magazine_capacity);
     }
 
     public Godot.Collections.Dictionary shoot_raycast(int distance, float raycast_offset_x = 0.0f, float raycast_offset_y = 0.0f, bool debug_raycost_dot = false)

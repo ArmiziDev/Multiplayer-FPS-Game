@@ -55,9 +55,6 @@ public partial class LoadingScreen : Control
 		Node currentNode = resource.Instantiate();
 		rootNode.AddChild(currentNode);
 
-		//Add Players After World is Instantiated
-		//AddPlayersToWorld();
-
 		QueueFree();
 	}
 

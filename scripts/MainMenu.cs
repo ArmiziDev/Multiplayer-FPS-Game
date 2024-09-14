@@ -67,7 +67,12 @@ public partial class MainMenu : Control
     private void PeerDisconnected(long id)
     {
 		PlayerInfo player = Globals.PLAYERS.Find(p => p.server_id == id);
+        if (player != null)
+        {
+            Globals.PLAYERS.Remove(player);
+        }
         PrintError(player.Name.ToString() + " Disconnected");
+		UpdateLobbyMenu();
     }
 
 	// runs when a player connects and runs on all peers
@@ -79,15 +84,19 @@ public partial class MainMenu : Control
 	public void _on_host_button_down()
 	{
 		peer = new ENetMultiplayerPeer();
-		var error = peer.CreateServer(port, 10); // Supports 10 Clients
+		port = (int)GetNode<SpinBox>("%Port").Value;
+        var error = peer.CreateServer(port, 10); // Supports 10 Clients
 		if (error != Error.Ok)
 		{
 			GD.PrintErr("error cannot host! : " + error.ToString());
 			return;
 		}
 		GetNode<Button>("%StartGame").Show();
-		GetNode<Button>("%Join").Hide();
-		StartLobbyMenu();
+        GetNode<Button>("%Disconnect").Hide();
+        GetNode<Label>("%GameModeDisplay").Show();
+        StartLobbyMenu();
+
+
 
 		peer.Host.Compress(compressionMode);
 
@@ -100,9 +109,17 @@ public partial class MainMenu : Control
 
 	private void StartLobbyMenu()
 	{
-		lobbyMenu.Show();
+        startMenu.Hide();
+        lobbyMenu.Show();
 		messageBox.Show();
 	}
+
+	private void StartMainMenu()
+	{
+        startMenu.Show();
+        lobbyMenu.Hide();
+        messageBox.Hide();
+    }
 
 	private void PrintMessage(String message)
 	{
@@ -129,7 +146,21 @@ public partial class MainMenu : Control
         GetNode<VBoxContainer>("%MessageBoxContainer").AddChild(tempMessage);
 	}
 
-	private void message_text_submit()
+	private void _on_game_mode_tab_clicked(int game_mode)
+	{
+        Globals.game_mode = game_mode;
+        Rpc(nameof(UpdateGameMode), game_mode);
+		UpdateLobbyMenu();
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    private void UpdateGameMode(int game_mode)
+	{
+        Globals.game_mode = game_mode;
+		UpdateLobbyMenu();
+	}
+
+    private void message_text_submit()
 	{
 		LineEdit messageInputBox = GetNode<LineEdit>("%TypeMessage");
 		if (messageInputBox.Text.Length > 0)
@@ -148,8 +179,25 @@ public partial class MainMenu : Control
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
 	private void UpdateLobbyMenu()
 	{
-		// Clear Lobby
-		for(int i = 1; i <= 10; i++)
+		String current_game_mode;
+		switch (Globals.game_mode)
+		{
+			case 0:
+				current_game_mode = "Free For All";
+				break;
+			case 1:
+				current_game_mode = "5v5 Teams";
+				break;
+			case 2:
+				current_game_mode = "Zombies";
+				break;
+			default:
+				current_game_mode = "None";
+				break;
+		}
+		GetNode<Label>("%GameModeDisplay").Text = "Game Mode: " + current_game_mode;
+        // Clear Lobby
+        for (int i = 1; i <= 10; i++)
 		{
 			GetNode<Label>("%Player" + i.ToString()).Text = "";
 		}
@@ -161,35 +209,101 @@ public partial class MainMenu : Control
 		{
 			if(player.player_team == Team.Red)
 			{
-				GetNode<Label>("%Player" + currentRedPlayer.ToString()).Text = player.Name;
-				currentRedPlayer++;
+				Label currentRedPlayerLabel = GetNode<Label>("%Player" + currentRedPlayer.ToString());
+
+                currentRedPlayerLabel.Text = player.Name;
+                currentRedPlayerLabel.LabelSettings.FontColor = new Color(1, 1, 1);
+
+                if (player.Name == Globals.localPlayerInfo.Name)
+					currentRedPlayerLabel.LabelSettings.FontColor = new Color(1, 1, 0);
+
+                currentRedPlayer++;
 			}
 			else if(player.player_team == Team.Blue)
 			{
-				GetNode<Label>("%Player" + currentBluePlayer.ToString()).Text = player.Name;
-				currentBluePlayer++;
+				Label currentBluePlayerLabel = GetNode<Label>("%Player" + currentBluePlayer.ToString());
+
+                currentBluePlayerLabel.Text = player.Name;
+                currentBluePlayerLabel.LabelSettings.FontColor = new Color(1, 1, 1);
+
+                if (player.Name == Globals.localPlayerInfo.Name)
+                    currentBluePlayerLabel.LabelSettings.FontColor = new Color(1, 1, 0);
+
+                currentBluePlayer++;
 			}
 		}	
 	}
 
 	private void _on_join_button_down()
 	{
-		if (!inServer)
+		Label StartMenuMessage = GetNode<Label>("%StartMenuMessage");
+
+        if (!inServer)
 		{
 			peer = new ENetMultiplayerPeer();
-			peer.CreateClient(address, port);
+			address = GetNode<TextEdit>("%IPAddress").Text;
+			Error result = peer.CreateClient(address, port);
 
-			peer.Host.Compress(compressionMode);
-			Multiplayer.MultiplayerPeer = peer;
-			PrintMessage("Joining Game");
-			inServer = true;
-			StartLobbyMenu();
-			GetNode<Button>("%Join").Text = "Disconnect";
-			GetNode<Button>("%Host").Hide();
-		}
+			if (result == Error.Ok)
+			{
+                peer.Host.Compress(compressionMode);
+                Multiplayer.MultiplayerPeer = peer;
+
+                StartMenuMessage.Text = "Connecting To Server...";
+                StartMenuMessage.LabelSettings.FontColor = new Color(1, 1, 1);
+
+                // Start checking the connection status
+                GetTree().CreateTimer(3).Connect("timeout", new Callable(this, nameof(CheckConnectionStatus)));
+            }
+            else
+			{
+                StartMenuMessage.Text = "Failed To Connect To Server";
+                StartMenuMessage.LabelSettings.FontColor = new Color(1, 0, 0);
+            }
+        }
 	}
 
-	private void _on_start_game_button_down()
+	private void CheckConnectionStatus()
+	{
+        if (peer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Connected)
+		{
+            PrintMessage("Successfully joined the game!");
+            inServer = true;
+            StartLobbyMenu();
+            GetNode<Label>("%GameModeDisplay").Show();
+            GetNode<TabBar>("%SetGameMode").Hide();
+        }
+        else
+        {
+            GetNode<Label>("%StartMenuMessage").Text = "Failed to join the game. Connection status: " + peer.GetConnectionStatus().ToString();
+			GetNode<Label>("%StartMenuMessage").LabelSettings.FontColor = new Color(1, 0, 0);
+            inServer = false;
+        }
+    }
+
+	private void _on_disconnect_pressed()
+	{
+        PrintError("Disconnecting From Server");
+
+        Globals.PLAYERS.Clear();
+
+        // Properly disconnect the peer
+        Multiplayer.MultiplayerPeer = null;  // Detach the multiplayer peer
+        peer.Close();  // Destroy the ENetMultiplayerPeer to free up resources
+        peer = null;
+
+        inServer = false;
+
+        // Reset UI and state
+        GetNode<Label>("%GameModeDisplay").Hide();
+        GetNode<TabBar>("%SetGameMode").Hide();
+        UpdateLobbyMenu();
+
+		StartMainMenu();
+    }
+
+
+    private void _on_start_game_button_down()
 	{
 		Rpc(nameof(startGame));
 	}
@@ -233,7 +347,6 @@ public partial class MainMenu : Control
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer)] // Needs to be called locally so server updates its own player
 	private void updatePlayerInformation(int id, string name, int newTeam, int health)
 	{
-		//PrintMessage("Updating Player Information");
 		// Check if the player exists in the global player list
 		var player = Globals.PLAYERS.Find(p => p.server_id == id);
 		
@@ -243,6 +356,10 @@ public partial class MainMenu : Control
 			player.player_team = (Team)newTeam;
 			player.Name = name;
 			player.health = health;
+
+			player.kills = 0;
+			player.deaths = 0;
+			player.assists = 0;
 			
 			// If the player being updated is the local player, update localPlayerInfo as well
 			if (player.server_id == Multiplayer.GetUniqueId())
@@ -298,6 +415,7 @@ public partial class MainMenu : Control
 		{
 			foreach (var player in Globals.PLAYERS)
 			{
+				RpcId(id, nameof(UpdateGameMode), Globals.game_mode);
 				Rpc(nameof(sendPlayerInformation), player.server_id, player.Name);
 			}
 		}

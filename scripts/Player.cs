@@ -11,7 +11,7 @@ public enum Team
 public partial class Player : CharacterBody3D
 {
     public PlayerInfo player_info; // for networking
-    [Export] public float health = 100.0f;
+    [Export] public int health;
     [Export(PropertyHint.Range, "1,100")]
     public float MouseSensitivity { get; set; } = 50.0f;
     [Export] public float default_speed { get; set; } = 5.0f;
@@ -86,6 +86,22 @@ public partial class Player : CharacterBody3D
     {
         // Setting current speed to the default_speed set for player and gravity vector
         _speed = default_speed;
+        health = player_info.health;
+
+        //Setting player color
+        StandardMaterial3D player_material = (StandardMaterial3D)GetNode<MeshInstance3D>("%Placeholder Mesh").GetActiveMaterial(0);
+        switch (Globals.localPlayerInfo.player_team)
+        {
+            case (Team.Red):
+                player_material.AlbedoColor = new Color(1, 0, 0);
+                break;
+            case (Team.Blue):
+                player_material.AlbedoColor = new Color(0, 0, 1);
+                break;
+            case (Team.None):
+                player_material.AlbedoColor = new Color(GD.Randf(), GD.Randf(), GD.Randf());
+                break;
+        }
 
         _camera = GetNode<Camera3D>(CameraNodePath);
         _camera.Fov = camera_fov;
@@ -156,8 +172,17 @@ public partial class Player : CharacterBody3D
         // player_info is the player currently being damaged
         PlayerInfo damaged_player = player_info;
         playerNetworkingCalls.Damage(_damage, damaged_player, sender_player);
+    }
 
+    public void PlayerDie()
+    {
+        // Set Visibility to False and wait for round to end
+        QueueFree();
+    }
 
+    public void Respawn()
+    {
+        
     }
 
     public Godot.Collections.Dictionary shoot_raycast(int distance, float raycast_offset_x = 0.0f, float raycast_offset_y = 0.0f, bool debug_raycost_dot = false)
@@ -251,7 +276,7 @@ public partial class Player : CharacterBody3D
     {
         if (current_interactable != null)
         {
-            ////Globals.debug.debug_message("Interacting With: " + current_interactable.Name);
+            //Globals.debug.debug_message("Interacting With: " + current_interactable.Name);
             current_interactable.EmitSignal(InteractionComponent.SignalName.OnInteract);
         }
     }
@@ -311,9 +336,15 @@ public partial class Player : CharacterBody3D
     {
         player_user_interface?.playerUI().UpdateUI("Health", "Health: " + player_info.health);
 
+        if (player_info.health < health)
+        {
+            health = player_info.health;
+            player_user_interface?.playerUI().ShowBloodSplatter();
+        }
+
         if (player_info.health <= 0)
         {
-            QueueFree();
+            PlayerDie();
         }
     }
 

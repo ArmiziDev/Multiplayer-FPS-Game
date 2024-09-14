@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://ccg7o15w0lhi6"]
 
-[ext_resource type="Script" path="res://scripts/WorldSetup.cs" id="1_ccgnv"]
+[ext_resource type="Script" path="res://scripts/GameManager.cs" id="1_ccgnv"]
 [ext_resource type="Texture2D" uid="uid://d1nk77oed4a8v" path="res://materials/PrototypeTextures/Contrast/Prototype_Contrast_003.png" id="1_po7dm"]
 [ext_resource type="Texture2D" uid="uid://clp0ghto4o8ic" path="res://materials/PrototypeTextures/Blue/Prototype_Blue_001.png" id="2_2x68d"]
 [ext_resource type="PackedScene" uid="uid://35bm0eur5345" path="res://scenes/interactable.tscn" id="3_hh1x0"]

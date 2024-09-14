@@ -30,12 +30,13 @@ public partial class PlayerNetworkingCalls : Node
 
         if (reciever_player != null && sender_player != null)
         {
-            if (reciever_player.player_team != sender_player.player_team)
+            if (reciever_player.player_team != sender_player.player_team || reciever_player.player_team == Team.None)
             {
                 reciever_player.health -= damage;
                 if (reciever_player.health <= 0)
                 {
-                    GD.Print(reciever_player.Name + " IS DEAD");
+                    reciever_player.deaths++;
+                    sender_player.kills++;
                 }
             }
             else

@@ -1,7 +1,6 @@
-[gd_scene load_steps=28 format=3 uid="uid://ce4lhugdkhlkl"]
+[gd_scene load_steps=27 format=3 uid="uid://ce4lhugdkhlkl"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_erhc8"]
-[ext_resource type="Texture2D" uid="uid://dq1xf8ov4swea" path="res://materials/PrototypeTextures/Green/Prototype_Green_001.png" id="1_etq1f"]
 [ext_resource type="Script" path="res://scripts/Networking/PlayerNetworkingCalls.cs" id="2_w6nvr"]
 [ext_resource type="Script" path="res://scripts/HeadMovement.cs" id="3_5pwa8"]
 [ext_resource type="Script" path="res://scripts/WeaponRecoil.cs" id="3_vxix5"]
@@ -18,7 +17,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gth1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q2mbk"]
-albedo_texture = ExtResource("1_etq1f")
+albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0u0go"]
 material = SubResource("StandardMaterial3D_q2mbk")
@@ -424,7 +423,7 @@ properties/6/path = NodePath("CameraController/HeadMovement/Recoil/Camera3D/Weap
 properties/6/spawn = true
 properties/6/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "stateMachine", "player_user_interface", "playerNetworkingCalls")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "stateMachine", "playerNetworkingCalls")]
 script = ExtResource("1_erhc8")
 MouseSensitivity = 17.054
 ACCELERATION = 0.5
@@ -433,7 +432,6 @@ AnimationPlayerPath = NodePath("AnimationPlayer")
 ShapeCastPath = NodePath("ShapeCast3D")
 WEAPON_CONTROLLER = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon")
 stateMachine = NodePath("PlayerStateMachine")
-player_user_interface = NodePath("")
 _speed = 6.0
 playerNetworkingCalls = NodePath("PlayerRpcCalls")
 
@@ -444,6 +442,7 @@ script = ExtResource("2_w6nvr")
 shape = SubResource("CapsuleShape3D_1gth1")
 
 [node name="Placeholder Mesh" type="MeshInstance3D" parent="CollisionShape3D"]
+unique_name_in_owner = true
 mesh = SubResource("CapsuleMesh_0u0go")
 
 [node name="CameraController" type="Node3D" parent="."]

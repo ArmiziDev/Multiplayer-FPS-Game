@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://derrt75lmxbw6"]
+[gd_scene load_steps=23 format=3 uid="uid://derrt75lmxbw6"]
 
 [ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="1_rfiqa"]
 [ext_resource type="Script" path="res://scripts/Reticle.cs" id="2_rh4ca"]
 [ext_resource type="Script" path="res://scripts/PlayerUserInterface.cs" id="2_yviua"]
 [ext_resource type="Script" path="res://scripts/Debug.cs" id="3_1hndn"]
 [ext_resource type="Script" path="res://scripts/PlayerUI.cs" id="4_55ufo"]
+[ext_resource type="Texture2D" uid="uid://dtn0jy62xke16" path="res://assets/textures/blood_splatter_effect.png" id="4_rb2xf"]
 [ext_resource type="FontFile" uid="uid://8ftaq73i0w2x" path="res://assets/fonts/Gameplay.ttf" id="5_6yovh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_42ipc"]
@@ -40,6 +41,9 @@ font = ExtResource("5_6yovh")
 font_size = 20
 font_color = Color(1, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_fvilj"]
+font = ExtResource("5_6yovh")
+
 [sub_resource type="LabelSettings" id="LabelSettings_5d4lw"]
 font = ExtResource("5_6yovh")
 
@@ -47,6 +51,43 @@ font = ExtResource("5_6yovh")
 font = ExtResource("5_6yovh")
 font_size = 20
 font_color = Color(0, 0, 1, 1)
+
+[sub_resource type="Animation" id="Animation_7iitq"]
+resource_name = "BloodSplatter"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerUI/BloodSplatter:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r33ne"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerUI/BloodSplatter:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hpwy4"]
+_data = {
+"BloodSplatter": SubResource("Animation_7iitq"),
+"RESET": SubResource("Animation_r33ne")
+}
 
 [node name="UserInterface" type="Control" node_paths=PackedStringArray("_reticle", "_debug", "_playerUI")]
 layout_mode = 3
@@ -62,54 +103,19 @@ _reticle = NodePath("Reticle")
 _debug = NodePath("DebugPanel")
 _playerUI = NodePath("PlayerUI")
 
-[node name="Reticle" type="CenterContainer" parent="." node_paths=PackedStringArray("RETICLE_LINES")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_right = 40.0
-offset_bottom = 40.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_rh4ca")
-RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
-
-[node name="Top" type="Line2D" parent="Reticle"]
-points = PackedVector2Array(0, -5, 0, -15)
-width = 2.0
-
-[node name="Right" type="Line2D" parent="Reticle"]
-points = PackedVector2Array(5, 0, 15, 0)
-width = 2.0
-
-[node name="Bottom" type="Line2D" parent="Reticle"]
-points = PackedVector2Array(0, 5, 0, 15)
-width = 2.0
-
-[node name="Left" type="Line2D" parent="Reticle"]
-points = PackedVector2Array(-5, 0, -15, 0)
-width = 2.0
-
-[node name="DebugPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("vBoxContainer")]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 210.0
-offset_bottom = 50.0
-script = ExtResource("3_1hndn")
-vBoxContainer = NodePath("MarginContainer/VBoxContainer")
-
-[node name="MarginContainer" type="MarginContainer" parent="DebugPanel"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel/MarginContainer"]
-layout_mode = 2
-
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 script = ExtResource("4_55ufo")
+
+[node name="BloodSplatter" type="TextureRect" parent="PlayerUI"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_rb2xf")
+expand_mode = 1
 
 [node name="DisplayName" type="Label" parent="PlayerUI"]
 unique_name_in_owner = true
@@ -245,14 +251,27 @@ offset_bottom = 62.0
 text = "Team Red"
 label_settings = SubResource("LabelSettings_ldqrq")
 
+[node name="Kills Deaths" type="Label" parent="PlayerUI/Scoreboard/TeamRed"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 68.0
+offset_top = 32.0
+offset_right = 217.0
+offset_bottom = 51.0
+grow_vertical = 0
+text = "Kills \\ Deaths"
+label_settings = SubResource("LabelSettings_fvilj")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/Scoreboard/TeamRed"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -39.0
+offset_left = -87.0
 offset_top = 88.0
-offset_right = 40.0
+offset_right = -8.0
 offset_bottom = 287.0
 grow_horizontal = 2
 theme_override_constants/separation = 25
@@ -262,35 +281,30 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
 
 [node name="Player2" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
 
 [node name="Player3" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
 
 [node name="Player4" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
 
 [node name="Player5" type="Label" parent="PlayerUI/Scoreboard/TeamRed/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
 
 [node name="TeamBlue" type="Label" parent="PlayerUI/Scoreboard"]
 layout_mode = 1
@@ -305,14 +319,27 @@ grow_horizontal = 0
 text = "Team Blue"
 label_settings = SubResource("LabelSettings_m05ps")
 
+[node name="Kills Deaths" type="Label" parent="PlayerUI/Scoreboard/TeamBlue"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -76.0
+offset_top = 35.0
+offset_right = 73.0
+offset_bottom = 54.0
+grow_vertical = 0
+text = "Kills / Deaths"
+label_settings = SubResource("LabelSettings_fvilj")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/Scoreboard/TeamBlue"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -39.5
+offset_left = 15.5
 offset_top = 88.0
-offset_right = 39.5
+offset_right = 94.5
 offset_bottom = 283.0
 grow_horizontal = 2
 theme_override_constants/separation = 25
@@ -322,32 +349,84 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Player7" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Player8" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Player9" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="Player10" type="Label" parent="PlayerUI/Scoreboard/TeamBlue/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "player"
 label_settings = SubResource("LabelSettings_5d4lw")
-horizontal_alignment = 1
+horizontal_alignment = 2
+
+[node name="Reticle" type="CenterContainer" parent="." node_paths=PackedStringArray("RETICLE_LINES")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_rh4ca")
+RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+
+[node name="Top" type="Line2D" parent="Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="DebugPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("vBoxContainer")]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+script = ExtResource("3_1hndn")
+vBoxContainer = NodePath("MarginContainer/VBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_hpwy4")
+}

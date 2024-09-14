@@ -21,7 +21,7 @@ public partial class Reticle : CenterContainer
 
     public override void _Process(double delta)
     {
-        adjust_reticle_lines();
+        //adjust_reticle_lines();
     }
 
     public override void _Draw()
@@ -31,6 +31,7 @@ public partial class Reticle : CenterContainer
 
 	private void adjust_reticle_lines()
 	{
+		if (PLAYER_CONTROLLER == null) return; // problem after player death
 		float speed = Vector3.Zero.DistanceTo(PLAYER_CONTROLLER.GetRealVelocity());
 
 		// Adjust Reticle Line Position

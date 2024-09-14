@@ -6,13 +6,21 @@ public partial class PlayerUI : CanvasLayer
 {
     private Dictionary<StringName, Control> _uiElements;
     private Panel scoreboard;
+    private TextureRect bloodSplatter;
+    private AnimationPlayer animationPlayer;
 
     public override void _Ready()
     {
         // Initialize the dictionary to hold UI elements
         _uiElements = new Dictionary<StringName, Control>();
 
-        // Example: Adding a health label to the UI elements
+        //Set Animation Player
+        animationPlayer = GetNode<AnimationPlayer>("%AnimationPlayer");
+
+        // Get The Blood Splatter
+        bloodSplatter = GetNode<TextureRect>("%BloodSplatter");
+
+        // Add UI Elements
         AddUIElement("Health", GetNode<Label>("%Health"));
         AddUIElement("Ammo", GetNode<Label>("%Ammo"));
         AddUIElement("Interact", GetNode<Label>("%Interact"));
@@ -35,19 +43,19 @@ public partial class PlayerUI : CanvasLayer
         {
             scoreboard.Visible = true;
             int redplayercount = 1;
-            int blueplayercount = 1;
+            int blueplayercount = 6;
             if (scoreboard.Visible)
             {
                 foreach(var player in Globals.PLAYERS)
                 {
                     if(player.player_team == Team.Red)
                     {
-                        GetNode<Label>("%Player" + redplayercount.ToString()).Text = player.Name;
+                        GetNode<Label>("%Player" + redplayercount.ToString()).Text = player.Name + "           " + player.kills + "   /   " + player.deaths;
                         redplayercount++;
                     }
                     if(player.player_team == Team.Blue)
                     {
-                        GetNode<Label>("%Player" + blueplayercount.ToString()).Text = player.Name;
+                        GetNode<Label>("%Player" + blueplayercount.ToString()).Text = player.kills + "   /   " + player.deaths + "           " + player.Name;
                         blueplayercount++;                        
                     }
                 }
@@ -116,4 +124,10 @@ public partial class PlayerUI : CanvasLayer
             return null;
         }
     }
+
+    public void ShowBloodSplatter()
+    {
+        animationPlayer.Play("BloodSplatter");
+    }
 }
+ 

@@ -41,7 +41,7 @@ public partial class PlayerMovementState : State
 		{
             weapon.DropWeapon();
         }
-        if (Input.IsActionPressed("attack"))
+        if (Input.IsActionPressed("attack") && Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			weapon._attack(delta);
 		}
@@ -49,14 +49,18 @@ public partial class PlayerMovementState : State
 		{
             weapon.shooting = false;
 		}
-        if (Input.IsActionJustPressed("interact"))
+        if (Input.IsActionJustPressed("interact") && Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			player.interact();
 		}
-        if (Input.IsActionJustPressed("reload"))
+        if (Input.IsActionJustPressed("reload") && Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			weapon._reload();
 		}
+        if (Input.IsActionJustPressed("buy_menu"))
+        {
+            Globals.PlayerUI.playerUI().buy_menu();
+        }
     }
 
     public void update_debug()

@@ -50,6 +50,7 @@ public partial class Player : CharacterBody3D
     public Godot.Collections.Dictionary weapon_raycast_result;
     public Godot.Collections.Dictionary interact_raycast_result;
     public ImmediateMesh raycast_mesh;  // Mesh for the raycast line
+    public Vector3 raycast_bullet_end;
 
     // Interaction
     public Node current_interactable;
@@ -166,7 +167,7 @@ public partial class Player : CharacterBody3D
             // Handle mouse click to recapture the mouse
             if (@event is InputEventMouseButton eventMouseButton)
             {
-                if (eventMouseButton.Pressed && Input.MouseMode == Input.MouseModeEnum.Visible)
+                if (eventMouseButton.Pressed && Input.MouseMode == Input.MouseModeEnum.Visible && !Globals.PlayerUI.playerUI().is_buymenu_open())
                 {
                     // Capture the mouse again when clicking inside the window
                     Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -198,7 +199,7 @@ public partial class Player : CharacterBody3D
         player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_CONTROLLER.WEAPON_TYPE.current_ammo + " / " + WEAPON_CONTROLLER.WEAPON_TYPE.magazine_capacity);
     }
 
-    public Godot.Collections.Dictionary shoot_raycast(int distance, float raycast_offset_x = 0.0f, float raycast_offset_y = 0.0f, bool debug_raycost_dot = false)
+    public Godot.Collections.Dictionary shoot_raycast(int distance, float raycast_offset_x = 0.0f, float raycast_offset_y = 0.0f, bool weapon_shooting = false)
     {
         space_state = _camera.GetWorld3D().DirectSpaceState;
         
@@ -223,6 +224,11 @@ public partial class Player : CharacterBody3D
 
         // Gives us information of what collided
         Godot.Collections.Dictionary result = space_state.IntersectRay(query);
+
+        if (weapon_shooting)
+        {
+            raycast_bullet_end = end;
+        }
 
         return result;
     }
@@ -260,12 +266,15 @@ public partial class Player : CharacterBody3D
         }
 
         // Shoot weapon raycast
-        weapon_raycast_result = shoot_raycast(1000, WEAPON_CONTROLLER.raycast_offset.X, WEAPON_CONTROLLER.raycast_offset.Y); //Regular distance for Weapon raycast
+        weapon_raycast_result = shoot_raycast(1000, WEAPON_CONTROLLER.raycast_offset.X, WEAPON_CONTROLLER.raycast_offset.Y, true); //Regular distance for Weapon raycast
 
-        if (weapon_raycast_result.ContainsKey("position"))
+        if (Globals.PlayerUI.debug().Visible) // red dot for debugging purposes
         {
-            Vector3 raycast_end_position = (Vector3)weapon_raycast_result["position"];
-            DrawRaycastDot(raycast_end_position); 
+            if (weapon_raycast_result.ContainsKey("position"))
+            {
+                Vector3 raycast_end_position = (Vector3)weapon_raycast_result["position"];
+                DrawRaycastDot(raycast_end_position);
+            }
         }
     }
 

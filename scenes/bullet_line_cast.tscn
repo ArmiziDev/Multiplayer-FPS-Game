@@ -1,6 +1,39 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4lc1kdhwqeu8"]
+[gd_scene load_steps=10 format=3 uid="uid://b4lc1kdhwqeu8"]
 
 [ext_resource type="Script" path="res://scripts/BulletLineCast.cs" id="1_dvcnd"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kpfh8"]
+direction = Vector3(0, 0, 1)
+spread = 140.422
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_4idvy"]
+offsets = PackedFloat32Array(0.114035, 0.350877, 0.789474)
+colors = PackedColorArray(1, 1, 1, 0, 0.867647, 0.867647, 0.867647, 0.132353, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o7oxh"]
+gradient = SubResource("Gradient_4idvy")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ugit6"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(1, 1, 1, 0.133333)
+albedo_texture = SubResource("GradientTexture2D_o7oxh")
+albedo_texture_msdf = true
+roughness = 0.0
+emission_enabled = true
+emission_energy_multiplier = 2.0
+emission_texture = SubResource("GradientTexture2D_o7oxh")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_wt44f"]
+material = SubResource("StandardMaterial3D_ugit6")
+size = Vector2(0.3, 0.3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_38soo"]
 albedo_color = Color(1, 1, 0, 1)
@@ -12,8 +45,19 @@ size = Vector3(0.01, 0.01, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7vesw"]
 size = Vector3(0.01, 0.01, 0.5)
 
-[node name="Node3D" type="Node3D"]
+[node name="bullet_line_cast" type="Node3D"]
 script = ExtResource("1_dvcnd")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.569595, 0.591016, 0.276888, 1)
+omni_range = 0.5
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+amount = 30
+lifetime = 0.5
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_kpfh8")
+draw_pass_1 = SubResource("QuadMesh_wt44f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_sy3hp")

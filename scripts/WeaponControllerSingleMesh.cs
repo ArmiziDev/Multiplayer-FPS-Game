@@ -450,14 +450,26 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             if (player.weapon_raycast_result.ContainsKey("position") && player.weapon_raycast_result.ContainsKey("normal"))
             {
-                networked_bullet_linecast(GlobalTransform, (Vector3)player.weapon_raycast_result["position"]);
                 if (Multiplayer.IsServer())
                 {
                     networked_bullet_hole((Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
+                    networked_bullet_linecast(GlobalTransform, muzzle_flash.GlobalTransform.Origin, (Vector3)player.weapon_raycast_result["position"]);
                 }
                 else
                 {
                     RpcId(1, nameof(networked_bullet_hole), (Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
+                    RpcId(1, nameof(networked_bullet_linecast), GlobalTransform, muzzle_flash.GlobalTransform.Origin, (Vector3)player.weapon_raycast_result["position"]);
+                }
+            }
+            else
+            {
+                if (Multiplayer.IsServer())
+                {
+                    networked_bullet_linecast(GlobalTransform, muzzle_flash.GlobalTransform.Origin, player.raycast_bullet_end);
+                }
+                else
+                {
+                    RpcId(1, nameof(networked_bullet_linecast), GlobalTransform, muzzle_flash.GlobalTransform.Origin, player.raycast_bullet_end);
                 }
             }
 
@@ -557,18 +569,35 @@ public partial class WeaponControllerSingleMesh : Node3D
         }
     }
 
-    private void networked_bullet_linecast(Transform3D playerGlobalTransform, Vector3 target_position)
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    private void networked_bullet_linecast(Transform3D playerGlobalTransform, Vector3 muzzleFlashOrigin, Vector3 target_position)
     {
+        if (Multiplayer.IsServer())
+        {
+            Rpc(nameof(networked_bullet_linecast), playerGlobalTransform, muzzleFlashOrigin, target_position);
+        }
+
         BulletLineCast bullet = raycast_bullet_linecast.Instantiate<BulletLineCast>();
         GetTree().Root.AddChild(bullet);
 
         // Align the bullet's rotation with the player's rotation
         bullet.GlobalTransform = playerGlobalTransform;  // Copy the player's global transform to the bullet
 
+        // Calculate the forward direction from the player's transform
+        Vector3 forwardDirection = -playerGlobalTransform.Basis.Z;  // Forward direction (negative Z axis)
+
+        // Get the muzzle flash position relative to the world
+        Vector3 muzzleFlashPositionWorld = muzzleFlashOrigin;
+
+        // Add a small offset to the muzzle flash position in the forward direction
+        float offsetDistance = 0.5f;  // Adjust this value based on how far ahead of the muzzle_flash you want the bullet to start
+        Vector3 startPosition = muzzleFlashPositionWorld + forwardDirection * offsetDistance;  // Start just ahead of the muzzle flash
+
         // Set the start and target positions
-        Vector3 startPosition = playerGlobalTransform.Origin;  // Start at the player's position
         bullet.SetTarget(startPosition, target_position);  // Pass start and target positions
     }
+
+
 
     private float GetRandomFloatInRange(float min, float max)
     {

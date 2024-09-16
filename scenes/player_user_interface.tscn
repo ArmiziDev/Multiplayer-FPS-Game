@@ -175,6 +175,10 @@ modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -6.0
+offset_right = -26.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_rb2xf")
@@ -227,6 +231,7 @@ label_settings = SubResource("LabelSettings_lbvbf")
 
 [node name="Interact" type="Label" parent="PlayerUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -255,6 +260,7 @@ text = "$ 999"
 label_settings = SubResource("LabelSettings_m1b6s")
 
 [node name="Loadout" type="Control" parent="PlayerUI"]
+visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -296,6 +302,7 @@ label_settings = SubResource("LabelSettings_s5k0j")
 
 [node name="Scoreboard" type="Panel" parent="PlayerUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -410,6 +417,187 @@ unique_name_in_owner = true
 layout_mode = 2
 label_settings = SubResource("LabelSettings_5d4lw")
 horizontal_alignment = 2
+
+[node name="BuyMenu" type="Control" parent="PlayerUI"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PlayerUI/BuyMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -409.0
+offset_top = -226.0
+offset_right = 404.0
+offset_bottom = 219.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pistols" type="HBoxContainer" parent="PlayerUI/BuyMenu/Panel"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 17.0
+offset_right = 256.0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/BuyMenu/Panel/Pistols"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Pistol1" type="Button" parent="PlayerUI/BuyMenu/Panel/Pistols/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Pistol"
+
+[node name="Pistol2" type="Button" parent="PlayerUI/BuyMenu/Panel/Pistols/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Pistol"
+
+[node name="Pistol3" type="Button" parent="PlayerUI/BuyMenu/Panel/Pistols/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Pistol"
+
+[node name="Pistol4" type="Button" parent="PlayerUI/BuyMenu/Panel/Pistols/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Pistol"
+
+[node name="Pistol5" type="Button" parent="PlayerUI/BuyMenu/Panel/Pistols/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Pistol"
+
+[node name="Rifles" type="HBoxContainer" parent="PlayerUI/BuyMenu/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -126.5
+offset_top = 16.0
+offset_right = 136.5
+offset_bottom = 443.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/BuyMenu/Panel/Rifles"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Rifle1" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Rifle"
+
+[node name="Rifle2" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Rifle"
+
+[node name="Rifle3" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Rifle"
+
+[node name="Rifle4" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Rifle"
+
+[node name="Rifle5" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "Rifle"
+
+[node name="SMGS" type="HBoxContainer" parent="PlayerUI/BuyMenu/Panel"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -252.0
+offset_top = 18.0
+offset_right = -16.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/BuyMenu/Panel/SMGS"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+
+[node name="Pistol1" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "SMG"
+
+[node name="Pistol2" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "SMG"
+
+[node name="Pistol3" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "SMG"
+
+[node name="Pistol4" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "SMG"
+
+[node name="Pistol5" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("5_6yovh")
+theme_override_font_sizes/font_size = 22
+text = "SMG"
 
 [node name="Reticle" type="CenterContainer" parent="." node_paths=PackedStringArray("RETICLE_LINES")]
 layout_mode = 1

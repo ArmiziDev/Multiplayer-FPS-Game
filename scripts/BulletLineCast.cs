@@ -3,16 +3,12 @@ using System;
 
 public partial class BulletLineCast : Node3D
 {
-    [Export] public float speed = 100.0f;  // Speed at which the bullet moves
+    [Export] public float speed = 200.0f;  // Speed at which the bullet moves
     public Vector3 startPosition;  // Bullet's starting position
     public Vector3 targetPosition;  // Bullet's ending (target) position
 
     private Vector3 direction;  // The direction from start to end
     private float totalDistance;  // Total distance to travel
-
-    public override void _Ready()
-    {
-    }
 
     public void SetTarget(Vector3 start, Vector3 target)
     {
@@ -26,6 +22,9 @@ public partial class BulletLineCast : Node3D
 
         // Set the bullet's initial position
         Position = startPosition;
+
+        // Rotate the bullet to face the target
+        LookAt(targetPosition, Vector3.Up);  // Make the bullet face the targetPosition
     }
 
     public override void _Process(double delta)
@@ -44,6 +43,7 @@ public partial class BulletLineCast : Node3D
     public void _on_area_3d_body_entered(Node3D node)
     {
         // Optionally free the bullet on collision
-        QueueFree();
+        Globals.PlayerUI.debug().debug_message("Linecast Entered body: " + node.Name);
+        //QueueFree();
     }
 }

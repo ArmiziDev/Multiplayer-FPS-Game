@@ -8,6 +8,7 @@ public partial class PlayerUI : CanvasLayer
     private Panel scoreboard;
     private TextureRect bloodSplatter;
     private AnimationPlayer animationPlayer;
+    private Control buyMenu;
 
     private VBoxContainer PlayerKillUIContainer;
     [Export] private PackedScene player_kill_ui;
@@ -45,6 +46,9 @@ public partial class PlayerUI : CanvasLayer
 
         scoreboard = GetNode<Panel>("%Scoreboard");
         scoreboard.Visible = false;
+
+        buyMenu = GetNode<Control>("%BuyMenu");
+        buyMenu.Visible = false;
     }
 
     public override void _Input(InputEvent @event)
@@ -66,8 +70,23 @@ public partial class PlayerUI : CanvasLayer
         if (@event.IsActionReleased("scoreboard"))
         {
             scoreboard.Visible = false;
-        }        
+        }
     }
+
+    public void buy_menu()
+    {
+        buyMenu.Visible = !buyMenu.Visible;
+        if (buyMenu.Visible)
+        {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+        else
+        {
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
+    }
+
+    public bool is_buymenu_open() { return buyMenu.Visible; }
 
     public void show_regular_scoreboard()
     {

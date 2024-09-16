@@ -59,7 +59,7 @@ public partial class MainMenu : Control
     {
         PrintMessage("CONNECTED TO SERVER");
 		// Sends specifically only to server (host)
-		RpcId(1, nameof(sendPlayerInformation), Multiplayer.GetUniqueId(), name_of_player);
+		RpcId(1, nameof(sendPlayerInformation), Multiplayer.GetUniqueId(), name_of_player, (int)Team.Red);
 		PrintMessage("Connected With Username: " + name_of_player);
     }
 
@@ -96,14 +96,12 @@ public partial class MainMenu : Control
         GetNode<Label>("%GameModeDisplay").Show();
         StartLobbyMenu();
 
-
-
 		peer.Host.Compress(compressionMode);
 
 		Multiplayer.MultiplayerPeer = peer; // making urself host
 		PrintMessage("WAITING FOR PLAYERS!");
 
-		sendPlayerInformation(1, name_of_player); // sending player information as host because host is player
+		sendPlayerInformation(1, name_of_player, (int)Team.Red); // sending player information as host because host is player
 		UpdateLobbyMenu();
 	}
 
@@ -303,7 +301,6 @@ public partial class MainMenu : Control
 		StartMainMenu();
     }
 
-
     private void _on_start_game_button_down()
 	{
 		Rpc(nameof(startGame));
@@ -367,6 +364,7 @@ public partial class MainMenu : Control
 			// If we're the server, broadcast this update to all other clients
 			if (Multiplayer.IsServer())
 			{
+				UpdateLobbyMenu();
 				Rpc(nameof(updatePlayerInformation), player.server_id, player.Name, (int)player.player_team, health);
 			}
 			
@@ -379,10 +377,8 @@ public partial class MainMenu : Control
 		}
 	}
 
-	
-
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
-	private void sendPlayerInformation(int id, string name)
+	private void sendPlayerInformation(int id, string name, int team)
 	{
 		// Check if the player already exists in the list based on Name or server_id
 		if (!Globals.PLAYERS.Any<PlayerInfo>(player => player.server_id == id))
@@ -396,7 +392,7 @@ public partial class MainMenu : Control
 				health = 100,
 				money = 700,
 
-				player_team = Team.Red,
+				player_team = (Team)team,
 
 				kills = 0,
 				deaths = 0,
@@ -410,22 +406,16 @@ public partial class MainMenu : Control
 				Globals.localPlayerInfo = new_player;
 			}
 		}
-		else
-		{
-			// If it is alreay in list, we need to just update the information
-		}
-
 		if (Multiplayer.IsServer())
 		{
             Rpc(nameof(UpdateGameMode), Globals.game_mode);
             foreach (var player in Globals.PLAYERS)
 			{
-				Rpc(nameof(sendPlayerInformation), player.server_id, player.Name);
+				Rpc(nameof(sendPlayerInformation), player.server_id, player.Name, (int)player.player_team);
 			}
 		}
         Rpc(nameof(UpdateLobbyMenu));
 	}
-
 
 	private void _on_enter_button_down()
 	{

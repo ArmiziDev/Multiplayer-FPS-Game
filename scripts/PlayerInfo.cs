@@ -13,4 +13,7 @@ public partial class PlayerInfo : Node
 	public int assists;
 	//
 	public int money;
+
+	// Loadout
+	public StringName[] loadout = new StringName[3];
 }

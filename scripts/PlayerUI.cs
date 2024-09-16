@@ -9,8 +9,11 @@ public partial class PlayerUI : CanvasLayer
     private TextureRect bloodSplatter;
     private AnimationPlayer animationPlayer;
 
+    private VBoxContainer PlayerKillUIContainer;
+    [Export] private PackedScene player_kill_ui;
+
     public override void _Ready()
-    {
+    { 
         // Initialize the dictionary to hold UI elements
         _uiElements = new Dictionary<StringName, Control>();
 
@@ -19,6 +22,9 @@ public partial class PlayerUI : CanvasLayer
 
         // Get The Blood Splatter
         bloodSplatter = GetNode<TextureRect>("%BloodSplatter");
+
+        // Set Kill UI Container
+        PlayerKillUIContainer = GetNode<VBoxContainer>("PlayerKillUIContainer");
 
         // Add UI Elements
         AddUIElement("Health", GetNode<Label>("%Health"));
@@ -32,6 +38,10 @@ public partial class PlayerUI : CanvasLayer
         AddUIElement("Loadout1", GetNode<Label>("%Loadout1"));
         AddUIElement("Loadout2", GetNode<Label>("%Loadout2"));
         AddUIElement("Loadout3", GetNode<Label>("%Loadout3"));
+
+        // Score
+        AddUIElement("RedTeamScore", GetNode<Label>("%RedTeamScore"));
+        AddUIElement("BlueTeamScore", GetNode<Label>("%BlueTeamScore"));
 
         scoreboard = GetNode<Panel>("%Scoreboard");
         scoreboard.Visible = false;
@@ -127,13 +137,13 @@ public partial class PlayerUI : CanvasLayer
                     break;
                 // Add more cases for different UI elements as needed
                 default:
-                    //Globals.debug.debug_err($"Unsupported UI element type for {elementName}.");
+                    Globals.PlayerUI.debug().debug_err($"Unsupported UI element type for {elementName}.");
                     break;
             }
         }
         else
         {
-            //Globals.debug.debug_err($"UI element {elementName} not found.");
+            Globals.PlayerUI.debug().debug_err($"UI element {elementName} not found.");
         }
     }
 
@@ -157,6 +167,15 @@ public partial class PlayerUI : CanvasLayer
             //Globals.debug.debug_err($"UI element {elementName} not found.");
             return null;
         }
+    }
+
+    public void AddPlayerKill(PlayerInfo Killer, PlayerInfo Killed)
+    {
+        // Instantiate the player_kill_ui scene
+        PlayerKillUi killUIInstance = (PlayerKillUi)player_kill_ui.Instantiate<Panel>();
+        PlayerKillUIContainer.AddChild(killUIInstance);
+
+        killUIInstance.SetPlayerKillUI(Killer, Killed);
     }
 
     public void ShowBloodSplatter()

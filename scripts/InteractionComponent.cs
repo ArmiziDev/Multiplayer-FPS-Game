@@ -60,7 +60,7 @@ public partial class InteractionComponent : Node
 		}
 		else
 		{
-			//Globals.debug.debug_err("Parent Has No Pickup Function");
+			Globals.PlayerUI?.debug().debug_err("Parent Has No Pickup Function");
 		}
 	}
 

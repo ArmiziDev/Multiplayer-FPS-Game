@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public partial class GameManager : Node3D
 {
+    double calculate_ping = 0;
+    bool check_ping = false;
+
+    int red_team_score = 0;
+    int blue_team_score = 0;
+
     private List<Player> m_players = new List<Player>();
 
     private int current_spectator = 0;
@@ -15,9 +21,20 @@ public partial class GameManager : Node3D
     public override void _Ready()
     {
         Globals.gameManager = this;
+
+        PreloadWeapons();
         SpawnPlayers();
+
+        // Updating Game Manager UI Elements
+        Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", red_team_score);
+        Globals.PlayerUI.playerUI().UpdateUI("BlueTeamScore", blue_team_score);
     }
 
+    private void PreloadWeapons()
+    {
+        Globals.weaponDictionary["Hand"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
+        Globals.weaponDictionary["AR-15"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
+    }
 
     public override void _Input(InputEvent @event)
     {
@@ -63,6 +80,56 @@ public partial class GameManager : Node3D
         }
     }
 
+    public override void _Process(double delta)
+    {
+        if (check_ping)
+        {
+            calculate_ping += delta;
+        }
+        else
+        {
+            Globals.PlayerUI?.debug().update_debug_property("Ping", calculate_ping);
+            calculate_ping = 0;
+        }
+    }
+
+    private void _on_check_ping_timeout()
+    {
+        check_ping = true;
+        RpcId(1, nameof(_PingServer), Multiplayer.GetUniqueId());
+    }
+
+    public void Round5v5End(Team winning_team)
+    {
+        switch (winning_team)
+        {
+            case Team.Red:
+                red_team_score++;
+                Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", red_team_score);
+                break;
+            case Team.Blue:
+                blue_team_score++;
+                Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", blue_team_score);
+                break;
+        }
+
+        foreach (Player player in m_players)
+        {
+            player.ResetAttributes();
+            EnablePlayer(player);
+
+            switch (player.player_info.player_team)
+            {
+                case Team.Red:
+                    player.Position = spawnPoints.GetRedTeamSpawnPoint().Position;
+                    break;
+                case Team.Blue:
+                    player.Position = spawnPoints.GetBlueTeamSpawnPoint().Position;
+                    break;
+            }
+        }
+    }
+
     public void HandlePlayerDead(Player player)
     {
         switch (Globals.game_mode)
@@ -70,6 +137,7 @@ public partial class GameManager : Node3D
             case 0: // 5v5
                 DisablePlayer(player);
                 SpectateTeamate();
+                CheckForRoundEnd();
                 break;
             case 1: // Free For All
                 player.ResetAttributes();
@@ -159,6 +227,11 @@ public partial class GameManager : Node3D
         }
 
         AddChild(currentPlayer);
+
+        // Add Signals
+        currentPlayer.playerNetworkingCalls.PlayerDropWeapon += NetworkPlayerDropWeapon;
+        currentPlayer.playerNetworkingCalls.PlayerShoot += NetworkPlayerShoot;
+        currentPlayer.playerNetworkingCalls.PlayerUpdateLoadout += NetworkUpdateLoadout;
     }
 
     public void SpawnPlayers()
@@ -178,7 +251,65 @@ public partial class GameManager : Node3D
             SpawnPlayer(player);
         }
     }
+    public void CheckForRoundEnd()
+    {
+        if (AreAllPlayersDead(Team.Red))
+        {
+            Round5v5End(Team.Blue); // Blue team wins
+        }
+        else if (AreAllPlayersDead(Team.Blue))
+        {
+            Round5v5End(Team.Red); // Red team wins
+        }
+    }
+    public bool AreAllPlayersDead(Team team)
+    {
+        // Loop through all players and check if any from the specified team are still alive
+        foreach (Player player in m_players)
+        {
+            if (player.player_info.player_team == team && player.player_info.health > 0)
+            {
+                return false; // There's at least one player alive in this team
+            }
+        }
+        return true; // All players from the specified team are dead
+    }
+
+    public void NetworkPlayerDropWeapon(int loadout_index, PlayerInfo player)
+    {
+        Player reciever_player = m_players.Find(p => p.player_info.server_id == player.server_id);
+        reciever_player.WEAPON_CONTROLLER.DropCurrentWeapon(loadout_index);
+    }
+
+    public void NetworkPlayerShoot(PlayerInfo shooter_player)
+    {
+        Player reciever_player = m_players.Find(p => p.player_info.server_id == shooter_player.server_id);
+        reciever_player.WEAPON_CONTROLLER._visual_weapon_fire();
+    }
+
+    public void NetworkUpdateLoadout(PlayerInfo player, int current_loadout_index)
+    {
+        Player current_player = m_players.Find(p => p.player_info.server_id == player.server_id);
+        current_player.WEAPON_CONTROLLER.current_loadout_index = current_loadout_index;
+        current_player.WEAPON_CONTROLLER.LoadWeapon(); 
+
+        if (player.server_id == Globals.localPlayerInfo.server_id)
+        {
+            Globals.PlayerUI.playerUI().UpdateUI("Loadout1", "1: " + player.loadout[0]);
+            Globals.PlayerUI.playerUI().UpdateUI("Loadout2", "2: " + player.loadout[1]);
+            Globals.PlayerUI.playerUI().UpdateUI("Loadout3", "3: " + player.loadout[2]);
+        }
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    public void _PingServer(int sender_id)
+    {
+        RpcId(sender_id, nameof(_PingClient));
+    }
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    public void _PingClient()
+    {
+        //Globals.PlayerUI.debug().debug_message("Pinged From Server");
+        check_ping = false;
+    }
 }
-
-
-

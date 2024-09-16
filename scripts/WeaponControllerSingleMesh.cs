@@ -5,9 +5,6 @@ using System;
 [Tool]
 public partial class WeaponControllerSingleMesh : Node3D
 {
-    // Dictionary to store preloaded weapons
-    private Godot.Collections.Array<Weapons> loadout = new Godot.Collections.Array<Weapons>();
-
     [Export]
     public Weapons WEAPON_TYPE { get; set; }
     
@@ -25,7 +22,9 @@ public partial class WeaponControllerSingleMesh : Node3D
     public bool can_shoot = true;
     public bool shooting = false;
     public bool reloading = false;
-    public int current_loadout;
+    public int StringName;
+
+    public int current_loadout_index;
 
     private Vector2 mouse_movement;
     private float random_sway_x;
@@ -50,10 +49,6 @@ public partial class WeaponControllerSingleMesh : Node3D
     //Signals
     [Signal] public delegate void WeaponFiredEventHandler();
 
-    // Networking
-    [Export] public bool network_shooting = false;
-    [Export] public int network_loadout;
-
     public void InitializeWeaponController(Player player)
     {
         this.player = player;
@@ -70,14 +65,13 @@ public partial class WeaponControllerSingleMesh : Node3D
 
         random = new Random();
 
-        PreloadWeapons();
+        LoadLoadout();
         InitializeComponents();
     }
 
     public void _on_PLAYER_READY()
     {
-        current_loadout = 0;
-        network_loadout = 0;
+        current_loadout_index = 0;
         LoadWeapon();
     }
 
@@ -86,71 +80,41 @@ public partial class WeaponControllerSingleMesh : Node3D
         weapon_recoil_physics.InitializeWeaponRecoilPhysics(this);
         muzzle_flash.InitializeMuzzleFlash(this);
     }
-    private void PreloadWeapons()
+    private void LoadLoadout()
     {
-        Globals.weaponDictionary["EMPTY"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
-        Globals.weaponDictionary["AR15"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
+        player.player_info.loadout[0] = "AR-15";
+        player.player_info.loadout[1] = "Hand";
+        player.player_info.loadout[2] = "Hand";
 
-        loadout.Add(Globals.weaponDictionary["AR15"]); // Primary Weapon
-        loadout.Add(Globals.weaponDictionary["EMPTY"]); // Secondary Weapon
-        loadout.Add(Globals.weaponDictionary["EMPTY"]); // Third Weapon
-
-        // Initialize Sounds
-        /*
-        foreach (var kvp in weaponDictionary)
-        {
-            Weapons weapon = kvp.Value;
-
-            if (weapon.FireSoundPath != null)
-            {
-                weapon.FireSound = GetNode<AudioStreamPlayer3D>(weapon.FireSoundPath);
-            }
-            else
-            {
-                //Globals.debug.debug_err(weapon.name + ": No Fire Sound Path");
-            }
-
-            if (weapon.ReloadSoundPath != null)
-            {
-                weapon.ReloadSound = GetNode<AudioStreamPlayer3D>(weapon.ReloadSoundPath);
-            }
-            else
-            {
-                //Globals.debug.debug_err(weapon.name + ": No Reload Sound Path");
-            }
-        }
-        */
+        WEAPON_TYPE = Globals.weaponDictionary["Hand"];
     }
-
     public override void _Process(double delta)
     {
-        SyncNetworkingComponents();
         ResetRecoilOffset((float)delta);
 
         raycast_offset = recoil_offset;
         raycast_offset += recoil_innacuracy_spread;
     }
-
     public override void _Input(InputEvent @event)
     {
         if (player.multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
-        if (@event.IsActionPressed("primary_weapon") && loadout.Count > 0 && loadout[0] != null)
+        if (@event.IsActionPressed("primary_weapon") && current_loadout_index != 0)
         {
-            current_loadout = 0; // changing for your own player for only you to see
-            network_loadout = 0; // changing for networked players for everyone to see
+            current_loadout_index = 0;
             LoadWeapon();
+            player.playerNetworkingCalls.UpdateLoadout(player);
         }
-        if (@event.IsActionPressed("secondary_weapon") && loadout.Count > 1 && loadout[1] != null)
+        if (@event.IsActionPressed("secondary_weapon") && current_loadout_index != 1)
         {
-            current_loadout = 1;
-            network_loadout = 1;
+            current_loadout_index = 1;
             LoadWeapon();
+            player.playerNetworkingCalls.UpdateLoadout(player);
         }
-        if (@event.IsActionPressed("tertiary_weapon") && loadout.Count > 2 && loadout[2] != null)
+        if (@event.IsActionPressed("tertiary_weapon") && current_loadout_index != 2)
         {
-            current_loadout = 2;
-            network_loadout = 2;
+            current_loadout_index = 2;
             LoadWeapon();
+            player.playerNetworkingCalls.UpdateLoadout(player);
         }
         if (@event is InputEventMouseMotion eventMouseMotion)
         {
@@ -160,10 +124,6 @@ public partial class WeaponControllerSingleMesh : Node3D
 
     public void OnWeaponPickedUp(Weapons _weapon)
     {
-        //Globals.debug.debug_message("Weapon was picked up: " + _weapon.name);
-        //Globals.debug.debug_message("Weapon Type: " + _weapon.weapon_type);
-        //Globals.debug.debug_message("Gun Class: " + _weapon.gun_class);
-
         switch(_weapon.weapon_type)
         {
             case (Weapons.WeaponType.Gun):
@@ -171,12 +131,11 @@ public partial class WeaponControllerSingleMesh : Node3D
                 switch (_weapon.gun_class)
                 {
                     case (Weapons.GunClass.Pistol): // Secondary
-                        if (loadout[1].weapon_type != Weapons.WeaponType.Empty)
+                        if (player.player_info.loadout[1] != "Hand")
                         {
-                            DropCurrentWeapon();
+                            DropCurrentWeapon(current_loadout_index);
                         }
-                        current_loadout = 1;
-                        loadout[current_loadout] = _weapon;
+                        player.player_info.loadout[1] = _weapon.name;
                         LoadWeapon();
                         break;
                     case (Weapons.GunClass.None): // Error
@@ -184,38 +143,41 @@ public partial class WeaponControllerSingleMesh : Node3D
                         break;
                     default: // First Gun In Loadout (Rifle, SMG, Sniper, Shotgun)
                         GD.Print("default hit");
-                        if (loadout[0].weapon_type != Weapons.WeaponType.Empty)
+                        if (player.player_info.loadout[0] != "Hand")
                         {
-                            DropCurrentWeapon();
+                            DropCurrentWeapon(current_loadout_index);
                         }
-                        current_loadout = 0;
-                        loadout[current_loadout] = _weapon;
+                        player.player_info.loadout[0] = _weapon.name;
                         LoadWeapon();
                         break;
                 }
-
                 break;
             case (Weapons.WeaponType.Melee):
                 break;
             case (Weapons.WeaponType.Utility):
                 break;
         }
+        player.playerNetworkingCalls.UpdateLoadout(player);
     }
 
-    public void DropCurrentWeapon()
+    public void DropWeapon()
+    {
+        player.playerNetworkingCalls.DropWeapon(player);
+    }
+
+    public void DropCurrentWeapon(int loadout_index)
     {
         if (WEAPON_TYPE == null) return;
         if (WEAPON_TYPE.weapon_type == Weapons.WeaponType.Empty) return;
 
         // Load the weapon physics body scene
         WeaponPhysicsBody WeaponBody = (WeaponPhysicsBody)GD.Load<PackedScene>("res://scenes/weapon_physics_body.tscn").Instantiate();
-        WeaponBody.InitializeWeaponPhysicsBody(this);
-
         // Add the weapon to the root node or world node (the farthest down parent in the scene)
         GetTree().Root.GetChild(0).AddChild(WeaponBody);
 
-        // Set the weapon type
         WeaponBody.SetWeapon(WEAPON_TYPE);
+        WeaponBody.InitializeWeaponPhysicsBody(this);
+        // Set the weapon type
 
         // Set the weapon's global transform to match the player's
         WeaponBody.GlobalTransform = GlobalTransform;
@@ -234,24 +196,27 @@ public partial class WeaponControllerSingleMesh : Node3D
         WeaponBody.RotationDegrees = RotationDegrees;  // Keep the player's current rotation
 
         // Reset the player's current weapon type if needed
-        WEAPON_TYPE = Globals.weaponDictionary["EMPTY"];
-        loadout[current_loadout] = WEAPON_TYPE;
-        LoadWeapon();
+        WEAPON_TYPE = Globals.weaponDictionary["Hand"];
+
+        player.player_info.loadout[current_loadout_index] = WEAPON_TYPE.name;
+
+        player.playerNetworkingCalls.UpdateLoadout(player);
     }
 
-    private void LoadWeapon()
+    public void LoadWeapon()
     {
-        if (loadout[current_loadout] == WEAPON_TYPE) return;
         currently_loading_weapon = true;
+
         PulloutTimer.Stop();
         PulloutTimer.Start();
-        WEAPON_TYPE = loadout[current_loadout]; // Setting weapon to the current loadout when loading a weapon
 
+        WEAPON_TYPE = Globals.weaponDictionary[player.player_info.loadout[current_loadout_index]]; // Setting weapon to the current loadout when loading a weapon
+        
         if (WEAPON_TYPE != null)
         {
             can_shoot = false; // Have to wait for pullout animation
 
-            if (loadout[current_loadout].name == "Hand")
+            if (player.player_info.loadout[current_loadout_index] == "Hand")
             {
                 Position = WEAPON_TYPE.position;
                 RotationDegrees = WEAPON_TYPE.rotation;
@@ -307,9 +272,9 @@ public partial class WeaponControllerSingleMesh : Node3D
             }
 
             // Update Loadout UI
-            player.player_user_interface?.playerUI().UpdateUI("Loadout1", "1: " + loadout[0].name);
-            player.player_user_interface?.playerUI().UpdateUI("Loadout2", "2: " + loadout[1].name);
-            player.player_user_interface?.playerUI().UpdateUI("Loadout3", "3: " + loadout[2].name);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout1", "1: " + player.player_info.loadout[0]);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout2", "2: " + player.player_info.loadout[1]);
+            player.player_user_interface?.playerUI().UpdateUI("Loadout3", "3: " + player.player_info.loadout[2]);
 
             player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
 
@@ -353,7 +318,7 @@ public partial class WeaponControllerSingleMesh : Node3D
 
         while (elapsedTime < pulloutDuration)
         {
-            if (loadout[current_loadout].name == "Hand") break;
+            if (player.player_info.loadout[current_loadout_index] == "Hand") break;
             // Calculate the interpolation factor (0 to 1)
             float t = elapsedTime / pulloutDuration;
 
@@ -456,25 +421,10 @@ public partial class WeaponControllerSingleMesh : Node3D
         return sway_noise.Noise.GetNoise2D(player_position.X, player_position.Y);
     }
 
-    private void SyncNetworkingComponents()
+    public void _visual_weapon_fire()
     {
-        if (WEAPON_TYPE == null) return;
-        if (network_shooting && WEAPON_TYPE.current_ammo > 0)
-        {
-            weapon_recoil_physics.add_recoil();
-            muzzle_flash.add_muzzle_flash();
-
-            network_shooting = false;
-        }
-
-        if(current_loadout != network_loadout)
-        {
-            current_loadout = network_loadout;
-            //Globals.debug.debug_message(player.Name + " Switching Loadout");
-            LoadWeapon();
-            
-        }
-        
+        weapon_recoil_physics.add_recoil();
+        muzzle_flash.add_muzzle_flash();
     }
 
     public void _attack(float delta)
@@ -482,12 +432,12 @@ public partial class WeaponControllerSingleMesh : Node3D
         //raycast_offset = Vector3.Zero;
         if (WEAPON_TYPE != null && WEAPON_TYPE.weapon_type == Weapons.WeaponType.Gun && can_shoot && WEAPON_TYPE.current_ammo > 0)
         {
+            player.playerNetworkingCalls.Shoot(player);
+
             WEAPON_TYPE.current_ammo --;
             player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
 
             shooting = true;
-            network_shooting = true; // once a player shoots, we set this to true so the networked player shooting is triggered, 
-                                     // once networked player shoots, this is set to false and waits for timer to set it back to true
             can_shoot = false;
 
             shoot_timer.Start();
@@ -577,7 +527,6 @@ public partial class WeaponControllerSingleMesh : Node3D
     public void _on_shoot_timer_timeout()
     {
         can_shoot = true;
-        network_shooting = true;
     }
 
     private async void _bullet_hole(Vector3 _pos, Vector3 _normal)

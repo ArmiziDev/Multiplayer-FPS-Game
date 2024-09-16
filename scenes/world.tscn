@@ -51,6 +51,9 @@ script = ExtResource("1_ccgnv")
 playerScene = ExtResource("10_v7wsf")
 spawnPoints = NodePath("SpawnPoints")
 
+[node name="check_ping" type="Timer" parent="."]
+autostart = true
+
 [node name="RecoilTestWall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.70383, 17.5415)
 
@@ -136,3 +139,5 @@ shadow_enabled = true
 directional_shadow_mode = 1
 
 [node name="SpawnPoints" parent="." instance=ExtResource("7_vbwwq")]
+
+[connection signal="timeout" from="check_ping" to="." method="_on_check_ping_timeout"]

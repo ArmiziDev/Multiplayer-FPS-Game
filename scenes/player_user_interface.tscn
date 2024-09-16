@@ -1,12 +1,23 @@
-[gd_scene load_steps=22 format=3 uid="uid://derrt75lmxbw6"]
+[gd_scene load_steps=25 format=3 uid="uid://derrt75lmxbw6"]
 
 [ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="1_rfiqa"]
 [ext_resource type="Script" path="res://scripts/Reticle.cs" id="2_rh4ca"]
 [ext_resource type="Script" path="res://scripts/PlayerUserInterface.cs" id="2_yviua"]
 [ext_resource type="Script" path="res://scripts/Debug.cs" id="3_1hndn"]
 [ext_resource type="Script" path="res://scripts/PlayerUI.cs" id="4_55ufo"]
+[ext_resource type="PackedScene" uid="uid://dkxfg1ng4yqch" path="res://scenes/player_kill_ui.tscn" id="4_l24js"]
 [ext_resource type="Texture2D" uid="uid://dtn0jy62xke16" path="res://assets/textures/blood_splatter_effect.png" id="4_rb2xf"]
 [ext_resource type="FontFile" uid="uid://8ftaq73i0w2x" path="res://assets/fonts/Gameplay.ttf" id="5_6yovh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_md7o3"]
+font = ExtResource("5_6yovh")
+font_size = 32
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_75dks"]
+font = ExtResource("5_6yovh")
+font_size = 32
+font_color = Color(0, 0, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_42ipc"]
 font = ExtResource("5_6yovh")
@@ -25,7 +36,7 @@ font = ExtResource("5_6yovh")
 
 [sub_resource type="LabelSettings" id="LabelSettings_m1b6s"]
 font = ExtResource("5_6yovh")
-font_size = 48
+font_size = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_pxpwm"]
 font = ExtResource("5_6yovh")
@@ -102,6 +113,61 @@ _playerUI = NodePath("PlayerUI")
 
 [node name="PlayerUI" type="CanvasLayer" parent="."]
 script = ExtResource("4_55ufo")
+player_kill_ui = ExtResource("4_l24js")
+
+[node name="TeamScore" type="Panel" parent="PlayerUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="RedTeamScore" type="Label" parent="PlayerUI/TeamScore"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 40.0
+offset_bottom = 11.5
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_md7o3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BlueTeamScore" type="Label" parent="PlayerUI/TeamScore"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "0"
+label_settings = SubResource("LabelSettings_75dks")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerKillUIContainer" type="VBoxContainer" parent="PlayerUI"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -223.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = 319.0
+grow_horizontal = 0
+theme_override_constants/separation = 15
 
 [node name="BloodSplatter" type="TextureRect" parent="PlayerUI"]
 unique_name_in_owner = true
@@ -116,14 +182,17 @@ expand_mode = 1
 
 [node name="DisplayName" type="Label" parent="PlayerUI"]
 unique_name_in_owner = true
-anchors_preset = 5
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -37.0
-offset_top = 20.0
-offset_right = 38.0
-offset_bottom = 49.0
+anchor_bottom = 1.0
+offset_left = -38.0
+offset_top = -46.0
+offset_right = 37.0
+offset_bottom = -17.0
 grow_horizontal = 2
+grow_vertical = 0
 text = "Name"
 label_settings = SubResource("LabelSettings_42ipc")
 
@@ -174,14 +243,14 @@ label_settings = SubResource("LabelSettings_0u1p1")
 
 [node name="Money" type="Label" parent="PlayerUI"]
 unique_name_in_owner = true
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -188.0
-offset_top = 33.0
-offset_right = -44.0
-offset_bottom = 90.0
-grow_horizontal = 0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 45.0
+offset_top = -110.0
+offset_right = 199.0
+offset_bottom = -72.0
+grow_vertical = 0
 text = "$ 999"
 label_settings = SubResource("LabelSettings_m1b6s")
 

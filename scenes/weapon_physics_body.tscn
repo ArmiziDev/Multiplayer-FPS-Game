@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bn7klcq0cq1vt"]
+[gd_scene load_steps=7 format=3 uid="uid://bn7klcq0cq1vt"]
 
 [ext_resource type="Script" path="res://scripts/WeaponPhysicsBody.cs" id="1_jrd1c"]
 [ext_resource type="ArrayMesh" uid="uid://b5522256hdmb" path="res://meshes/weapons/weapon_pack/Rifles/AR15_19/ar15_19.res" id="2_80vov"]
@@ -11,10 +11,16 @@ bounce = 0.6
 [sub_resource type="BoxShape3D" id="BoxShape3D_kwhnt"]
 size = Vector3(0.3, 1.5, 0.3)
 
-[node name="WeaponPhysicsBody" type="RigidBody3D"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mrbqr"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="WeaponPhysicsBody" type="RigidBody3D" node_paths=PackedStringArray("gun_mesh")]
 mass = 0.013
 physics_material_override = SubResource("PhysicsMaterial_fpmmh")
 script = ExtResource("1_jrd1c")
+gun_mesh = NodePath("GunMesh")
 
 [node name="GunMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
@@ -26,3 +32,6 @@ shape = SubResource("BoxShape3D_kwhnt")
 
 [node name="Interactable" parent="." instance=ExtResource("2_tsc2y")]
 interactableType = 0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mrbqr")

@@ -7,7 +7,12 @@ public partial class PlayerUserInterface : Control
 	[Export] public Debug _debug { get; set; }
 	[Export] public PlayerUI _playerUI { get; set; }
 
-	public void update_debug_property(string title, object value)
+    public override void _Ready()
+    {
+        Globals.PlayerUI = this;
+    }
+
+    public void update_debug_property(string title, object value)
 	{
 		_debug.update_debug_property(title, value);
     }

@@ -11,7 +11,6 @@ public enum Team
 public partial class Player : CharacterBody3D
 {
     public PlayerInfo player_info; // for networking
-    [Export] public int health;
     [Export(PropertyHint.Range, "1,100")]
     public float MouseSensitivity { get; set; } = 50.0f;
     [Export] public float default_speed { get; set; } = 5.0f;
@@ -57,7 +56,7 @@ public partial class Player : CharacterBody3D
 
     // Multiplayer
     public MultiplayerSynchronizer multiplayerSynchronizer;
-    [Export] public PlayerNetworkingCalls playerNetworkingCalls { get; set; }
+    public PlayerNetworkingCalls playerNetworkingCalls { get; set; }
 
     [Signal] public delegate void PlayerReadyEventHandler();
 
@@ -77,6 +76,8 @@ public partial class Player : CharacterBody3D
 
     private void InitializeNetworkComponents()
     {
+        playerNetworkingCalls = GetNode<PlayerNetworkingCalls>("%PlayerRpcCalls");
+
         // Set current player as multiplayer authority
         multiplayerSynchronizer = GetNode<MultiplayerSynchronizer>("%MultiplayerSynchronizer");
         multiplayerSynchronizer.SetMultiplayerAuthority(int.Parse(Name));
@@ -85,10 +86,11 @@ public partial class Player : CharacterBody3D
     {
         // Setting current speed to the default_speed set for player and gravity vector
         _speed = default_speed;
-        health = player_info.health;
 
         //Setting player color
-        StandardMaterial3D player_material = (StandardMaterial3D)GetNode<MeshInstance3D>("%Placeholder Mesh").GetActiveMaterial(0);
+        var player_mesh = GetNode<MeshInstance3D>("%Placeholder Mesh");
+        StandardMaterial3D player_material = new StandardMaterial3D();
+
         switch (player_info.player_team)
         {
             case (Team.Red):
@@ -101,6 +103,9 @@ public partial class Player : CharacterBody3D
                 player_material.AlbedoColor = new Color(GD.Randf(), GD.Randf(), GD.Randf());
                 break;
         }
+
+        // Apply the material to the player's mesh
+        player_mesh.SetMaterialOverride(player_material);
 
         _camera = GetNode<Camera3D>(CameraNodePath);
         _camera.Fov = camera_fov;
@@ -127,7 +132,7 @@ public partial class Player : CharacterBody3D
         GetTree().Root.AddChild(player_user_interface);
 
         player_user_interface.reticle().SetPlayer(this);
-        player_user_interface.playerUI().UpdateUI("Health", "Health: " + health);
+        player_user_interface.playerUI().UpdateUI("Health", "Health " + player_info.health);
         player_user_interface.playerUI().UpdateUI("Money", "$" + player_info.money);
         player_user_interface.playerUI().UpdateUI("DisplayName", player_info.Name);
 
@@ -187,7 +192,6 @@ public partial class Player : CharacterBody3D
     public void ResetAttributes()
     {
         player_info.health = 100;
-        health = player_info.health; // reset health
         WEAPON_CONTROLLER.WEAPON_TYPE.current_ammo = WEAPON_CONTROLLER.WEAPON_TYPE.magazine_capacity; // reset ammo
         
         player_user_interface?.playerUI().UpdateUI("Health", "Health: " + player_info.health);
@@ -222,7 +226,6 @@ public partial class Player : CharacterBody3D
 
         return result;
     }
-
 
     public void run_raycast()
     {
@@ -278,7 +281,6 @@ public partial class Player : CharacterBody3D
         // Set the position of the red dot at the hit location
         red_dot.GlobalPosition = raycast_end_position;
         GetTree().CreateTimer(0.01f).Timeout += () => { red_dot.QueueFree(); };
-
     }
 
     public void interact()
@@ -347,20 +349,20 @@ public partial class Player : CharacterBody3D
     }
 
     // Networking Player RPC Calls Handling
-    public void _on_player_rpc_player_damage_update()
+    public void _on_player_rpc_player_damage_update(PlayerInfo reciever, PlayerInfo sender)
     {
-        if (player_info.health < health)
+        if (reciever == Globals.localPlayerInfo) // if the reciever of the damage is the localPlayer we want to blood splatter
         {
-            health = player_info.health;
-            player_user_interface?.playerUI().ShowBloodSplatter();
+            Globals.PlayerUI.playerUI().ShowBloodSplatter();
         }
 
         if (player_info.health <= 0)
         {
             PlayerDie();
+            Globals.PlayerUI.playerUI().AddPlayerKill(sender, player_info);
         }
-        player_user_interface?.playerUI().UpdateUI("Health", player_info.health);
+
+        Globals.PlayerUI.playerUI().UpdateUI("Health", "Health " + Globals.localPlayerInfo.health);
+        Globals.PlayerUI.playerUI().UpdateUI("Money", "$" + Globals.localPlayerInfo.money);
     }
-
-
 }

@@ -8,14 +8,12 @@ public partial class Debug : PanelContainer
 
     public override void _Ready()
     {
-        //Sets global reference to self in Globals Singleton
-        Globals.debug = this;
-
         // Setting Initial Visibility To False
         Visible = false;
 
         // Add debug properties
         add_debug_property("FPS", 0);  // Initialize FPS as 0, will be updated later
+        add_debug_property("Ping", 0);
     }
 
     public override void _Process(double delta)
@@ -48,20 +46,13 @@ public partial class Debug : PanelContainer
 
     public void update_debug_property(string title, object value)
     {
-        bool is_in_debug = false;
         foreach (Label label in debugLabels)
         {
             if (label.Name == title)
             {
-                is_in_debug = true;
                 label.Text = $"{title}: {value}";
                 break;
             }
-        }
-        if (!is_in_debug)
-        {
-            add_debug_property(title, value);
-            update_debug_property(title, value);
         }
     }
 

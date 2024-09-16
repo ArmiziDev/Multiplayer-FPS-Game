@@ -32,19 +32,22 @@ public partial class SpawnPoints : Node3D
 
 	public Node3D GetFFASpawnPoint()
 	{
-		Node3D spawn_point = FFASpawnPoints[Mathf.RoundToInt(GD.RandRange(0, FFASpawnPoints.Count - 1))];
+        if (FFASpawnPoints.Count == 0) return null;
+        Node3D spawn_point = FFASpawnPoints[Mathf.RoundToInt(GD.RandRange(0, FFASpawnPoints.Count - 1))];
 
 		return spawn_point;
 	}
 	public Node3D GetRedTeamSpawnPoint()
 	{
+		if (RedSpawnPoints.Count == 0) return null;
         Node3D spawn_point = RedSpawnPoints[Mathf.RoundToInt(GD.RandRange(0, RedSpawnPoints.Count - 1))];
 
         return spawn_point;
     }
     public Node3D GetBlueTeamSpawnPoint()
     {
-		Node3D spawn_point = BlueSpawnPoints[Mathf.RoundToInt(GD.RandRange(0, BlueSpawnPoints.Count - 1))];
+        if (BlueSpawnPoints.Count == 0) return null;
+        Node3D spawn_point = BlueSpawnPoints[Mathf.RoundToInt(GD.RandRange(0, BlueSpawnPoints.Count - 1))];
 
         return spawn_point;
     }

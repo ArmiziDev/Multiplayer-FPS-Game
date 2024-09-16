@@ -39,24 +39,20 @@ public partial class PlayerMovementState : State
         if (player.multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
         if (Input.IsActionJustPressed("drop_item"))
 		{
-			weapon.DropCurrentWeapon();
-		}
-
+            weapon.DropWeapon();
+        }
         if (Input.IsActionPressed("attack"))
 		{
 			weapon._attack(delta);
 		}
 		else
 		{
-			weapon.network_shooting = false;
             weapon.shooting = false;
 		}
-
         if (Input.IsActionJustPressed("interact"))
 		{
 			player.interact();
 		}
-
         if (Input.IsActionJustPressed("reload"))
 		{
 			weapon._reload();

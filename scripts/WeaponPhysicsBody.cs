@@ -1,8 +1,11 @@
 using Godot;
 using System;
+using static System.Net.Mime.MediaTypeNames;
 
 public partial class WeaponPhysicsBody : RigidBody3D
 {
+	public int weaponbody_id;
+
 	[Export] public bool Physics = true;
 	[Export] public Weapons weapon;
 	[Export] public MeshInstance3D gun_mesh;
@@ -37,13 +40,20 @@ public partial class WeaponPhysicsBody : RigidBody3D
 		weapon.current_ammo = current_mag;
 		// Emit the signal before queueing the weapon for freeing
     	EmitSignal(SignalName.WeaponPickup, weapon);  // Emit the signal here
-		
-		QueueFree();
-		//return weapon;
+
+		if (Multiplayer.IsServer())
+		{
+			networkedWeaponPickup();
+        }
+		else
+		{
+			RpcId(1, nameof(networkedWeaponPickup));
+		}
 	}
 
-    public void SetWeapon(Weapons _weapon)
+    public void SetWeapon(Weapons _weapon, int weapon_id = 0)
 	{
+		weaponbody_id = weapon_id;
 		weapon = _weapon;
 		LoadWeapon();
 	}
@@ -58,4 +68,13 @@ public partial class WeaponPhysicsBody : RigidBody3D
 		current_mag = weapon.current_ammo;
 	}
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    public void networkedWeaponPickup()
+	{
+        if (Multiplayer.IsServer())
+        {
+            Rpc(nameof(networkedWeaponPickup));
+        }
+        QueueFree();
+    }
 }

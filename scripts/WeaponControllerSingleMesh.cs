@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Runtime.CompilerServices;
 
 
 [Tool]
@@ -36,6 +37,7 @@ public partial class WeaponControllerSingleMesh : Node3D
     private Vector2 weapon_bob_amount = Vector2.Zero;
     public NoiseTexture2D sway_noise;
     public PackedScene raycast_bullet_hole;
+    public PackedScene raycast_bullet_linecast;
     private bool currently_loading_weapon = false;
     private Random random;
 
@@ -54,7 +56,8 @@ public partial class WeaponControllerSingleMesh : Node3D
         this.player = player;
         sway_noise = ResourceLoader.Load<NoiseTexture2D>("res://meshes/weapons/weapon_sway/weapon_sway1.tres");
         raycast_bullet_hole = ResourceLoader.Load<PackedScene>("res://scenes/raycast_bullet_hole.tscn");
-
+        raycast_bullet_linecast = ResourceLoader.Load<PackedScene>("res://scenes/bullet_line_cast.tscn");
+        
         weapon_mesh = GetNode<MeshInstance3D>("%WeaponMesh");
         weapon_shadow = GetNode<MeshInstance3D>("%WeaponShadow");
         shoot_timer = GetNode<Timer>("%ShootTimer");
@@ -83,7 +86,7 @@ public partial class WeaponControllerSingleMesh : Node3D
     private void LoadLoadout()
     {
         player.player_info.loadout[0] = "AR-15";
-        player.player_info.loadout[1] = "Hand";
+        player.player_info.loadout[1] = "Desert Eagle";
         player.player_info.loadout[2] = "Hand";
 
         WEAPON_TYPE = Globals.weaponDictionary["Hand"];
@@ -142,7 +145,6 @@ public partial class WeaponControllerSingleMesh : Node3D
                         //Globals.debug.debug_err(_weapon.name + " Has No Class");
                         break;
                     default: // First Gun In Loadout (Rifle, SMG, Sniper, Shotgun)
-                        GD.Print("default hit");
                         if (player.player_info.loadout[0] != "Hand")
                         {
                             DropCurrentWeapon(current_loadout_index);
@@ -165,16 +167,15 @@ public partial class WeaponControllerSingleMesh : Node3D
         player.playerNetworkingCalls.DropWeapon(player);
     }
 
-    public void DropCurrentWeapon(int loadout_index)
+    public WeaponPhysicsBody DropCurrentWeapon(int loadout_index)
     {
-        if (WEAPON_TYPE == null) return;
-        if (WEAPON_TYPE.weapon_type == Weapons.WeaponType.Empty) return;
+        if (WEAPON_TYPE == null) return null;
+        if (WEAPON_TYPE.weapon_type == Weapons.WeaponType.Empty) return null;
 
         // Load the weapon physics body scene
         WeaponPhysicsBody WeaponBody = (WeaponPhysicsBody)GD.Load<PackedScene>("res://scenes/weapon_physics_body.tscn").Instantiate();
         // Add the weapon to the root node or world node (the farthest down parent in the scene)
         GetTree().Root.GetChild(0).AddChild(WeaponBody);
-
         WeaponBody.SetWeapon(WEAPON_TYPE);
         WeaponBody.InitializeWeaponPhysicsBody(this);
         // Set the weapon type
@@ -201,6 +202,8 @@ public partial class WeaponControllerSingleMesh : Node3D
         player.player_info.loadout[current_loadout_index] = WEAPON_TYPE.name;
 
         player.playerNetworkingCalls.UpdateLoadout(player);
+
+        return WeaponBody;
     }
 
     public void LoadWeapon()
@@ -447,7 +450,14 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             if (player.weapon_raycast_result.ContainsKey("position") && player.weapon_raycast_result.ContainsKey("normal"))
             {
-                _bullet_hole((Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
+                if (Multiplayer.IsServer())
+                {
+                    networked_bullet_hole((Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
+                }
+                else
+                {
+                    RpcId(1, nameof(networked_bullet_hole), (Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
+                }
             }
 
             if (player.weapon_raycast_result.ContainsKey("collider"))
@@ -529,8 +539,13 @@ public partial class WeaponControllerSingleMesh : Node3D
         can_shoot = true;
     }
 
-    private async void _bullet_hole(Vector3 _pos, Vector3 _normal)
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    private void networked_bullet_hole(Vector3 _pos, Vector3 _normal)
     {
+        if (Multiplayer.IsServer())
+        {
+            Rpc(nameof(networked_bullet_hole), _pos, _normal);
+        }
         Node3D instance = raycast_bullet_hole.Instantiate<Node3D>();
         GetTree().Root.AddChild(instance);
         instance.GlobalPosition = _pos; 
@@ -539,16 +554,11 @@ public partial class WeaponControllerSingleMesh : Node3D
         {
             instance.RotateObjectLocal(new Vector3(1, 0, 0), 90);
         }
-        //Bullet Explosion
-        GpuParticles3D bulletScatter = instance.GetNode<GpuParticles3D>("%BulletScatter");
-        bulletScatter.Emitting = true;
+    }
 
-        //Fade Away
-        await ToSignal(GetTree().CreateTimer(3.0f), "timeout");
-        Tween fade = GetTree().CreateTween();
-        fade.TweenProperty(instance, "modulate:a", 0, 4.5);
-        await ToSignal(GetTree().CreateTimer(4.5f), "timeout");
-        instance.QueueFree();
+    private void networked_bullet_linecast(Vector3 position)
+    {
+
     }
 
     private float GetRandomFloatInRange(float min, float max)

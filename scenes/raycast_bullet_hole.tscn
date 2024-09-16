@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://buyae06ant0vn"]
+[gd_scene load_steps=8 format=3 uid="uid://buyae06ant0vn"]
 
 [ext_resource type="Texture2D" uid="uid://b3cb41n5r03r3" path="res://assets/textures/bullet_hole.png" id="1_5uv2g"]
+[ext_resource type="Script" path="res://scripts/RaycastBulletHole.cs" id="2_jbpjr"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pmj2i"]
 angle_min = -398.8
@@ -39,9 +40,10 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_dbs00")
 size = Vector2(0.05, 0.05)
 
-[node name="Decal" type="Decal"]
+[node name="wall_bullet_hole" type="Decal"]
 size = Vector3(0.1, 0.1, 0.1)
 texture_albedo = ExtResource("1_5uv2g")
+script = ExtResource("2_jbpjr")
 
 [node name="BulletScatter" type="GPUParticles3D" parent="."]
 unique_name_in_owner = true

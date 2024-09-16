@@ -8,7 +8,6 @@ public partial class PlayerNetworkingCalls : Node
     // Only Gets Called For Player That is Damaged
     [Signal] public delegate void PlayerDamageUpdateEventHandler(PlayerInfo reciever, PlayerInfo sender);
     [Signal] public delegate void PlayerDropWeaponEventHandler(int loadout_index, PlayerInfo sender);
-    [Signal] public delegate void PlayerPickupWeaponEventHandler();
     [Signal] public delegate void PlayerShootEventHandler(PlayerInfo player_id);
     [Signal] public delegate void PlayerDeathEventHandler(PlayerInfo player_id);
     [Signal] public delegate void PlayerUpdateLoadoutEventHandler(PlayerInfo player_id, int current_loadout_index);

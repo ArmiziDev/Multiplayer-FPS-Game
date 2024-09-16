@@ -15,6 +15,9 @@ size = Vector3(0.3, 1.5, 0.3)
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="WeaponPhysicsBody" type="RigidBody3D" node_paths=PackedStringArray("gun_mesh")]
 mass = 0.013

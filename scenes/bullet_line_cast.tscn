@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4lc1kdhwqeu8"]
+
+[ext_resource type="Script" path="res://scripts/BulletLineCast.cs" id="1_dvcnd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_38soo"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sy3hp"]
+material = SubResource("StandardMaterial3D_38soo")
+size = Vector3(0.01, 0.01, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7vesw"]
+size = Vector3(0.01, 0.01, 0.5)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_dvcnd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_sy3hp")
+skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_7vesw")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

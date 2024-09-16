@@ -11,6 +11,7 @@ public partial class GameManager : Node3D
     int blue_team_score = 0;
 
     private List<Player> m_players = new List<Player>();
+    //private List<WeaponPhysicsBody> physic_weapon_body_handler = new List<WeaponPhysicsBody>();
 
     private int current_spectator = 0;
     private bool current_spectating = false;
@@ -34,6 +35,7 @@ public partial class GameManager : Node3D
     {
         Globals.weaponDictionary["Hand"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
         Globals.weaponDictionary["AR-15"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
+        Globals.weaponDictionary["Desert Eagle"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Pistols/DEAGLE_125/WeaponDeagle.tres");
     }
 
     public override void _Input(InputEvent @event)
@@ -96,7 +98,8 @@ public partial class GameManager : Node3D
     private void _on_check_ping_timeout()
     {
         check_ping = true;
-        RpcId(1, nameof(_PingServer), Multiplayer.GetUniqueId());
+        if (Multiplayer.GetUniqueId() != 1)
+            RpcId(1, nameof(_PingServer), Multiplayer.GetUniqueId());
     }
 
     public void Round5v5End(Team winning_team)

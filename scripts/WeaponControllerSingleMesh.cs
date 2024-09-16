@@ -1,4 +1,4 @@
-using Godot;
+ using Godot;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -450,6 +450,7 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             if (player.weapon_raycast_result.ContainsKey("position") && player.weapon_raycast_result.ContainsKey("normal"))
             {
+                networked_bullet_linecast(GlobalTransform, (Vector3)player.weapon_raycast_result["position"]);
                 if (Multiplayer.IsServer())
                 {
                     networked_bullet_hole((Vector3)player.weapon_raycast_result["position"], (Vector3)player.weapon_raycast_result["normal"]);
@@ -556,9 +557,17 @@ public partial class WeaponControllerSingleMesh : Node3D
         }
     }
 
-    private void networked_bullet_linecast(Vector3 position)
+    private void networked_bullet_linecast(Transform3D playerGlobalTransform, Vector3 target_position)
     {
+        BulletLineCast bullet = raycast_bullet_linecast.Instantiate<BulletLineCast>();
+        GetTree().Root.AddChild(bullet);
 
+        // Align the bullet's rotation with the player's rotation
+        bullet.GlobalTransform = playerGlobalTransform;  // Copy the player's global transform to the bullet
+
+        // Set the start and target positions
+        Vector3 startPosition = playerGlobalTransform.Origin;  // Start at the player's position
+        bullet.SetTarget(startPosition, target_position);  // Pass start and target positions
     }
 
     private float GetRandomFloatInRange(float min, float max)

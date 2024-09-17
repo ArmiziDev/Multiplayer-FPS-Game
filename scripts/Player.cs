@@ -72,6 +72,8 @@ public partial class Player : CharacterBody3D
         // Spawn Points
         GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10);
 
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+
         EmitSignal(SignalName.PlayerReady);
     }
 
@@ -145,36 +147,10 @@ public partial class Player : CharacterBody3D
     public override void _Input(InputEvent @event)
     {
         if (multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
-            if (@event is InputEventKey eventKey)
-            {
-                if (eventKey.Pressed && eventKey.Keycode == Key.Escape)
-                {
-                    if (Input.MouseMode == Input.MouseModeEnum.Captured)
-                    {
-                        Input.MouseMode = Input.MouseModeEnum.Visible;
-                    }
-                    else
-                    {
-                        GetTree().Quit();
-                    }
-                }
-            }
-
-            if (@event is InputEventMouseMotion eventMouseMotion && Input.MouseMode == Input.MouseModeEnum.Captured)
-            {
-                HandleMouseInput(eventMouseMotion);
-            }
-
-            // Handle mouse click to recapture the mouse
-            if (@event is InputEventMouseButton eventMouseButton)
-            {
-                if (eventMouseButton.Pressed && Input.MouseMode == Input.MouseModeEnum.Visible && !Globals.PlayerUI.playerUI().is_buymenu_open())
-                {
-                    // Capture the mouse again when clicking inside the window
-                    Input.MouseMode = Input.MouseModeEnum.Captured;
-                }
-            }
-        
+        if (@event is InputEventMouseMotion eventMouseMotion && Input.MouseMode == Input.MouseModeEnum.Captured)
+        {
+            HandleMouseInput(eventMouseMotion);
+        }
     }
 
     public void Damage(int _damage, PlayerInfo sender_player)

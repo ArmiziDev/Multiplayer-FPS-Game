@@ -136,7 +136,7 @@ public partial class WeaponControllerSingleMesh : Node3D
                     case (Weapons.GunClass.Pistol): // Secondary
                         if (player.player_info.loadout[1] != "Hand")
                         {
-                            DropCurrentWeapon(current_loadout_index);
+                            DropCurrentWeapon();
                         }
                         player.player_info.loadout[1] = _weapon.name;
                         LoadWeapon();
@@ -147,7 +147,7 @@ public partial class WeaponControllerSingleMesh : Node3D
                     default: // First Gun In Loadout (Rifle, SMG, Sniper, Shotgun)
                         if (player.player_info.loadout[0] != "Hand")
                         {
-                            DropCurrentWeapon(current_loadout_index);
+                            DropCurrentWeapon();
                         }
                         player.player_info.loadout[0] = _weapon.name;
                         LoadWeapon();
@@ -167,10 +167,10 @@ public partial class WeaponControllerSingleMesh : Node3D
         player.playerNetworkingCalls.DropWeapon(player);
     }
 
-    public WeaponPhysicsBody DropCurrentWeapon(int loadout_index)
+    public void DropCurrentWeapon()
     {
-        if (WEAPON_TYPE == null) return null;
-        if (WEAPON_TYPE.weapon_type == Weapons.WeaponType.Empty) return null;
+        if (WEAPON_TYPE == null) return;
+        if (WEAPON_TYPE.weapon_type == Weapons.WeaponType.Empty) return;
 
         // Load the weapon physics body scene
         WeaponPhysicsBody WeaponBody = (WeaponPhysicsBody)GD.Load<PackedScene>("res://scenes/weapon_physics_body.tscn").Instantiate();
@@ -202,8 +202,35 @@ public partial class WeaponControllerSingleMesh : Node3D
         player.player_info.loadout[current_loadout_index] = WEAPON_TYPE.name;
 
         player.playerNetworkingCalls.UpdateLoadout(player);
+    }
 
-        return WeaponBody;
+    internal void DropWeaponKeepOriginal(int loadout_index)
+    {
+        if (player.player_info.loadout[loadout_index] == "Hand") return;
+
+        // Load the weapon physics body scene
+        WeaponPhysicsBody WeaponBody = (WeaponPhysicsBody)GD.Load<PackedScene>("res://scenes/weapon_physics_body.tscn").Instantiate();
+        // Add the weapon to the root node or world node (the farthest down parent in the scene)
+        GetTree().Root.GetChild(0).AddChild(WeaponBody);
+        WeaponBody.SetWeapon(Globals.weaponDictionary[player.player_info.loadout[loadout_index]]);
+        WeaponBody.InitializeWeaponPhysicsBody(this);
+        // Set the weapon type
+
+        // Set the weapon's global transform to match the player's
+        WeaponBody.GlobalTransform = GlobalTransform;
+
+        // Calculate the position in front of the player
+        Vector3 forwardDirection = -GlobalTransform.Basis.Z;  // Forward direction (negative Z axis)
+        Vector3 dropPosition = GlobalTransform.Origin + forwardDirection * 2.0f;  // Drop 2 units in front of the player
+
+        // Set a consistent Y (height) value for the drop position (e.g., 1.0f units above the ground)
+        dropPosition.Y = GlobalTransform.Origin.Y;  // Keep it at the player's current Y position
+
+        // Set the weapon's position to the calculated drop position
+        WeaponBody.GlobalTransform = new Transform3D(WeaponBody.GlobalTransform.Basis, dropPosition);
+
+        // Optionally apply additional rotation or adjustments if needed
+        WeaponBody.RotationDegrees = RotationDegrees;  // Keep the player's current rotation
     }
 
     public void LoadWeapon()

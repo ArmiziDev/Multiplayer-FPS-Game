@@ -35,6 +35,8 @@ public partial class GameManager : Node3D
         AddWeaponToDictionary("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
         AddWeaponToDictionary("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
         AddWeaponToDictionary("res://meshes/weapons/weapon_pack/Pistols/DEAGLE_125/WeaponDeagle.tres");
+        AddWeaponToDictionary("res://meshes/weapons/weapon_pack/Rifles/AK-556_28/weapon_ak556.tres");
+        AddWeaponToDictionary("res://meshes/weapons/weapon_pack/SMG/HK_MP7/Weapon_MP7.tres");
     }
 
     private void AddWeaponToDictionary(String location)
@@ -137,7 +139,6 @@ public partial class GameManager : Node3D
             }
         }
     }
-
     public void HandlePlayerDead(Player player)
     {
         switch (Globals.game_mode)
@@ -240,6 +241,8 @@ public partial class GameManager : Node3D
         currentPlayer.playerNetworkingCalls.PlayerDropWeapon += NetworkPlayerDropWeapon;
         currentPlayer.playerNetworkingCalls.PlayerShoot += NetworkPlayerShoot;
         currentPlayer.playerNetworkingCalls.PlayerUpdateLoadout += NetworkUpdateLoadout;
+        currentPlayer.playerNetworkingCalls.PlayerWeaponBought += NetworkWeaponBought;
+        currentPlayer.playerNetworkingCalls.PlayerDropWeaponKeepOriginal += NetworkDropWeaponKeepOriginal;
     }
 
     public void SpawnPlayers()
@@ -286,7 +289,7 @@ public partial class GameManager : Node3D
     public void NetworkPlayerDropWeapon(int loadout_index, PlayerInfo player)
     {
         Player reciever_player = m_players.Find(p => p.player_info.server_id == player.server_id);
-        reciever_player.WEAPON_CONTROLLER.DropCurrentWeapon(loadout_index);
+        reciever_player.WEAPON_CONTROLLER.DropCurrentWeapon();
     }
 
     public void NetworkPlayerShoot(PlayerInfo shooter_player)
@@ -299,7 +302,7 @@ public partial class GameManager : Node3D
     {
         Player current_player = m_players.Find(p => p.player_info.server_id == player.server_id);
         current_player.WEAPON_CONTROLLER.current_loadout_index = current_loadout_index;
-        current_player.WEAPON_CONTROLLER.LoadWeapon(); 
+        current_player.WEAPON_CONTROLLER.LoadWeapon();
 
         if (player.server_id == Globals.localPlayerInfo.server_id)
         {
@@ -307,6 +310,36 @@ public partial class GameManager : Node3D
             Globals.PlayerUI.playerUI().UpdateUI("Loadout2", "2: " + player.loadout[1]);
             Globals.PlayerUI.playerUI().UpdateUI("Loadout3", "3: " + player.loadout[2]);
         }
+    }
+
+    public void NetworkWeaponBought(PlayerInfo player, StringName weapon_name)
+    {
+        Player current_player = m_players.Find(p => p.player_info.server_id == player.server_id);
+
+        // Get Weapon from Global Weapon Dictionary
+        Weapons weapon = Globals.weaponDictionary[weapon_name];
+
+        if (weapon.gun_class == Weapons.GunClass.Rifle || weapon.gun_class == Weapons.GunClass.Sniper || weapon.gun_class == Weapons.GunClass.Shotgun || weapon.gun_class == Weapons.GunClass.SMG)
+        {
+            current_player.WEAPON_CONTROLLER.current_loadout_index = 0;
+            current_player.WEAPON_CONTROLLER.DropWeaponKeepOriginal(0);
+            player.loadout[0] = weapon_name;
+        }
+        else if (weapon.gun_class == Weapons.GunClass.Pistol)
+        {
+            current_player.WEAPON_CONTROLLER.current_loadout_index = 1;
+            current_player.WEAPON_CONTROLLER.DropWeaponKeepOriginal(1);
+            player.loadout[1] = weapon_name;
+        }
+
+        current_player.playerNetworkingCalls.UpdateLoadout(current_player);
+    }
+
+    public void NetworkDropWeaponKeepOriginal(PlayerInfo player, int loadout_index)
+    {
+        Player current_player = m_players.Find(p => p.player_info.server_id == player.server_id);
+
+        current_player.WEAPON_CONTROLLER.DropWeaponKeepOriginal(loadout_index);
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]

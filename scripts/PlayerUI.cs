@@ -10,6 +10,8 @@ public partial class PlayerUI : CanvasLayer
     private TextureRect bloodSplatter;
     private AnimationPlayer animationPlayer;
     private Control buyMenu;
+    private Control buyMenuWeaponInfo;
+    private Control escMenu;
 
     private VBoxContainer PlayerKillUIContainer;
     [Export] private PackedScene player_kill_ui;
@@ -49,7 +51,13 @@ public partial class PlayerUI : CanvasLayer
         scoreboard.Visible = false;
 
         buyMenu = GetNode<Control>("%BuyMenu");
+        buyMenuWeaponInfo = buyMenu.GetNode<Control>("WeaponInfo");
+        escMenu = GetNode<Control>("%EscMenu");
+        escMenu.Visible = false;
+        buyMenuWeaponInfo.Visible = false;
         buyMenu.Visible = false;
+
+        escMenu.GetNode<HSlider>("%SensitivitySlider").GetNode<Label>("Value").Text = Globals.localPlayer.MouseSensitivity.ToString();
     }
 
     public override void _Input(InputEvent @event)
@@ -65,7 +73,6 @@ public partial class PlayerUI : CanvasLayer
                 default:
                     show_regular_scoreboard();
                     break;
-            
             }
         }
         if (@event.IsActionReleased("scoreboard"))
@@ -76,10 +83,29 @@ public partial class PlayerUI : CanvasLayer
 
     public void buy_menu()
     {
-        buyMenu.Visible = !buyMenu.Visible;
-        if (buyMenu.Visible)
+        if (!buyMenu.Visible && !escMenu.Visible)
+        {
+            buyMenu.Visible = true;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+        else if (escMenu.Visible)
         {
             Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+        else
+        {
+            buyMenu.Visible = false;
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
+    }
+
+    public void esc_menu()
+    {
+        escMenu.Visible = !escMenu.Visible;
+        if (escMenu.Visible)
+        {
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+            buyMenu.Visible = false;
         }
         else
         {
@@ -102,7 +128,6 @@ public partial class PlayerUI : CanvasLayer
                 current_player_count++;
             }
         }
-
     }
 
     public void show_redvsblue_scoreboard()
@@ -203,45 +228,79 @@ public partial class PlayerUI : CanvasLayer
         animationPlayer.Play("BloodSplatter");
     }
 
-    public void on_buy_button(StringName weapon_name)
+    private void SetWeaponInfo(StringName weapon_name)
+    {
+        Weapons current_weapon = Globals.weaponDictionary[weapon_name];
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponName").Text = current_weapon.name;
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponDamage").Text = "Damage: " + current_weapon.base_damage;
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponAmmo").Text = "Ammo: " + current_weapon.magazine_capacity + " / " + current_weapon.magazine_capacity;
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponCost").Text = "$" + current_weapon.cost;
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponFireRate").Text = Math.Round(1.0f / current_weapon.time_between_bullets, 2) + " BPS";
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponRecoil").Text = "Recoil: " + Mathf.Round((current_weapon.recoil_amount_rotation.Y / 50.0f) * 100.0f) + "%";
+
+        StringName weapon_class = "";
+
+        switch (current_weapon.gun_class)
+        {
+            case Weapons.GunClass.Rifle:
+                weapon_class = "Rifle";
+                break;
+            case Weapons.GunClass.Pistol:
+                weapon_class = "Pistol";
+                break;
+            case Weapons.GunClass.SMG:
+                weapon_class = "SMG";
+                break;
+            case Weapons.GunClass.Shotgun:
+                weapon_class = "Shotgun";
+                break;
+        }
+
+        buyMenuWeaponInfo.GetNode<Label>("%WeaponClass").Text = weapon_class;
+    }
+
+    private void on_buy_button(StringName weapon_name)
     {
         WeaponButtonPressed(weapon_name);
+    }
+
+    private void on_button_mouse_entered(StringName weapon_name)
+    {
+        buyMenuWeaponInfo.Visible = true;
+        SetWeaponInfo(weapon_name);
+    }
+
+    private void on_button_mouse_exited(StringName weapon_name)
+    {
+        buyMenuWeaponInfo.Visible = false;
     }
 
     public void WeaponButtonPressed(StringName weapon_name)
     {
         Weapons bought_weapon = Globals.weaponDictionary[weapon_name];
-        if (bought_weapon == null)
-        {
-            Globals.PlayerUI.debug().debug_err("Weapon Is Null");
-            return;
-        }
         if (Globals.localPlayerInfo.money >= bought_weapon.cost)
         {
             Globals.localPlayerInfo.money -= bought_weapon.cost;
             Globals.PlayerUI.playerUI().UpdateUI("Money", "$" + Globals.localPlayerInfo.money);
 
-            if (bought_weapon.gun_class == Weapons.GunClass.Rifle || bought_weapon.gun_class == Weapons.GunClass.Sniper || bought_weapon.gun_class == Weapons.GunClass.Shotgun)
-            {
-                Globals.localPlayer.WEAPON_CONTROLLER.current_loadout_index = 0; // Set current gun to Main Weapon
-                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon Before Dropping
-                Globals.localPlayer.WEAPON_CONTROLLER.DropWeapon(); // Drop Weapon
-                Globals.localPlayer.player_info.loadout[0] = weapon_name; // Set the weapon into the loadout
-                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon And Now you have weapon
-            }
-            else if (bought_weapon.gun_class == Weapons.GunClass.Pistol)
-            {
-                Globals.localPlayer.WEAPON_CONTROLLER.current_loadout_index = 1; // Set current gun to Main Weapon
-                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon Before Dropping
-                Globals.localPlayer.WEAPON_CONTROLLER.DropCurrentWeapon(1); // Drop Weapon
-                Globals.localPlayer.player_info.loadout[1] = weapon_name; // Set the weapon into the loadout
-                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon And Now you have weapon
-            }
+            Globals.localPlayer.playerNetworkingCalls.BuyWeapon(Globals.localPlayer, weapon_name);
         }
         else
         {
             Globals.PlayerUI.debug().debug_err("Player can't afford " + weapon_name);
         }
+    }
+
+    private void _on_sensitivity_slider_value_changed(float value)
+    {
+        escMenu.GetNode<HSlider>("%SensitivitySlider").GetNode<Label>("Value").Text = value.ToString();
+
+        Globals.localPlayer.MouseSensitivity = value;
+    }
+
+    private void _on_quit_game_button_pressed()
+    {
+        GetTree().Quit();
     }
 }
  

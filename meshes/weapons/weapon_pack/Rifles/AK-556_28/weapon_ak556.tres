@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://bd5k24sohpgnj"]
+
+[ext_resource type="ArrayMesh" uid="uid://by3hg1i3v8os5" path="res://meshes/weapons/weapon_pack/Rifles/AK-556_28/ak-556_28.res" id="1_adi8h"]
+[ext_resource type="Script" path="res://scripts/Weapons.cs" id="1_njfxq"]
+
+[resource]
+script = ExtResource("1_njfxq")
+name = &"AK-556"
+weapon_type = 1
+gun_class = 1
+position = Vector3(-0.12, 0.22, 1.02)
+rotation = Vector3(0, -176, 0)
+scale = Vector3(1, 1, 1)
+base_damage = 29.0
+current_ammo = 30
+magazine_capacity = 30
+reload_time = 1.5
+time_between_bullets = 0.18
+automatic_reload = true
+pullout_time = 1.5
+money_kill_reward = 100
+cost = 300
+fire_mode = 2
+burst_fire_count = 3
+bullet_spread = 1.0
+recoil_amount_kickback = Vector3(0.15, 0.15, -1.1)
+snap_amount_kickback = 10.0
+speed_kickback = 20.0
+recoil_amount_rotation = Vector3(7, 14, 0)
+recoil_follow_speed = 1.0
+recoil_reset_speed = 0.5
+recoil_reset_speed_amplifier = 6.0
+sway_min = Vector2(-20, -20)
+sway_max = Vector2(20, 20)
+sway_speed_position = 0.07
+sway_speed_rotation = 0.1
+sway_amount_position = 0.1
+sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+random_sway_amount = 5.0
+mesh = ExtResource("1_adi8h")
+shadow = false
+muzzle_flash_position = Vector3(0.1, -0.05, -1.7)
+FireSoundPath = NodePath("")
+ReloadSoundPath = NodePath("")

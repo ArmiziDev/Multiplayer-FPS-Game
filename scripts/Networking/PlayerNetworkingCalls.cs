@@ -11,6 +11,8 @@ public partial class PlayerNetworkingCalls : Node
     [Signal] public delegate void PlayerShootEventHandler(PlayerInfo player_id);
     [Signal] public delegate void PlayerDeathEventHandler(PlayerInfo player_id);
     [Signal] public delegate void PlayerUpdateLoadoutEventHandler(PlayerInfo player_id, int current_loadout_index);
+    [Signal] public delegate void PlayerWeaponBoughtEventHandler(PlayerInfo player_id, StringName weapon_name);
+    [Signal] public delegate void PlayerDropWeaponKeepOriginalEventHandler(PlayerInfo player_id, int loadout_index);
 
     internal void Damage(int damage, PlayerInfo reciever, PlayerInfo sender)
     {
@@ -33,6 +35,18 @@ public partial class PlayerNetworkingCalls : Node
         else
         {
             RpcId(1, nameof(networkedWeaponDrop), player.WEAPON_CONTROLLER.current_loadout_index, player.player_info.server_id);
+        }
+    }
+
+    internal void DropWeaponAndKeepOriginalGun(Player player, int loadout_index)
+    {
+        if (Multiplayer.IsServer())
+        {
+            NetworkDropWeaponAndKeepOriginalGun(player.player_info.server_id, loadout_index);
+        }
+        else
+        {
+            RpcId(1, nameof(NetworkDropWeaponAndKeepOriginalGun), player.player_info.server_id, loadout_index);
         }
     }
 
@@ -60,6 +74,46 @@ public partial class PlayerNetworkingCalls : Node
             RpcId(1, nameof(networkedUpdateLoadout), player.player_info.server_id, player.WEAPON_CONTROLLER.current_loadout_index,
                 player.player_info.loadout[0], player.player_info.loadout[1], player.player_info.loadout[2]);
         }
+    }
+
+    internal void BuyWeapon(Player player, StringName weapon_name)
+    {
+        if (Multiplayer.IsServer())
+        {
+            networkedBuyWeapon(player.player_info.server_id, weapon_name);
+        }
+        else
+        {
+            RpcId(1, nameof(networkedBuyWeapon), player.player_info.server_id, weapon_name);
+        }
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    private void NetworkDropWeaponAndKeepOriginalGun(int player_id, int loadout_index)
+    {
+        if (Multiplayer.IsServer())
+        {
+            Rpc(nameof(NetworkDropWeaponAndKeepOriginalGun), player_id, loadout_index);
+        }
+
+        PlayerInfo player_info = Globals.PLAYERS.Find(p => p.server_id == player_id);
+
+        EmitSignal(nameof(PlayerDropWeaponKeepOriginal), player_info, loadout_index);
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+    private void networkedBuyWeapon(int player_id, StringName weapon_name)
+    {
+        if (Multiplayer.IsServer())
+        {
+            Rpc(nameof(networkedBuyWeapon), player_id, weapon_name);
+        }
+
+        // Get Player Info
+        PlayerInfo player_info = Globals.PLAYERS.Find(p => p.server_id == player_id);
+
+
+        EmitSignal(nameof(PlayerWeaponBought), player_info, weapon_name);
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]

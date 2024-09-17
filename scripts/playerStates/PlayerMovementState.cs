@@ -61,6 +61,10 @@ public partial class PlayerMovementState : State
         {
             Globals.PlayerUI.playerUI().buy_menu();
         }
+        if (Input.IsActionJustPressed("esc_menu"))
+        {
+            Globals.PlayerUI.playerUI().esc_menu();
+        }
     }
 
     public void update_debug()

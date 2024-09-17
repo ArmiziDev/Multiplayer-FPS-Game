@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b80ml530koc8m"]
+
+[ext_resource type="ArrayMesh" uid="uid://choru8py7r3qi" path="res://meshes/weapons/weapon_pack/SMG/HK_MP7/hk_mp7.res" id="1_u3on0"]
+[ext_resource type="Script" path="res://scripts/Weapons.cs" id="1_xfxkb"]
+
+[resource]
+script = ExtResource("1_xfxkb")
+name = &"MP7"
+weapon_type = 1
+gun_class = 4
+position = Vector3(-0.12, 0.22, 1.2)
+rotation = Vector3(0, -176, 0)
+scale = Vector3(1, 1, 1)
+base_damage = 14.0
+current_ammo = 23
+magazine_capacity = 23
+reload_time = 1.2
+time_between_bullets = 0.1
+automatic_reload = true
+pullout_time = 1.5
+money_kill_reward = 100
+cost = 200
+fire_mode = 2
+burst_fire_count = 3
+bullet_spread = 2.0
+recoil_amount_kickback = Vector3(0.3, 0.3, -0.8)
+snap_amount_kickback = 10.0
+speed_kickback = 20.0
+recoil_amount_rotation = Vector3(4, 7, 0)
+recoil_follow_speed = 1.0
+recoil_reset_speed = 0.5
+recoil_reset_speed_amplifier = 3.0
+sway_min = Vector2(-20, -20)
+sway_max = Vector2(20, 20)
+sway_speed_position = 0.07
+sway_speed_rotation = 0.1
+sway_amount_position = 0.1
+sway_amount_rotation = 30.0
+idle_sway_adjustment = 10.0
+idle_sway_rotation_strength = 300.0
+random_sway_amount = 5.0
+mesh = ExtResource("1_u3on0")
+shadow = false
+muzzle_flash_position = Vector3(-0.074, 0.212, -1.886)
+FireSoundPath = NodePath("")
+ReloadSoundPath = NodePath("")

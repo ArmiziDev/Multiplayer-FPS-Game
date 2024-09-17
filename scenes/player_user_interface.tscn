@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://derrt75lmxbw6"]
+[gd_scene load_steps=34 format=3 uid="uid://derrt75lmxbw6"]
 
 [ext_resource type="Theme" uid="uid://bxpd44ye03ux3" path="res://ui/themes/debug.tres" id="1_rfiqa"]
 [ext_resource type="Script" path="res://scripts/Reticle.cs" id="2_rh4ca"]
@@ -60,6 +60,37 @@ font = ExtResource("5_6yovh")
 font_size = 20
 font_color = Color(0, 0, 1, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_6e8ow"]
+font = ExtResource("5_6yovh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_s0sfn"]
+font = ExtResource("5_6yovh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_4lkou"]
+font = ExtResource("5_6yovh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_mg8tj"]
+font = ExtResource("5_6yovh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_6jnxl"]
+font = ExtResource("5_6yovh")
+font_size = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_3pg6u"]
+font = ExtResource("5_6yovh")
+font_size = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_ty2ul"]
+font = ExtResource("5_6yovh")
+font_size = 20
+font_color = Color(1, 1, 0.462745, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ojfl"]
+font = ExtResource("5_6yovh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_o6ycs"]
+font = ExtResource("5_6yovh")
+
 [sub_resource type="Animation" id="Animation_7iitq"]
 resource_name = "BloodSplatter"
 length = 0.15
@@ -116,6 +147,7 @@ script = ExtResource("4_55ufo")
 player_kill_ui = ExtResource("4_l24js")
 
 [node name="TeamScore" type="Panel" parent="PlayerUI"]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -301,6 +333,7 @@ label_settings = SubResource("LabelSettings_s5k0j")
 
 [node name="Scoreboard" type="Panel" parent="PlayerUI"]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -431,6 +464,82 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="WeaponInfo" type="Control" parent="PlayerUI/BuyMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 435.0
+offset_top = -245.0
+offset_right = 606.0
+offset_bottom = 10.0
+grow_vertical = 0
+
+[node name="Panel" type="Panel" parent="PlayerUI/BuyMenu/WeaponInfo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/BuyMenu/WeaponInfo/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -68.5
+offset_right = 66.0
+offset_bottom = 68.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="WeaponName" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Name"
+label_settings = SubResource("LabelSettings_6e8ow")
+
+[node name="WeaponClass" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Type"
+label_settings = SubResource("LabelSettings_s0sfn")
+
+[node name="WeaponDamage" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Damage"
+label_settings = SubResource("LabelSettings_4lkou")
+
+[node name="WeaponAmmo" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Ammo"
+label_settings = SubResource("LabelSettings_mg8tj")
+
+[node name="WeaponFireRate" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Fire Rate"
+label_settings = SubResource("LabelSettings_6jnxl")
+
+[node name="WeaponRecoil" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Recoil"
+label_settings = SubResource("LabelSettings_3pg6u")
+
+[node name="WeaponCost" type="Label" parent="PlayerUI/BuyMenu/WeaponInfo/Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Weapon Cost"
+label_settings = SubResource("LabelSettings_ty2ul")
+
 [node name="Panel" type="Panel" parent="PlayerUI/BuyMenu"]
 layout_mode = 1
 anchors_preset = 8
@@ -515,7 +624,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("5_6yovh")
 theme_override_font_sizes/font_size = 22
-text = "AK-47"
+text = "AK-556"
 
 [node name="Rifle2" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
 layout_mode = 2
@@ -567,7 +676,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("5_6yovh")
 theme_override_font_sizes/font_size = 22
-text = "SMG"
+text = "MP7"
 
 [node name="Pistol2" type="Button" parent="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer"]
 layout_mode = 2
@@ -596,6 +705,91 @@ size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("5_6yovh")
 theme_override_font_sizes/font_size = 22
 text = "SMG"
+
+[node name="EscMenu" type="Control" parent="PlayerUI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -174.5
+offset_top = -229.0
+offset_right = 174.5
+offset_bottom = 229.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="PlayerUI/EscMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="QuitGameButton" type="Button" parent="PlayerUI/EscMenu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -51.5
+offset_top = -58.0
+offset_right = 51.5
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.694118, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_6yovh")
+text = "Quit Game"
+
+[node name="SensitivitySlider" type="HSlider" parent="PlayerUI/EscMenu"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 40.0
+offset_top = 51.0
+offset_right = -28.0
+offset_bottom = 67.0
+grow_horizontal = 2
+step = 0.1
+value = 30.0
+
+[node name="Title" type="Label" parent="PlayerUI/EscMenu/SensitivitySlider"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -19.5
+offset_top = -42.0
+offset_right = 20.5
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Mouse Sensitivity"
+label_settings = SubResource("LabelSettings_7ojfl")
+
+[node name="Value" type="Label" parent="PlayerUI/EscMenu/SensitivitySlider"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_top = 18.0
+offset_right = 32.0
+offset_bottom = 41.0
+grow_horizontal = 2
+text = "15"
+label_settings = SubResource("LabelSettings_o6ycs")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Reticle" type="CenterContainer" parent="." node_paths=PackedStringArray("RETICLE_LINES")]
 layout_mode = 1
@@ -649,5 +843,14 @@ libraries = {
 "": SubResource("AnimationLibrary_hpwy4")
 }
 
-[connection signal="pressed" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle1" to="PlayerUI" method="on_buy_button" binds= [&"AK47"]]
+[connection signal="mouse_entered" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle1" to="PlayerUI" method="on_button_mouse_entered" binds= [&"AK-556"]]
+[connection signal="mouse_exited" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle1" to="PlayerUI" method="on_button_mouse_exited" binds= [&"AK-556"]]
+[connection signal="pressed" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle1" to="PlayerUI" method="on_buy_button" binds= [&"AK-556"]]
+[connection signal="mouse_entered" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle2" to="PlayerUI" method="on_button_mouse_entered" binds= [&"AR-15"]]
+[connection signal="mouse_exited" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle2" to="PlayerUI" method="on_button_mouse_exited" binds= [&"AR-15"]]
 [connection signal="pressed" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle2" to="PlayerUI" method="on_buy_button" binds= [&"AR-15"]]
+[connection signal="mouse_entered" from="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer/Pistol1" to="PlayerUI" method="on_button_mouse_entered" binds= [&"MP7"]]
+[connection signal="mouse_exited" from="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer/Pistol1" to="PlayerUI" method="on_button_mouse_exited" binds= [&"MP7"]]
+[connection signal="pressed" from="PlayerUI/BuyMenu/Panel/SMGS/VBoxContainer/Pistol1" to="PlayerUI" method="on_buy_button" binds= [&"MP7"]]
+[connection signal="pressed" from="PlayerUI/EscMenu/QuitGameButton" to="PlayerUI" method="_on_quit_game_button_pressed"]
+[connection signal="value_changed" from="PlayerUI/EscMenu/SensitivitySlider" to="PlayerUI" method="_on_sensitivity_slider_value_changed"]

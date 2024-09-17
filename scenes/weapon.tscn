@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://85f2v3t7gdwy"]
 
 [ext_resource type="Script" path="res://scripts/WeaponControllerSingleMesh.cs" id="1_sgldv"]
-[ext_resource type="ArrayMesh" uid="uid://jib2gjndfd7a" path="res://meshes/weapons/weapon_pack/Pistols/DEAGLE_125/deagle_125.res" id="3_pwglf"]
+[ext_resource type="ArrayMesh" uid="uid://choru8py7r3qi" path="res://meshes/weapons/weapon_pack/SMG/HK_MP7/hk_mp7.res" id="3_aqy04"]
 [ext_resource type="Script" path="res://scripts/WeaponRecoilPhysics.cs" id="3_tkf6l"]
 [ext_resource type="Script" path="res://scripts/MuzzleFlash.cs" id="5_rak6i"]
 
@@ -62,16 +62,16 @@ skeleton = NodePath("../..")
 
 [node name="WeaponMeshTest" type="MeshInstance3D" parent="RecoilPosition"]
 unique_name_in_owner = true
-transform = Transform3D(-0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, -0.984808, -0.12, 0.22, 0.665)
+transform = Transform3D(-0.997564, 0, -0.0697565, 0, 1, 0, 0.0697565, 0, -0.997564, -0.12, 0.22, 1.2)
 visible = false
 layers = 3
 cast_shadow = 0
-mesh = ExtResource("3_pwglf")
+mesh = ExtResource("3_aqy04")
 skeleton = NodePath("../..")
 
 [node name="MuzzleFlash" type="Node3D" parent="RecoilPosition" node_paths=PackedStringArray("light", "emitter")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-08, 0, -1.49012e-08, 1, 0.000249252, 0.479718, 1.28948)
+transform = Transform3D(1, 0, 0, 0, 1, 1.49012e-08, 0, -1.49012e-08, 1, -0.0738453, 0.211794, 1.88612)
 script = ExtResource("5_rak6i")
 light = NodePath("OmniLight3D")
 emitter = NodePath("GPUParticles3D")

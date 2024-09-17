@@ -13,6 +13,9 @@ public partial class SpawnPoints : Node3D
     public List<Node3D> FFASpawnPoints = new List<Node3D>();
     public List<Node3D> ZombiesSpawnPoints = new List<Node3D>();
 
+    int current_redSpawnPointIndex = 0;
+    int current_blueSpawnPointIndex = 0;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -33,21 +36,34 @@ public partial class SpawnPoints : Node3D
 	public Node3D GetFFASpawnPoint()
 	{
         if (FFASpawnPoints.Count == 0) return null;
+
         Node3D spawn_point = FFASpawnPoints[Mathf.RoundToInt(GD.RandRange(0, FFASpawnPoints.Count - 1))];
+        Area3D player_detection = spawn_point.GetNode<Area3D>("CheckPlayer");
 
 		return spawn_point;
 	}
+
+    public void resetTeamSpawnPoints()
+    {
+        current_blueSpawnPointIndex = 0;
+        current_redSpawnPointIndex = 0;
+    }
+
 	public Node3D GetRedTeamSpawnPoint()
 	{
 		if (RedSpawnPoints.Count == 0) return null;
-        Node3D spawn_point = RedSpawnPoints[Mathf.RoundToInt(GD.RandRange(0, RedSpawnPoints.Count - 1))];
+        Node3D spawn_point = RedSpawnPoints[current_redSpawnPointIndex];
+
+        current_redSpawnPointIndex++;
 
         return spawn_point;
     }
     public Node3D GetBlueTeamSpawnPoint()
     {
         if (BlueSpawnPoints.Count == 0) return null;
-        Node3D spawn_point = BlueSpawnPoints[Mathf.RoundToInt(GD.RandRange(0, BlueSpawnPoints.Count - 1))];
+        Node3D spawn_point = BlueSpawnPoints[current_blueSpawnPointIndex];
+
+        current_blueSpawnPointIndex++;
 
         return spawn_point;
     }

@@ -119,6 +119,7 @@ public partial class Player : CharacterBody3D
         // Needed for Networked Player Not Extras
         if (multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
         Globals.localPlayerInfo = player_info;
+        Globals.localPlayer = this;
 
         _crouchShapeCast = GetNode<ShapeCast3D>(ShapeCastPath);
         stateMachine.InitializeStateMachine(this);

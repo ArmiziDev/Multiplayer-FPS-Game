@@ -11,7 +11,6 @@ public partial class GameManager : Node3D
     int blue_team_score = 0;
 
     private List<Player> m_players = new List<Player>();
-    //private List<WeaponPhysicsBody> physic_weapon_body_handler = new List<WeaponPhysicsBody>();
 
     private int current_spectator = 0;
     private bool current_spectating = false;
@@ -33,9 +32,15 @@ public partial class GameManager : Node3D
 
     private void PreloadWeapons()
     {
-        Globals.weaponDictionary["Hand"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
-        Globals.weaponDictionary["AR-15"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
-        Globals.weaponDictionary["Desert Eagle"] = (Weapons)GD.Load("res://meshes/weapons/weapon_pack/Pistols/DEAGLE_125/WeaponDeagle.tres");
+        AddWeaponToDictionary("res://meshes/weapons/weapon_pack/hand/EMPTY_HAND.tres");
+        AddWeaponToDictionary("res://meshes/weapons/weapon_pack/Rifles/AR15_19/weapon_ar15.tres");
+        AddWeaponToDictionary("res://meshes/weapons/weapon_pack/Pistols/DEAGLE_125/WeaponDeagle.tres");
+    }
+
+    private void AddWeaponToDictionary(String location)
+    {
+        Weapons current_weapon = (Weapons)GD.Load(location);
+        Globals.weaponDictionary[current_weapon.name] = current_weapon;
     }
 
     public override void _Input(InputEvent @event)

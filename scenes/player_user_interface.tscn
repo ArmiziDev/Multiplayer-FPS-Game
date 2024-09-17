@@ -260,7 +260,6 @@ text = "$ 999"
 label_settings = SubResource("LabelSettings_m1b6s")
 
 [node name="Loadout" type="Control" parent="PlayerUI"]
-visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -302,7 +301,6 @@ label_settings = SubResource("LabelSettings_s5k0j")
 
 [node name="Scoreboard" type="Panel" parent="PlayerUI"]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -517,14 +515,14 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("5_6yovh")
 theme_override_font_sizes/font_size = 22
-text = "Rifle"
+text = "AK-47"
 
 [node name="Rifle2" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("5_6yovh")
 theme_override_font_sizes/font_size = 22
-text = "Rifle"
+text = "AR-15"
 
 [node name="Rifle3" type="Button" parent="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer"]
 layout_mode = 2
@@ -650,3 +648,6 @@ unique_name_in_owner = true
 libraries = {
 "": SubResource("AnimationLibrary_hpwy4")
 }
+
+[connection signal="pressed" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle1" to="PlayerUI" method="on_buy_button" binds= [&"AK47"]]
+[connection signal="pressed" from="PlayerUI/BuyMenu/Panel/Rifles/VBoxContainer/Rifle2" to="PlayerUI" method="on_buy_button" binds= [&"AR-15"]]

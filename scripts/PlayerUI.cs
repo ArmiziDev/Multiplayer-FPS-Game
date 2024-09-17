@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 public partial class PlayerUI : CanvasLayer
 {
@@ -200,6 +201,47 @@ public partial class PlayerUI : CanvasLayer
     public void ShowBloodSplatter()
     {
         animationPlayer.Play("BloodSplatter");
+    }
+
+    public void on_buy_button(StringName weapon_name)
+    {
+        WeaponButtonPressed(weapon_name);
+    }
+
+    public void WeaponButtonPressed(StringName weapon_name)
+    {
+        Weapons bought_weapon = Globals.weaponDictionary[weapon_name];
+        if (bought_weapon == null)
+        {
+            Globals.PlayerUI.debug().debug_err("Weapon Is Null");
+            return;
+        }
+        if (Globals.localPlayerInfo.money >= bought_weapon.cost)
+        {
+            Globals.localPlayerInfo.money -= bought_weapon.cost;
+            Globals.PlayerUI.playerUI().UpdateUI("Money", "$" + Globals.localPlayerInfo.money);
+
+            if (bought_weapon.gun_class == Weapons.GunClass.Rifle || bought_weapon.gun_class == Weapons.GunClass.Sniper || bought_weapon.gun_class == Weapons.GunClass.Shotgun)
+            {
+                Globals.localPlayer.WEAPON_CONTROLLER.current_loadout_index = 0; // Set current gun to Main Weapon
+                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon Before Dropping
+                Globals.localPlayer.WEAPON_CONTROLLER.DropWeapon(); // Drop Weapon
+                Globals.localPlayer.player_info.loadout[0] = weapon_name; // Set the weapon into the loadout
+                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon And Now you have weapon
+            }
+            else if (bought_weapon.gun_class == Weapons.GunClass.Pistol)
+            {
+                Globals.localPlayer.WEAPON_CONTROLLER.current_loadout_index = 1; // Set current gun to Main Weapon
+                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon Before Dropping
+                Globals.localPlayer.WEAPON_CONTROLLER.DropCurrentWeapon(1); // Drop Weapon
+                Globals.localPlayer.player_info.loadout[1] = weapon_name; // Set the weapon into the loadout
+                Globals.localPlayer.WEAPON_CONTROLLER.LoadWeapon(); // Load The Weapon And Now you have weapon
+            }
+        }
+        else
+        {
+            Globals.PlayerUI.debug().debug_err("Player can't afford " + weapon_name);
+        }
     }
 }
  

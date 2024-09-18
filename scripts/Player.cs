@@ -70,7 +70,7 @@ public partial class Player : CharacterBody3D
         InitializePlayerComponents();
 
         // Spawn Points
-        GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10);
+        //GlobalPosition = new Vector3(GD.Randf() * 20, 10 , 10); // Temporary
 
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
@@ -139,9 +139,6 @@ public partial class Player : CharacterBody3D
         player_user_interface.playerUI().UpdateUI("Health", "Health " + player_info.health);
         player_user_interface.playerUI().UpdateUI("Money", "$" + player_info.money);
         player_user_interface.playerUI().UpdateUI("DisplayName", player_info.Name);
-
-        player_user_interface.debug().add_debug_property("Global Local Player Team: ", Globals.localPlayerInfo.player_team);
-        player_user_interface.debug().add_debug_property("Player Team: ", player_info.player_team);
     }
 
     public override void _Input(InputEvent @event)
@@ -187,6 +184,8 @@ public partial class Player : CharacterBody3D
         Vector2 screen_center = visible_rect.Size / 2;
 
         Vector3 origin = _camera.ProjectRayOrigin(screen_center);
+        Vector3 direction = _camera.ProjectRayNormal(screen_center);
+        Vector3 modified_origin = origin + direction * 1.5f;
 
         // Apply recoil offset by moving the screen center upwards
         screen_center.X -= raycast_offset_x; // Moves the recoil left or right

@@ -11,6 +11,8 @@ public partial class GameManager : Node3D
     int blue_team_score = 0;
 
     Timer round_time_left;
+    Timer ui_update_round_time;
+    double round_time; 
 
     private List<Player> m_players = new List<Player>();
 
@@ -24,15 +26,62 @@ public partial class GameManager : Node3D
     {
         Globals.gameManager = this;
 
-        round_time_left = GetNode<Timer>("round_time_left");
-
         PreloadWeapons();
         SpawnPlayers();
+        LoadTimers();
 
         // Updating Game Manager UI Elements
         Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", red_team_score);
         Globals.PlayerUI.playerUI().UpdateUI("BlueTeamScore", blue_team_score);
         Globals.PlayerUI.playerUI().UpdateUI("RoundTimeDisplay", round_time_left.TimeLeft);
+    }
+
+    private void LoadTimers()
+    {
+        round_time_left = new Timer();
+        ui_update_round_time = new Timer();
+        AddChild(ui_update_round_time);
+        AddChild(round_time_left);
+
+        switch (Globals.game_mode)
+        {
+            case 0: //5v5
+                round_time = 130;
+                break;
+            case 1: //FFA
+                round_time = 600;
+                break;
+            case 2: //Zombies
+                round_time = 200;
+                break;
+        }
+
+        round_time_left.WaitTime = round_time;
+        round_time_left.Connect("timeout", new Callable(this, nameof(_on_round_end_timeout)));
+        round_time_left.Start();
+
+        ui_update_round_time.WaitTime = 1.0f;  // 1 second intervals
+        ui_update_round_time.OneShot = false;
+        ui_update_round_time.Connect("timeout", new Callable(this, nameof(UpdateRoundTimeUI)));
+        ui_update_round_time.Start();  // Start the timer to update the UI every second
+
+        UpdateRoundTimeUI();
+    }
+
+    private void UpdateRoundTimeUI()
+    {
+        // Get the time left in seconds
+        int timeLeft = (int)Math.Max(round_time_left.TimeLeft, 0);  // Ensures no negative values
+
+        // Convert time to minutes and seconds
+        int minutes = timeLeft / 60;
+        int seconds = timeLeft % 60;
+
+        // Format the time as MM:SS
+        string timeFormatted = string.Format("{0:D2}:{1:D2}", minutes, seconds);
+
+        // Update the UI with the formatted time
+        Globals.PlayerUI.playerUI().UpdateUI("RoundTimeDisplay", timeFormatted);
     }
 
     private void PreloadWeapons()
@@ -99,12 +148,6 @@ public partial class GameManager : Node3D
         if (check_ping)
         {
             calculate_ping += delta;
-            Globals.PlayerUI.debug().update_debug_property("Ping", calculate_ping);
-        }
-        else
-        {
-            Globals.PlayerUI?.debug().update_debug_property("Ping", calculate_ping);
-            calculate_ping = 0;
         }
     }
 
@@ -115,6 +158,7 @@ public partial class GameManager : Node3D
 
     public void Round5v5End(Team winning_team)
     {
+        spawnPoints.resetTeamSpawnPoints();
         switch (winning_team)
         {
             case Team.Red:
@@ -123,7 +167,7 @@ public partial class GameManager : Node3D
                 break;
             case Team.Blue:
                 blue_team_score++;
-                Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", blue_team_score);
+                Globals.PlayerUI.playerUI().UpdateUI("BlueTeamScore", blue_team_score);
                 break;
         }
 
@@ -227,9 +271,13 @@ public partial class GameManager : Node3D
         currentPlayer.player_info = player; // this is where we initialize the player info
         player.health = 100;
 
+        AddChild(currentPlayer);
+
         switch (Globals.game_mode)
         {
             case 0: // 5v5
+                if (player.player_team == Team.Red) currentPlayer.Position = spawnPoints.GetRedTeamSpawnPoint().Position;
+                else if (player.player_team == Team.Blue) currentPlayer.Position = spawnPoints.GetBlueTeamSpawnPoint().Position;
                 break;
             case 1: // Free For All
                 player.player_team = Team.None;
@@ -238,8 +286,6 @@ public partial class GameManager : Node3D
             case 2: // Zombies
                 break;
         }
-
-        AddChild(currentPlayer);
 
         // Add Signals
         currentPlayer.playerNetworkingCalls.PlayerDropWeapon += NetworkPlayerDropWeapon;
@@ -356,13 +402,13 @@ public partial class GameManager : Node3D
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     public void _PingServer(int sender_id)
     {
-        Globals.PlayerUI.debug().debug_message("Server Pinged From" +  sender_id);
         RpcId(sender_id, nameof(_PingClient));
     }
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     public void _PingClient()
     {
-        Globals.PlayerUI.debug().debug_message("Server Pinged " + Globals.localPlayerInfo.Name);
+        Globals.PlayerUI.debug().update_debug_property("Ping", calculate_ping);
         check_ping = false;
+        calculate_ping = 0;
     }
 }

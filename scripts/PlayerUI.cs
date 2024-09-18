@@ -63,6 +63,12 @@ public partial class PlayerUI : CanvasLayer
         escMenu.GetNode<HSlider>("%SensitivitySlider").GetNode<Label>("Value").Text = Globals.localPlayer.MouseSensitivity.ToString();
     }
 
+    public override void _Process(double delta)
+    {
+        // Debugging
+        Globals.PlayerUI.debug().update_debug_property("Velocity", Globals.localPlayer.Velocity.Length());
+    }
+
     public override void _Input(InputEvent @event)
     {
         if (@event.IsActionPressed("scoreboard"))

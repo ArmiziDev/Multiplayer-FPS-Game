@@ -15,13 +15,14 @@ public partial class SpawnPoints : Node3D
 
     int current_redSpawnPointIndex = 0;
     int current_blueSpawnPointIndex = 0;
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    int current_FFASpawnIndex = 0;
+    
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 		SetupSpawnPoints(FFASpawnPoints, FreeForAllNode);
-		SetupSpawnPoints(RedSpawnPoints, FiveVFiveNode.GetNode<Node3D>("RedTeam"));
-        SetupSpawnPoints(RedSpawnPoints, FiveVFiveNode.GetNode<Node3D>("BlueTeam"));
+		SetupSpawnPoints(RedSpawnPoints, FiveVFiveNode.GetNode<Node3D>("%RedTeam"));
+        SetupSpawnPoints(BlueSpawnPoints, FiveVFiveNode.GetNode<Node3D>("%BlueTeam"));
 		SetupSpawnPoints(ZombiesSpawnPoints, ZombiesNode);
     }
 
@@ -37,8 +38,18 @@ public partial class SpawnPoints : Node3D
 	{
         if (FFASpawnPoints.Count == 0) return null;
 
-        Node3D spawn_point = FFASpawnPoints[Mathf.RoundToInt(GD.RandRange(0, FFASpawnPoints.Count - 1))];
-        Area3D player_detection = spawn_point.GetNode<Area3D>("CheckPlayer");
+        Node3D spawn_point = FFASpawnPoints[current_FFASpawnIndex];
+
+        if (FFASpawnPoints.Count > current_FFASpawnIndex)
+        {
+            current_FFASpawnIndex++;
+        }
+        else
+        {
+            current_FFASpawnIndex = 0;
+        }
+
+        //Area3D player_detection = spawn_point.GetNode<Area3D>("CheckPlayer");
 
 		return spawn_point;
 	}

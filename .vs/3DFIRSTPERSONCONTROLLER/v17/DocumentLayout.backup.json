@@ -3,53 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\spawnpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\spawnpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\playerui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\playerui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\playerstates\\playermovementstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\playerstates\\playermovementstate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\networking\\playernetworkingcalls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\networking\\playernetworkingcalls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\weaponcontrollersinglemesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\weaponcontrollersinglemesh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\f62b88e5b50b5849ad215d302c3a54ecd2a9ab42\\Godot.NativeInterop.NativeFuncs.generated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0b92585a2941c39bc3abf3f7f1d5ab117aae375b2c5c977a2baff6056f0beb65\\NativeCalls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\playeruserinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\playeruserinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0bb1b7001f3c7411227a09d2e09f965d857ff30e7701557650c4f513e427d77c\\Node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\bulletlinecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\bulletlinecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\weapons.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\weapons.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\spawnpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\spawnpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|c:\\users\\arman\\documents\\godotprojects\\3dfirstpersoncontroller\\3dfirstpersoncontroller\\scripts\\playerui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F85D1A20-4DB7-4E9A-82F9-557C5B789607}|3DFirstPersonController.csproj|solutionrelative:scripts\\playerui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -59,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 259,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
@@ -69,7 +48,7 @@
               "RelativeDocumentMoniker": "scripts\\Player.cs",
               "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Player.cs",
               "RelativeToolTip": "scripts\\Player.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAADwv0wAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAgwEcAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-13T22:27:55.673Z",
               "IsPinned": true,
@@ -77,13 +56,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "GameManager.cs",
               "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\GameManager.cs",
               "RelativeDocumentMoniker": "scripts\\GameManager.cs",
               "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\GameManager.cs",
               "RelativeToolTip": "scripts\\GameManager.cs",
-              "ViewState": "AgIAADUBAAAAAAAAAAAowEgBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAhwBYBAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-15T23:31:27.331Z",
               "IsPinned": true,
@@ -91,13 +70,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "PlayerNetworkingCalls.cs",
               "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Networking\\PlayerNetworkingCalls.cs",
               "RelativeDocumentMoniker": "scripts\\Networking\\PlayerNetworkingCalls.cs",
               "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Networking\\PlayerNetworkingCalls.cs",
               "RelativeToolTip": "scripts\\Networking\\PlayerNetworkingCalls.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAuwB8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-17T14:34:02.949Z",
               "IsPinned": true,
@@ -105,129 +84,55 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PlayerMovementState.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\playerStates\\PlayerMovementState.cs",
-              "RelativeDocumentMoniker": "scripts\\playerStates\\PlayerMovementState.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\playerStates\\PlayerMovementState.cs",
-              "RelativeToolTip": "scripts\\playerStates\\PlayerMovementState.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwEAAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "SpawnPoints.cs",
+              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\SpawnPoints.cs",
+              "RelativeDocumentMoniker": "scripts\\SpawnPoints.cs",
+              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\SpawnPoints.cs",
+              "RelativeToolTip": "scripts\\SpawnPoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T15:33:29.632Z",
+              "WhenOpened": "2024-09-18T02:07:31.45Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PlayerUI.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUI.cs",
-              "RelativeDocumentMoniker": "scripts\\PlayerUI.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUI.cs",
-              "RelativeToolTip": "scripts\\PlayerUI.cs",
-              "ViewState": "AgIAAPUAAAAAAAAAAAAAABMBAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-16T22:05:21.026Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "NativeCalls.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0b92585a2941c39bc3abf3f7f1d5ab117aae375b2c5c977a2baff6056f0beb65\\NativeCalls.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0b92585a2941c39bc3abf3f7f1d5ab117aae375b2c5c977a2baff6056f0beb65\\NativeCalls.cs",
-              "ToolTip": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0b92585a2941c39bc3abf3f7f1d5ab117aae375b2c5c977a2baff6056f0beb65\\NativeCalls.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0b92585a2941c39bc3abf3f7f1d5ab117aae375b2c5c977a2baff6056f0beb65\\NativeCalls.cs [Read Only]",
-              "ViewState": "AgIAAOQBAAAAAAAAAAAMwPwBAAAIAAAAAQAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T14:50:35.244Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Node.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0bb1b7001f3c7411227a09d2e09f965d857ff30e7701557650c4f513e427d77c\\Node.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0bb1b7001f3c7411227a09d2e09f965d857ff30e7701557650c4f513e427d77c\\Node.cs",
-              "ToolTip": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\0bb1b7001f3c7411227a09d2e09f965d857ff30e7701557650c4f513e427d77c\\Node.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\0bb1b7001f3c7411227a09d2e09f965d857ff30e7701557650c4f513e427d77c\\Node.cs [Read Only]",
-              "ViewState": "AgIAAGwHAAAAAAAAAAAMwIQHAAAIAAAAAQAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T14:50:32.917Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Godot.NativeInterop.NativeFuncs.generated.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\f62b88e5b50b5849ad215d302c3a54ecd2a9ab42\\Godot.NativeInterop.NativeFuncs.generated.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\f62b88e5b50b5849ad215d302c3a54ecd2a9ab42\\Godot.NativeInterop.NativeFuncs.generated.cs",
-              "ToolTip": "C:\\Users\\arman\\AppData\\Local\\Temp\\.vsdbgsrc\\f62b88e5b50b5849ad215d302c3a54ecd2a9ab42\\Godot.NativeInterop.NativeFuncs.generated.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\f62b88e5b50b5849ad215d302c3a54ecd2a9ab42\\Godot.NativeInterop.NativeFuncs.generated.cs [Read Only]",
-              "ViewState": "AgIAAE4BAAAAAAAAAAAMwGYBAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T14:50:06.171Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BulletLineCast.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\BulletLineCast.cs",
-              "RelativeDocumentMoniker": "scripts\\BulletLineCast.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\BulletLineCast.cs",
-              "RelativeToolTip": "scripts\\BulletLineCast.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T03:23:46.001Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Globals.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Globals.cs",
-              "RelativeDocumentMoniker": "scripts\\Globals.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Globals.cs",
-              "RelativeToolTip": "scripts\\Globals.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-17T00:49:08.284Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Weapons.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Weapons.cs",
-              "RelativeDocumentMoniker": "scripts\\Weapons.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\Weapons.cs",
-              "RelativeToolTip": "scripts\\Weapons.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-16T23:15:50.83Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "WeaponControllerSingleMesh.cs",
               "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\WeaponControllerSingleMesh.cs",
               "RelativeDocumentMoniker": "scripts\\WeaponControllerSingleMesh.cs",
               "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\WeaponControllerSingleMesh.cs",
               "RelativeToolTip": "scripts\\WeaponControllerSingleMesh.cs",
-              "ViewState": "AgIAAMIAAAAAAAAAAAAQwM8AAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAQwF4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-15T19:27:26.109Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "SpawnPoints.cs",
-              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\SpawnPoints.cs",
-              "RelativeDocumentMoniker": "scripts\\SpawnPoints.cs",
-              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\SpawnPoints.cs",
-              "RelativeToolTip": "scripts\\SpawnPoints.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwCsAAAACAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "PlayerUserInterface.cs",
+              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUserInterface.cs",
+              "RelativeDocumentMoniker": "scripts\\PlayerUserInterface.cs",
+              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUserInterface.cs",
+              "RelativeToolTip": "scripts\\PlayerUserInterface.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-16T22:34:10.878Z"
+              "WhenOpened": "2024-09-18T00:48:58.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlayerUI.cs",
+              "DocumentMoniker": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUI.cs",
+              "RelativeDocumentMoniker": "scripts\\PlayerUI.cs",
+              "ToolTip": "C:\\Users\\arman\\Documents\\GodotProjects\\3DFirstPersonController\\3DFirstPersonController\\scripts\\PlayerUI.cs",
+              "RelativeToolTip": "scripts\\PlayerUI.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAhwD4AAACGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-16T22:05:21.026Z",
+              "EditorCaption": ""
             }
           ]
         }

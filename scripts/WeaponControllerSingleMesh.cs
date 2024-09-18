@@ -244,8 +244,7 @@ public partial class WeaponControllerSingleMesh : Node3D
         
         if (WEAPON_TYPE != null)
         {
-            can_shoot = false; // Have to wait for pullout animation
-
+            can_shoot = false;
             if (player.player_info.loadout[current_loadout_index] == "Hand")
             {
                 Position = WEAPON_TYPE.position;
@@ -255,25 +254,9 @@ public partial class WeaponControllerSingleMesh : Node3D
             {
                 StartPulloutAnimation();
             }
-
-            if (weapon_mesh != null)
-            {
-                weapon_mesh.Mesh = WEAPON_TYPE.mesh;
-            }
-            else
-            {
-                //Globals.debug?.debug_err("weapon_mesh is null. Cannot set mesh.");
-            }
-
-            if (weapon_shadow != null)
-            {
-                weapon_shadow.Visible = WEAPON_TYPE.shadow;
-            }
-            else
-            {
-                //Globals.debug?.debug_err("weapon_shadow is null. Cannot set visibility.");
-            }
-
+            
+            weapon_mesh.Mesh = WEAPON_TYPE.mesh;
+            weapon_shadow.Visible = WEAPON_TYPE.shadow;
             Scale = WEAPON_TYPE.scale;
 
             // Sway Animation
@@ -281,25 +264,9 @@ public partial class WeaponControllerSingleMesh : Node3D
             idle_sway_rotation_strength = WEAPON_TYPE.idle_sway_rotation_strength;
             random_sway_amount = WEAPON_TYPE.random_sway_amount;
 
-            // Gun Stats
-            if (shoot_timer != null)
-            {
-                shoot_timer.WaitTime = WEAPON_TYPE.time_between_bullets;
-            }
-            else
-            {
-                //Globals.debug?.debug_err("shoot_timer is null. Cannot set wait time.");
-            }
+            shoot_timer.WaitTime = WEAPON_TYPE.time_between_bullets;
 
-            // Muzzle Flash
-            if (muzzle_flash != null)
-            {
-                muzzle_flash.Position = WEAPON_TYPE.muzzle_flash_position;
-            }
-            else
-            {
-                //Globals.debug?.debug_err("muzzle_flash is null. Cannot set position.");
-            }
+            muzzle_flash.Position = WEAPON_TYPE.muzzle_flash_position;
 
             // Update Loadout UI
             player.player_user_interface?.playerUI().UpdateUI("Loadout1", "1: " + player.player_info.loadout[0]);
@@ -307,14 +274,10 @@ public partial class WeaponControllerSingleMesh : Node3D
             player.player_user_interface?.playerUI().UpdateUI("Loadout3", "3: " + player.player_info.loadout[2]);
 
             player.player_user_interface?.playerUI().UpdateUI("Ammo", WEAPON_TYPE.current_ammo + " / " + WEAPON_TYPE.magazine_capacity);
-
-            // Await and completion
-            //await ToSignal(GetTree().CreateTimer(WEAPON_TYPE.pullout_time), "timeout"); // causing godot to crash!
-            PulloutTimer.Start();
         }
         else
         {
-            //Globals.debug?.debug_err("WEAPON_TYPE is null. Cannot load weapon.");
+            Globals.PlayerUI.debug().debug_err("WEAPON_TYPE is null. Cannot load weapon.");
         }
     }
 
@@ -322,9 +285,6 @@ public partial class WeaponControllerSingleMesh : Node3D
     {
         currently_loading_weapon = false;
         can_shoot = true;
-
-        //Globals.debug.debug_message("Ending Weapon Position: " + Position);
-        //Globals.debug.debug_message("Ending Weapon Rotation: " + Rotation);
     }
 
     private async void StartPulloutAnimation()
@@ -472,9 +432,6 @@ public partial class WeaponControllerSingleMesh : Node3D
 
             shoot_timer.Start();
 
-            //Sound
-            //WEAPON_TYPE.FireSound.Play();
-
             if (player.weapon_raycast_result.ContainsKey("position") && player.weapon_raycast_result.ContainsKey("normal"))
             {
                 if (Multiplayer.IsServer())
@@ -524,15 +481,21 @@ public partial class WeaponControllerSingleMesh : Node3D
     private void add_weapon_innacuracy(float delta)
     {
         // Multiplying player velocity by 15 for a dramatic effect to bullet spread when moving
-        float player_movement_spread_multiplier = 15.0f;
+        float player_movement_spread_multiplier = 8.0f;
 
         recoil_innacuracy_spread.X = GetRandomFloatInRange(-WEAPON_TYPE.bullet_spread, WEAPON_TYPE.bullet_spread);
         recoil_innacuracy_spread.Y = GetRandomFloatInRange(-WEAPON_TYPE.bullet_spread, WEAPON_TYPE.bullet_spread);
 
-        // Cap the innacuracy to 50
-        recoil_innacuracy_spread *= Mathf.Min(50, Mathf.Max(1, player.Velocity.Length() * player_movement_spread_multiplier));
+        float player_movement_innacuracy = 1.0f;
+        if (player.Velocity.Length() >= 3.5f) // allow for strafing
+        {
+            player_movement_innacuracy = player.Velocity.Length();
+        }
 
-        //Globals.debug.update_debug_property("Recoil Innacuracy", recoil_innacuracy_spread.Length());
+        Globals.PlayerUI.debug().debug_message("Weapon Innacuracy From Movement: " + player_movement_innacuracy * player_movement_spread_multiplier);
+
+        // Cap the innacuracy to 50
+        recoil_innacuracy_spread *= Mathf.Min(50, Mathf.Max(1, player_movement_innacuracy * player_movement_spread_multiplier));
     }
 
     private void add_recoil_offset(float delta)
@@ -576,7 +539,8 @@ public partial class WeaponControllerSingleMesh : Node3D
 
     public void _on_shoot_timer_timeout()
     {
-        can_shoot = true;
+        if (!currently_loading_weapon)
+            can_shoot = true;
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]

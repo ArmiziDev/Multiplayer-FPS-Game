@@ -10,6 +10,9 @@ public partial class PlayerUserInterface : Control
     public override void _Ready()
     {
         Globals.PlayerUI = this;
+
+		// Debugging
+        debug().add_debug_property("Velocity", Globals.localPlayer.Velocity.Length());
     }
 
     public void update_debug_property(string title, object value)

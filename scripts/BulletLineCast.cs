@@ -43,7 +43,7 @@ public partial class BulletLineCast : Node3D
     public void _on_area_3d_body_entered(Node3D node)
     {
         // Optionally free the bullet on collision
-        Globals.PlayerUI.debug().debug_message("Linecast Entered body: " + node.Name);
-        //QueueFree();
+        //Globals.PlayerUI.debug().debug_message("Linecast Entered body: " + node.Name);
+        QueueFree();
     }
 }

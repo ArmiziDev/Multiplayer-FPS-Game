@@ -4,6 +4,7 @@ using System;
 public partial class WeaponRecoil : Node3D
 {
     [Export] public WeaponControllerSingleMesh weapon;
+    [Export] public bool Enabled = false;
 
     public Vector3 current_rotation;
     public Vector3 target_rotation;

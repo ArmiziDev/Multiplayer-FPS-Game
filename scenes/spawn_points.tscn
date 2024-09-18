@@ -11,24 +11,61 @@ ZombiesNode = NodePath("Zombies")
 [node name="5v5s" type="Node3D" parent="."]
 
 [node name="RedTeam" type="Node3D" parent="5v5s"]
+unique_name_in_owner = true
+
+[node name="SpawnPoint1" type="Node3D" parent="5v5s/RedTeam"]
+
+[node name="SpawnPoint2" type="Node3D" parent="5v5s/RedTeam"]
+
+[node name="SpawnPoint3" type="Node3D" parent="5v5s/RedTeam"]
+
+[node name="SpawnPoint4" type="Node3D" parent="5v5s/RedTeam"]
+
+[node name="SpawnPoint5" type="Node3D" parent="5v5s/RedTeam"]
 
 [node name="BlueTeam" type="Node3D" parent="5v5s"]
+unique_name_in_owner = true
+
+[node name="SpawnPoint1" type="Node3D" parent="5v5s/BlueTeam"]
+
+[node name="SpawnPoint2" type="Node3D" parent="5v5s/BlueTeam"]
+
+[node name="SpawnPoint3" type="Node3D" parent="5v5s/BlueTeam"]
+
+[node name="SpawnPoint4" type="Node3D" parent="5v5s/BlueTeam"]
+
+[node name="SpawnPoint5" type="Node3D" parent="5v5s/BlueTeam"]
 
 [node name="FreeForAll" type="Node3D" parent="."]
 
-[node name="SpawPoint1" type="Node3D" parent="FreeForAll"]
+[node name="SpawnPoint1" type="Node3D" parent="FreeForAll"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.9335, 1.61647, 4.61012)
 
-[node name="SpawPoint2" type="Node3D" parent="FreeForAll"]
+[node name="SpawnPoint2" type="Node3D" parent="FreeForAll"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.5343, 1.18349, -13.4613)
 
-[node name="SpawPoint3" type="Node3D" parent="FreeForAll"]
+[node name="SpawnPoint3" type="Node3D" parent="FreeForAll"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.8763, 1.32724, 26.1226)
 
-[node name="SpawPoint4" type="Node3D" parent="FreeForAll"]
+[node name="SpawnPoint4" type="Node3D" parent="FreeForAll"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.009, 1.32724, -26.0104)
 
-[node name="SpawPoint5" type="Node3D" parent="FreeForAll"]
+[node name="SpawnPoint5" type="Node3D" parent="FreeForAll"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
+
+[node name="SpawnPoint6" type="Node3D" parent="FreeForAll"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
+
+[node name="SpawnPoint7" type="Node3D" parent="FreeForAll"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
+
+[node name="SpawnPoint8" type="Node3D" parent="FreeForAll"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
+
+[node name="SpawnPoint9" type="Node3D" parent="FreeForAll"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
+
+[node name="SpawnPoint10" type="Node3D" parent="FreeForAll"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1707, 1.32724, -11.2621)
 
 [node name="Zombies" type="Node3D" parent="."]

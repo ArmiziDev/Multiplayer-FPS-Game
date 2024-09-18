@@ -188,8 +188,8 @@ public partial class Player : CharacterBody3D
         Vector3 modified_origin = origin + direction * 1.5f;
 
         // Apply recoil offset by moving the screen center upwards
-        screen_center.X -= raycast_offset_x; // Moves the recoil left or right
-        screen_center.Y -= raycast_offset_y;  // Moves the center up for recoil effect
+        screen_center.X -= raycast_offset_x; // Moves the bullet spread left or right
+        screen_center.Y -= raycast_offset_y;  // Moves the bulllet spread up or down
 
         // Creating Ray Begining and End
         Vector3 end = origin + _camera.ProjectRayNormal(screen_center) * distance; // Distanced Traveled

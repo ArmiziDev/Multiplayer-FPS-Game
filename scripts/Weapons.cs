@@ -39,13 +39,18 @@ public partial class Weapons : Resource
     [Export] public float snap_amount_kickback;
     [Export] public float speed_kickback;
 
-	[ExportCategory("Weapon Recoil Rotation")]
+	[ExportCategory("Weapon Recoil Rotation (CSGO STYLE)")]
 	[Export] public Vector3 recoil_amount_rotation;
 	[Export] public float recoil_follow_speed;
     [Export] public float recoil_reset_speed;
 	[Export] public float recoil_reset_speed_amplifier = 2.0f;
 
-	[ExportCategory("Weapon Sway")]
+	[ExportCategory("Weapon Recoil Rotation (Camera Altering)")]
+	[Export] public Vector3 recoil_amount_rotation_camera;
+	[Export] public float recoil_speed_rotation_camera;
+	[Export] public float recoil_snap_amount_rotation_camera;
+
+    [ExportCategory("Weapon Sway")]
 	[Export] public Vector2 sway_min { get; set; } = new Vector2(-20.0f, -20.0f); 
 	[Export] public Vector2 sway_max { get; set; } = new Vector2(20.0f, 20.0f); 
 	[Export(PropertyHint.Range, "0,0.2,0.01")] public float sway_speed_position { get; set; } = 0.07f;
@@ -62,9 +67,6 @@ public partial class Weapons : Resource
 	[Export] public Vector3 muzzle_flash_position { get; set; } = new Vector3(0.11f, 31.25f, 94.597f);
 
 	[ExportCategory("Audio Settings")]
-    [Export] public NodePath FireSoundPath { get; set; }
-    [Export] public NodePath ReloadSoundPath { get; set; }
-	public AudioStreamPlayer3D FireSound { get; set; }
-	public AudioStreamPlayer3D ReloadSound { get; set; }
-
+	[Export] public AudioStream FireSound { get; set; }
+	[Export] public AudioStream ReloadSound { get; set; }
 }

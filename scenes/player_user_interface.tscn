@@ -137,6 +137,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -836,6 +838,34 @@ width = 2.0
 [node name="Left" type="Line2D" parent="Reticle"]
 points = PackedVector2Array(-5, 0, -15, 0)
 width = 2.0
+
+[node name="HitMarker" type="Control" parent="Reticle"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Top Right" type="Line2D" parent="Reticle/HitMarker"]
+position = Vector2(-20, -20)
+points = PackedVector2Array(13, -12, 5, -4)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Bottom Right" type="Line2D" parent="Reticle/HitMarker"]
+position = Vector2(-21, -3)
+points = PackedVector2Array(5, -13, 13, -5)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Top Left" type="Line2D" parent="Reticle/HitMarker"]
+position = Vector2(-38, -21)
+points = PackedVector2Array(5, -11, 13, -3)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Bottom Left" type="Line2D" parent="Reticle/HitMarker"]
+position = Vector2(-38, -4)
+points = PackedVector2Array(13, -12, 5, -4)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
 
 [node name="DebugPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("vBoxContainer")]
 custom_minimum_size = Vector2(200, 0)

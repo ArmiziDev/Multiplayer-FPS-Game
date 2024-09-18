@@ -97,5 +97,11 @@ one_shot = true
 unique_name_in_owner = true
 one_shot = true
 
+[node name="WeaponFireSound" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+
+[node name="HitMarkerSound" type="AudioStreamPlayer3D" parent="."]
+unique_name_in_owner = true
+
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
 [connection signal="timeout" from="PulloutTimer" to="." method="_on_pullout_timer_timeout"]

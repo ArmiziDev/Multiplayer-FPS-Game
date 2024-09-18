@@ -12,12 +12,15 @@ public partial class PlayerUI : CanvasLayer
     private Control buyMenu;
     private Control buyMenuWeaponInfo;
     private Control escMenu;
+    private Control HitMarker;
 
     private VBoxContainer PlayerKillUIContainer;
     [Export] private PackedScene player_kill_ui;
 
     public override void _Ready()
-    { 
+    {
+        this.Visible = true;
+
         // Initialize the dictionary to hold UI elements
         _uiElements = new Dictionary<StringName, Control>();
 
@@ -60,6 +63,9 @@ public partial class PlayerUI : CanvasLayer
         buyMenuWeaponInfo.Visible = false;
         buyMenu.Visible = false;
 
+        HitMarker = GetNode<Control>("%HitMarker");
+        HitMarker.Visible = false;
+
         escMenu.GetNode<HSlider>("%SensitivitySlider").GetNode<Label>("Value").Text = Globals.localPlayer.MouseSensitivity.ToString();
     }
 
@@ -88,6 +94,13 @@ public partial class PlayerUI : CanvasLayer
         {
             scoreboard.Visible = false;
         }
+    }
+
+    public async void DisplayHitMarker(float duration = 0.05f)
+    {
+        HitMarker.Visible = true;
+        await ToSignal(GetTree().CreateTimer(duration), "timeout");
+        HitMarker.Visible = false;
     }
 
     public void buy_menu()

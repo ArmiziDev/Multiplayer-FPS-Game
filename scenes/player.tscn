@@ -452,7 +452,8 @@ unique_name_in_owner = true
 [node name="WeaponRig" type="Node3D" parent="CameraController/HeadMovement/Recoil/Camera3D"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.55, -0.72, -0.13)
 
-[node name="Weapon" parent="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig" instance=ExtResource("4_c001k")]
+[node name="Weapon" parent="CameraController/HeadMovement/Recoil/Camera3D/WeaponRig" node_paths=PackedStringArray("weaponRecoilNode") instance=ExtResource("4_c001k")]
+weaponRecoilNode = NodePath("../../..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -6,17 +6,25 @@ using System.Runtime.CompilerServices;
 [Tool]
 public partial class WeaponControllerSingleMesh : Node3D
 {
-    [Export]
     public Weapons WEAPON_TYPE { get; set; }
     
     [Export] public float sway_speed = 1.2f;
+    [Export] public bool upwards_recoil = false;
+
+    [Export] public Node3D weaponRecoilNode;
+    public WeaponRecoil weaponRecoilCameraAdjuster;
 
     //[Export] public Node3D recoil_node3D;
-    [Export] public MeshInstance3D weapon_mesh { get; set; }
-    [Export] public MeshInstance3D weapon_shadow { get; set; }
-    [Export] public MuzzleFlash muzzle_flash { get; set; }
-    [Export] public Timer shoot_timer { get; set; }
-    [Export] public Timer PulloutTimer { get; set; }
+    public MeshInstance3D weapon_mesh { get; set; }
+    public MeshInstance3D weapon_shadow { get; set; }
+    public MuzzleFlash muzzle_flash { get; set; }
+    public Timer shoot_timer { get; set; }
+    public Timer PulloutTimer { get; set; }
+
+    // Sounds
+    private AudioStreamPlayer3D WeaponFireSound { get; set; }
+    private AudioStream backupWeaponSound {  get; set; }
+    private AudioStreamPlayer3D HitMakerSound { get; set; }
 
     public Player player;
     public WeaponRecoilPhysics weapon_recoil_physics;
@@ -66,6 +74,11 @@ public partial class WeaponControllerSingleMesh : Node3D
         weapon_recoil_physics = GetNode<WeaponRecoilPhysics>("%RecoilPosition");
         muzzle_flash = GetNode<MuzzleFlash>("%MuzzleFlash");
 
+        WeaponFireSound = GetNode<AudioStreamPlayer3D>("%WeaponFireSound");
+        backupWeaponSound = (AudioStream)GD.Load("res://assets/sounds/8_Bit_Gun.wav");
+        HitMakerSound = GetNode<AudioStreamPlayer3D>("%HitMarkerSound");
+        HitMakerSound.Stream = (AudioStream)GD.Load("res://assets/sounds/HitMarker.wav");
+
         random = new Random();
 
         LoadLoadout();
@@ -82,6 +95,7 @@ public partial class WeaponControllerSingleMesh : Node3D
     {
         weapon_recoil_physics.InitializeWeaponRecoilPhysics(this);
         muzzle_flash.InitializeMuzzleFlash(this);
+        weaponRecoilCameraAdjuster = (WeaponRecoil)weaponRecoilNode;
     }
     private void LoadLoadout()
     {
@@ -95,7 +109,14 @@ public partial class WeaponControllerSingleMesh : Node3D
     {
         ResetRecoilOffset((float)delta);
 
-        raycast_offset = recoil_offset;
+        if (upwards_recoil)
+        {
+            raycast_offset = recoil_offset;
+        }
+        else
+        {
+            raycast_offset = Vector3.Zero;
+        }
         raycast_offset += recoil_innacuracy_spread;
     }
     public override void _Input(InputEvent @event)
@@ -253,6 +274,14 @@ public partial class WeaponControllerSingleMesh : Node3D
             else
             {
                 StartPulloutAnimation();
+            }
+
+            if (WEAPON_TYPE.FireSound != null)
+            {
+                WeaponFireSound.Stream = WEAPON_TYPE.FireSound;
+            } else
+            {
+                WeaponFireSound.Stream = backupWeaponSound;
             }
             
             weapon_mesh.Mesh = WEAPON_TYPE.mesh;
@@ -413,8 +442,24 @@ public partial class WeaponControllerSingleMesh : Node3D
 
     public void _visual_weapon_fire()
     {
-        weapon_recoil_physics.add_recoil();
-        muzzle_flash.add_muzzle_flash();
+        if (upwards_recoil)
+        {
+            
+        }
+        else
+        {
+            weaponRecoilCameraAdjuster.add_recoil();
+        }
+        weapon_recoil_physics.add_recoil(); // shows the kickback in the gun
+        muzzle_flash.add_muzzle_flash(); // displays muzzle flash
+        weapon_fire_sound();
+    }
+
+    private void weapon_fire_sound()
+    {
+        if (WeaponFireSound.Stream == null) return;
+        GD.Print("Playing Fire Sound");
+        WeaponFireSound.Play();
     }
 
     public void _attack(float delta)
@@ -467,6 +512,8 @@ public partial class WeaponControllerSingleMesh : Node3D
                         Player hit_player = (Player)collider;
                         if(hit_player != player)
                         {
+                            HitMakerSound.Play();
+                            Globals.PlayerUI.playerUI().DisplayHitMarker();
                             hit_player.Damage((int)WEAPON_TYPE.base_damage, player.player_info);
                         }
                     }

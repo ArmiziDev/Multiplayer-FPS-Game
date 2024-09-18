@@ -54,6 +54,11 @@ spawnPoints = NodePath("SpawnPoints")
 [node name="check_ping" type="Timer" parent="."]
 autostart = true
 
+[node name="round_time_left" type="Timer" parent="."]
+one_shot = true
+
+[node name="SpawnPoints" parent="." instance=ExtResource("7_vbwwq")]
+
 [node name="RecoilTestWall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.70383, 17.5415)
 
@@ -187,6 +192,5 @@ transform = Transform3D(1, 0, 0, 0, -0.428809, 0.903395, 0, -0.903395, -0.428809
 shadow_enabled = true
 directional_shadow_mode = 1
 
-[node name="SpawnPoints" parent="." instance=ExtResource("7_vbwwq")]
-
 [connection signal="timeout" from="check_ping" to="." method="_on_check_ping_timeout"]
+[connection signal="timeout" from="round_time_left" to="." method="_on_round_end_timeout"]

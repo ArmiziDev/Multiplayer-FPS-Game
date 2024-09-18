@@ -10,6 +10,8 @@ public partial class GameManager : Node3D
     int red_team_score = 0;
     int blue_team_score = 0;
 
+    Timer round_time_left;
+
     private List<Player> m_players = new List<Player>();
 
     private int current_spectator = 0;
@@ -22,12 +24,15 @@ public partial class GameManager : Node3D
     {
         Globals.gameManager = this;
 
+        round_time_left = GetNode<Timer>("round_time_left");
+
         PreloadWeapons();
         SpawnPlayers();
 
         // Updating Game Manager UI Elements
         Globals.PlayerUI.playerUI().UpdateUI("RedTeamScore", red_team_score);
         Globals.PlayerUI.playerUI().UpdateUI("BlueTeamScore", blue_team_score);
+        Globals.PlayerUI.playerUI().UpdateUI("RoundTimeDisplay", round_time_left.TimeLeft);
     }
 
     private void PreloadWeapons()
@@ -94,6 +99,7 @@ public partial class GameManager : Node3D
         if (check_ping)
         {
             calculate_ping += delta;
+            Globals.PlayerUI.debug().update_debug_property("Ping", calculate_ping);
         }
         else
         {
@@ -102,11 +108,9 @@ public partial class GameManager : Node3D
         }
     }
 
-    private void _on_check_ping_timeout()
+    private void _on_round_end_timeout()
     {
-        check_ping = true;
-        if (Multiplayer.GetUniqueId() != 1)
-            RpcId(1, nameof(_PingServer), Multiplayer.GetUniqueId());
+        Globals.PlayerUI.debug().debug_message("Round Ended");
     }
 
     public void Round5v5End(Team winning_team)
@@ -342,15 +346,23 @@ public partial class GameManager : Node3D
         current_player.WEAPON_CONTROLLER.DropWeaponKeepOriginal(loadout_index);
     }
 
+    private void _on_check_ping_timeout()
+    {
+        check_ping = true;
+        if (Multiplayer.GetUniqueId() != 1)
+            RpcId(1, nameof(_PingServer), Multiplayer.GetUniqueId());
+    }
+
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     public void _PingServer(int sender_id)
     {
+        Globals.PlayerUI.debug().debug_message("Server Pinged From" +  sender_id);
         RpcId(sender_id, nameof(_PingClient));
     }
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     public void _PingClient()
     {
-        //Globals.PlayerUI.debug().debug_message("Pinged From Server");
+        Globals.PlayerUI.debug().debug_message("Server Pinged " + Globals.localPlayerInfo.Name);
         check_ping = false;
     }
 }

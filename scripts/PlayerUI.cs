@@ -47,6 +47,9 @@ public partial class PlayerUI : CanvasLayer
         AddUIElement("RedTeamScore", GetNode<Label>("%RedTeamScore"));
         AddUIElement("BlueTeamScore", GetNode<Label>("%BlueTeamScore"));
 
+        // Time Display
+        AddUIElement("RoundTimeDisplay", GetNode<Label>("%RoundTimeDisplay"));
+
         scoreboard = GetNode<Panel>("%Scoreboard");
         scoreboard.Visible = false;
 

@@ -40,7 +40,7 @@ public partial class SpawnPoints : Node3D
 
         Node3D spawn_point = FFASpawnPoints[current_FFASpawnIndex];
 
-        if (FFASpawnPoints.Count > current_FFASpawnIndex)
+        if (FFASpawnPoints.Count > current_FFASpawnIndex - 1)
         {
             current_FFASpawnIndex++;
         }

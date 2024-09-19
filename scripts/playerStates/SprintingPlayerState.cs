@@ -15,7 +15,7 @@ public partial class SprintingPlayerState : PlayerMovementState
     public override void Exit()
     {
 		state_machine.animationPlayer.SpeedScale = 1.0f;
-		state_machine.animationPlayer.Pause();
+        state_machine.animationPlayer.Pause();
     }
 
     public override void Update(float delta)

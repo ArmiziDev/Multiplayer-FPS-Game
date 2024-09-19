@@ -7,7 +7,14 @@ public enum Team
 	Blue, // Can be only damaged by None or Red
 	None // Can be damaged by anyone
 }
-
+public enum PlayerAnimation
+{
+    TPose,
+    Idle,
+    Running,
+    Crouch,
+    Slide
+}
 public partial class Player : CharacterBody3D
 {
     public PlayerInfo player_info; // for networking
@@ -32,6 +39,8 @@ public partial class Player : CharacterBody3D
     [Export] public State_Machine stateMachine { get; set; }
     [Export] public PlayerUserInterface player_user_interface;
     [Export] public float _speed;
+    [Export] public CharacterModel character_model;
+    [Export] public PlayerAnimation current_player_animation = PlayerAnimation.Idle;
 
     public float gravity = 12.0f;
     public Vector3 gravity_vector;
@@ -55,6 +64,9 @@ public partial class Player : CharacterBody3D
     // Interaction
     public Node current_interactable;
 
+    private Node3D PlayerModelNode3D;
+    private Node3D CameraController;
+
     // Multiplayer
     public MultiplayerSynchronizer multiplayerSynchronizer;
     public PlayerNetworkingCalls playerNetworkingCalls { get; set; }
@@ -75,6 +87,25 @@ public partial class Player : CharacterBody3D
         Input.MouseMode = Input.MouseModeEnum.Captured;
 
         EmitSignal(SignalName.PlayerReady);
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        character_model.current_animation = current_player_animation;
+        HandlePlayerAnimations();
+    }
+
+    public void HandlePlayerAnimations()
+    {
+        if (multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
+        if (Velocity.Length() > 1)
+        {
+            current_player_animation = PlayerAnimation.Running;
+        }
+        else
+        {
+            current_player_animation = PlayerAnimation.Idle;
+        }
     }
 
     private void InitializeNetworkComponents()
@@ -118,8 +149,15 @@ public partial class Player : CharacterBody3D
         _animationPlayer = GetNode<AnimationPlayer>(AnimationPlayerPath);
         WEAPON_CONTROLLER.InitializeWeaponController(this);
 
+        PlayerModelNode3D = GetNode<Node3D>("CharacterModel");
+        CameraController = GetNode<Node3D>("CameraController");
+
+        CameraController.Visible = false;
+
         // Needed for Networked Player Not Extras
         if (multiplayerSynchronizer.GetMultiplayerAuthority() != Multiplayer.GetUniqueId()) return;
+        PlayerModelNode3D.Visible = false; // Make character model invisible for self
+        CameraController.Visible = true; // Make weapon visible to self
         Globals.localPlayerInfo = player_info;
         Globals.localPlayer = this;
 

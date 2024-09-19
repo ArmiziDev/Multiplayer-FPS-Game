@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://ce4lhugdkhlkl"]
+[gd_scene load_steps=27 format=3 uid="uid://ce4lhugdkhlkl"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_erhc8"]
 [ext_resource type="Script" path="res://scripts/Networking/PlayerNetworkingCalls.cs" id="2_w6nvr"]
 [ext_resource type="Script" path="res://scripts/HeadMovement.cs" id="3_5pwa8"]
+[ext_resource type="PackedScene" uid="uid://3wwg0ii8pu70" path="res://scenes/characters/AmyCharacter.tscn" id="3_r8cb0"]
 [ext_resource type="Script" path="res://scripts/WeaponRecoil.cs" id="3_vxix5"]
 [ext_resource type="PackedScene" uid="uid://85f2v3t7gdwy" path="res://scenes/weapon.tscn" id="4_c001k"]
 [ext_resource type="Script" path="res://scripts/State_Machine.cs" id="6_ruf4d"]
@@ -15,8 +16,10 @@
 [ext_resource type="Script" path="res://scripts/playerStates/FallingPlayerState.cs" id="13_0s4uh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gth1"]
+radius = 0.35
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0u0go"]
+radius = 0.35
 
 [sub_resource type="Animation" id="Animation_oyh3a"]
 resource_name = "Crouch"
@@ -412,8 +415,11 @@ properties/3/replication_mode = 1
 properties/4/path = NodePath("CameraController/HeadMovement:rotation")
 properties/4/spawn = true
 properties/4/replication_mode = 1
+properties/5/path = NodePath(".:current_player_animation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "stateMachine")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("WEAPON_CONTROLLER", "stateMachine", "character_model")]
 script = ExtResource("1_erhc8")
 MouseSensitivity = 17.054
 ACCELERATION = 0.5
@@ -423,12 +429,23 @@ ShapeCastPath = NodePath("ShapeCast3D")
 WEAPON_CONTROLLER = NodePath("CameraController/HeadMovement/Recoil/Camera3D/WeaponRig/Weapon")
 stateMachine = NodePath("PlayerStateMachine")
 _speed = 6.0
+character_model = NodePath("CharacterModel/Character")
 
 [node name="PlayerRpcCalls" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_w6nvr")
 
+[node name="CharacterModel" type="Node3D" parent="."]
+transform = Transform3D(-0.015, 0, -1.31134e-09, 0, 0.015, 0, 1.31134e-09, 0, -0.015, 0, 0, 0)
+
+[node name="WeaponModel" type="Node3D" parent="CharacterModel"]
+transform = Transform3D(1, 0, 2.13163e-14, 0, 1, 0, -2.13163e-14, 0, 1, -10.8924, 21.6873, 40.5866)
+
+[node name="Character" parent="CharacterModel" instance=ExtResource("3_r8cb0")]
+unique_name_in_owner = true
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape3D_1gth1")
 
 [node name="Placeholder Mesh" type="MeshInstance3D" parent="CollisionShape3D"]

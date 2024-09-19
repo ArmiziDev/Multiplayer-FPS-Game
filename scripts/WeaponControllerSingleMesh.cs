@@ -254,6 +254,19 @@ public partial class WeaponControllerSingleMesh : Node3D
         WeaponBody.RotationDegrees = RotationDegrees;  // Keep the player's current rotation
     }
 
+    public async void LoadWeaponSound(AudioStream fire_sound)
+    {
+        await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+        if (WEAPON_TYPE.FireSound != null)
+        {
+            WeaponFireSound.Stream = WEAPON_TYPE.FireSound;
+        }
+        else
+        {
+            WeaponFireSound.Stream = backupWeaponSound;
+        }
+    }
+
     public void LoadWeapon()
     {
         currently_loading_weapon = true;
@@ -276,13 +289,7 @@ public partial class WeaponControllerSingleMesh : Node3D
                 StartPulloutAnimation();
             }
 
-            if (WEAPON_TYPE.FireSound != null)
-            {
-                WeaponFireSound.Stream = WEAPON_TYPE.FireSound;
-            } else
-            {
-                WeaponFireSound.Stream = backupWeaponSound;
-            }
+            LoadWeaponSound(WEAPON_TYPE.FireSound);
             
             weapon_mesh.Mesh = WEAPON_TYPE.mesh;
             weapon_shadow.Visible = WEAPON_TYPE.shadow;
@@ -458,7 +465,6 @@ public partial class WeaponControllerSingleMesh : Node3D
     private void weapon_fire_sound()
     {
         if (WeaponFireSound.Stream == null) return;
-        GD.Print("Playing Fire Sound");
         WeaponFireSound.Play();
     }
 

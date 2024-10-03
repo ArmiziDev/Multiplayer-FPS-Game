@@ -1,5 +1,5 @@
-# 3DFpsController - Godot 4.3 (C#)
-Welcome to the **3DFpsController** project! This is my first ever attempt at building a 3D FPS controller from scratch using **C#** in **Godot 4.3**. It’s been a wild ride—filled with janky, spaghetti code and plenty of trial and error—but the experience was invaluable.
+# Multiplayer FPS Project - Godot 4.3 (C#)
+Welcome to the **Multiplayer FPS** project! This is my first ever attempt at building a 3D FPS controller from scratch using **C#** in **Godot 4.3**. It’s been a wild ride—filled with janky, spaghetti code and plenty of trial and error—but the experience was invaluable.
 
 ## About the Project
 I embarked on this project with the goal of enhancing my skills in game development and learning C#. Prior to this, my coding experience primarily revolved around solving algorithmic problems on LeetCode and creating complex data structures like virtual heaps using C++. This project was a big leap from that, as I transitioned from pure programming challenges to designing a fully-fledged game.
